@@ -1,3 +1,5 @@
+import { request } from "https";
+
 "use strict";
 
 const express = require("express");
@@ -29,6 +31,10 @@ app.get("/featureflags", (request, response) => {
   // if(isDriveEnabled)
   // otherwise not
   response.send(`${flagName}: ${isDriveEnabled}`);
+});
+
+app.get("/newendpoint", (request, response) => {
+  response.send("The deploy worked!");
 });
 
 app.listen(3000);
