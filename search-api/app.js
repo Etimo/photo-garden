@@ -4,7 +4,7 @@ const express = require("express");
 const app = express();
 const setup = require("./lib/setup");
 
-setup.init();
+setup.init(app);
 
 function helloRespond(request, response) {
   const name = request.params.name || "Etimo";

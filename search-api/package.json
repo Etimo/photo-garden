@@ -20,6 +20,7 @@
     "body-parser": "^1.18.2",
     "envvars": "^0.1.0",
     "express": "^4.16.2",
+    "morgan": "^1.9.0",
     "request": "^2.83.0",
     "unleash-client": "^2.3.1",
     "uuid": "^3.1.0"
