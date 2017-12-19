@@ -19,7 +19,7 @@ Feature("Hello", () => {
 
     Given("we have set a name", () => { });
     And("we send a request to hello", async () => {
-      response = await request.get(`/${name}`);
+      response = await request.get(`/hello/${name}`);
     });
     Then("response status should be OK", () => {
       response.status.should.equal(200);
