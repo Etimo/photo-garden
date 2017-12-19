@@ -19,3 +19,7 @@ services:
     ports:
         - "5432:5432"
     image: postgres:10-alpine
+    volumes:
+        - data:/var/lib/postgresql/data
+volumes:
+  data: {}
