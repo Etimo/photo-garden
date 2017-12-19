@@ -4,4 +4,4 @@ services:
   - docker
 
 before_install:
-  - docker build -t etimo/photo-garden-search-api
+  - docker build -t etimo/photo-garden-search-api search-api/
