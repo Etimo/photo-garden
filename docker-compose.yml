@@ -1,0 +1,7 @@
+version: "3.3"
+services:
+  search-api:
+    build:
+      context: search-api
+    ports:
+      - "3000:3000"
