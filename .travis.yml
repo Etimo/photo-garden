@@ -12,4 +12,3 @@ install: no
 before_script: ./test.sh
 
 script: ./build.sh
-
