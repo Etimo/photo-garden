@@ -12,3 +12,7 @@ install: no
 before_script: ./test.sh
 
 script: ./build.sh
+
+after_success: 
+  - ./push.sh
+  - ./deploy.sh 
