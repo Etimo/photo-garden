@@ -2,6 +2,9 @@
 
 const express = require("express");
 const app = express();
+const setup = require("./lib/setup");
+
+setup.init();
 
 function respond(request, response) {
   const name = request.params.name || "Etimo";
