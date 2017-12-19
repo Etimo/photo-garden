@@ -1,3 +1,5 @@
+notifications:
+  email: false
 language: node_js
 node_js:
   - 8
@@ -10,3 +12,4 @@ install: no
 before_script: ./test.sh
 
 script: ./build.sh
+
