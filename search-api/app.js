@@ -1,5 +1,3 @@
-import { request } from "https";
-
 "use strict";
 
 const express = require("express");
