@@ -1,7 +1,7 @@
 "use strict";
 
 const app = require("../app");
-const supertest = require("supertest-as-promised");
+const supertest = require("supertest");
 const request = supertest.agent(app.listen());
 
 Feature("Hello", () => {
