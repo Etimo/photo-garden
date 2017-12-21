@@ -1,3 +1,3 @@
-cd ${TRAVIS_BUILD_DIR}/search-api
-npm install
-npm test
+cd ${TRAVIS_BUILD_DIR}
+./npm-all.sh install
+./npm-all.sh test
