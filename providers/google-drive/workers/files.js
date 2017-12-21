@@ -19,7 +19,7 @@ function filesListCallback(client, err, response) {
 function getFilesInDrive(client, nextPageToken) {
   var options = {
     auth: client,
-    fields: "nextPageToken, files(mimeType, name)"
+    fields: "nextPageToken, files"
   };
   if (nextPageToken) {
     // Indicate that we want to continue a previously started search
