@@ -1,6 +1,6 @@
-var google = require('googleapis');
-var GoogleAuth = require('google-auth-library');
-var auth = new GoogleAuth;
+var google = require("googleapis");
+var GoogleAuth = require("google-auth-library");
+var auth = new GoogleAuth();
 var config = require("../../config");
 
 function isValidFile(file) {

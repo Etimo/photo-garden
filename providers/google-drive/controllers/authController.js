@@ -6,7 +6,7 @@ var config = require("../../config");
 function getAuthUrl() {
   var client = util.getClient();
   return client.generateAuthUrl({
-    access_type: 'offline',
+    access_type: "offline",
     scope: scopes,
     redirect_uri: config.GOOGLE_CLIENT_REDIRECT_URI
   });
@@ -24,7 +24,9 @@ function finishAuth(client, code, res) {
     } else {
       client.credentials = tokens;
       filesWorker.getFilesInDrive(client);
-      res.send("Successfully authorized. Your files will be fetched on the server, check output")
+      res.send(
+        "Successfully authorized. Your files will be fetched on the server, check output"
+      );
     }
   });
 }

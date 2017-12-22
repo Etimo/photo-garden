@@ -1,11 +1,11 @@
-var google = require('googleapis');
-var GoogleAuth = require('google-auth-library');
-var auth = new GoogleAuth;
+var google = require("googleapis");
+var GoogleAuth = require("google-auth-library");
+var auth = new GoogleAuth();
 var util = require("../lib/util");
 
 function filesListCallback(client, err, response) {
   if (err) {
-    console.log('The API returned an error: ' + err);
+    console.log("The API returned an error: " + err);
     return;
   }
   if (response.hasOwnProperty("nextPageToken")) {
