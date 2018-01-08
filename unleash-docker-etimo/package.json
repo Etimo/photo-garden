@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "NODE_ENV=production unleash",
-    "test:ci": "echo 'no tests for unleash-docker';"
+    "test:ci": "echo 'no tests for unleash-docker';",
+    "test": "true"
   },
   "engines": {
     "node": "8"
