@@ -1,9 +1,10 @@
 import React from 'react';
-import Header from "./header.jsx";
-import Footer from 	'./footer.jsx';
-import Login from 	'./login.jsx';
 import ReactDOM from 'react-dom';
+import Header from "./header.jsx";
+import Footer from './footer.jsx';
+import Garden from './components/garden';
 import main from "../sass/main.scss";
+import mockData from '../mock/garden.json'
 
 class Main extends React.Component {
 	onmessage(event) {
@@ -24,13 +25,13 @@ class Main extends React.Component {
 	}
 	render() {
 		return (
-		<div className="wrapper">
-			<Header />
-			<main className="main">
-			<Login/>
-			</main>
-			<Footer/>
-	</div>)
+			<div className="wrapper">
+				<Header />
+				<main className="main">
+					<Garden photosJson={mockData.photos} />
+				</main>
+				<Footer />
+			</div>)
 	}
 }
 const element = <Main prop="I AM A MIGHTY PROPPY PROP2!" />;
