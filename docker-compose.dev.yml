@@ -5,6 +5,11 @@ services:
     ports:
       - "15672:15672"
 
+  db:
+    image: postgres
+    ports:
+      - "5432:5432"
+
   proxy:
     build: proxy
     ports:
@@ -15,9 +20,12 @@ services:
       context: ./providers
       dockerfile: Dockerfile.dev
     environment:
+      - DEBUG=true
       - GOOGLE_CLIENT_ID
       - GOOGLE_CLIENT_SECRET
       - GOOGLE_CLIENT_REDIRECT_URI
+    links:
+      - queue
     volumes:
       - "./providers/:/usr/src/app"
     ports:
