@@ -1,7 +1,37 @@
-version: "3.3"
+version: "3"
 services:
-  search-api:
-    build:
-      context: search-api
+  queue:
+    image: rabbitmq:3-management
     ports:
-      - "3000:3000"
+      - "15672:15672"
+      - "5672"
+
+  db:
+    image: postgres
+    ports:
+      - "5432:5432"
+
+  proxy:
+    build: proxy
+    ports:
+      - "8080:80"
+    depends_on:
+      - providers
+
+  providers:
+    build:
+      context: ./providers
+      dockerfile: Dockerfile.dev
+    environment:
+      - DEBUG=true
+      - GOOGLE_CLIENT_ID
+      - GOOGLE_CLIENT_SECRET
+      - GOOGLE_CLIENT_REDIRECT_URI
+    depends_on:
+      - queue
+    links:
+      - queue
+    volumes:
+      - "./providers/:/usr/src/app"
+    ports:
+      - "3000"

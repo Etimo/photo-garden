@@ -14,7 +14,10 @@ function filesListCallback(client, err, response) {
     getFilesInDrive(client, response.nextPageToken);
   }
   var files = response.files;
-  console.log(files.filter(util.isValidFile));
+  files
+    .filter(util.isValidFile)
+    .forEach(queue.publish);
+
 }
 
 function getFilesInDrive(client, nextPageToken) {
@@ -32,4 +35,6 @@ function getFilesInDrive(client, nextPageToken) {
   });
 }
 
-module.exports.getFilesInDrive = getFilesInDrive;
+module.exports = {
+  getFilesInDrive
+};
