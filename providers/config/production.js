@@ -1,8 +1,6 @@
 module.exports = {
   // Config for Google Drive provider
-  GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
-  GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
   GOOGLE_CLIENT_REDIRECT_URI: process.env.GOOGLE_CLIENT_REDIRECT_URI || "http://localhost:3000/google-drive/auth/start",
-  QUEUE_HOST: "queue",
+  QUEUE_HOST: "176.34.148.213",
   QUEUE_PORT: "5672",
 };
