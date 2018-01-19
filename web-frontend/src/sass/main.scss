@@ -1,3 +1,72 @@
-div {
-    
+
+$etimo-blue:#253444;
+$etimo-cyan:#1abc9c;
+$font-color:$etimo-blue;
+.icon{
+    display:inline-block;
+    width:2em;
+    height:2em;
+
 }
+.icon-menu{
+    @extend .icon;
+    background:url("../public/navicon-round.svg");
+    background-size:cover;
+}
+.icon-filter{
+    @extend .icon;
+    background:url("../public/android-search.svg");
+    background-size:cover;
+}
+.right{
+    position:absolute;
+    right:1em;
+}
+main{
+    min-height:10em;
+}
+.text-center{
+    text-align: center;
+}
+
+.flex{
+    display:flex;
+}
+.wrapper {
+    display: flex;  
+    flex-flow: row wrap;
+    text-align: center;
+   }
+   
+   .wrapper > * {
+    padding: 10px;
+    flex: 1 100%;
+   }
+   
+   .header {
+       position:relative;
+    background: lightgreen;
+    overflow:hidden;
+   }
+   
+   
+   main {
+    text-align: left;
+    background: deepskyblue;
+   }
+   
+   
+   @media all and (min-width: 800px) {
+    main    { flex: 3 0px; }
+    main    { order: 2; }
+    footer  { order: 4; }
+   }
+
+   footer {
+    border-top:2px solid $etimo-blue;
+    height: 100px;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    left: 0;
+   }

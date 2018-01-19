@@ -1,0 +1,19 @@
+<html>
+  <head>
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+      <meta name="google-signin-client_id" content="212991127628-8rj19c00v2d1tpl9v3rpd2vd740o6d96.apps.googleusercontent.com">
+    <script>
+      function onSignIn(googleUser){
+        var access_token = googleUser.getAuthResponse().access_token;
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', '/drive/access-token');
+        xhr.setRequestHeader('X-Auth', access_token);
+        xhr.send();
+      }
+    </script>
+  </head>
+  <body>
+    <div class="g-signin2" data-scope="https://www.googleapis.com/auth/drive.readonly" data-onsuccess="onSignIn"></div>
+  </body>
+</html>
+
