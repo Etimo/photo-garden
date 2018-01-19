@@ -2,6 +2,7 @@ var google = require("googleapis");
 var GoogleAuth = require("google-auth-library");
 var auth = new GoogleAuth();
 var util = require("../lib/util");
+var queue = require("../lib/queue");
 
 function filesListCallback(client, err, response) {
   if (err) {

@@ -1,0 +1,32 @@
+version: "3"
+services:
+  queue:
+    image: rabbitmq:3-management
+    ports:
+      - "15672:15672"
+
+  db:
+    image: postgres
+    ports:
+      - "5432:5432"
+
+  proxy:
+    build: proxy
+    ports:
+      - "8080:80"
+
+  providers:
+    build:
+      context: ./providers
+      dockerfile: Dockerfile.dev
+    environment:
+      - DEBUG=true
+      - GOOGLE_CLIENT_ID
+      - GOOGLE_CLIENT_SECRET
+      - GOOGLE_CLIENT_REDIRECT_URI
+    links:
+      - queue
+    volumes:
+      - "./providers/:/usr/src/app"
+    ports:
+      - "3000"
