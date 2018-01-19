@@ -15,21 +15,18 @@ function getClient() {
   );
 }
 
-function assertConfig(config, keys) {
-  var missing = keys.reduce((prev, key) => {
+function hasRequiredKeys(config, keys) {
+  return keys.reduce((prev, key) => {
     if (!config[key]) {
       console.error(`Missing config key ${key}`);
-      return true;
+      return false;
     }
     return prev;
-  }, false);
-  if (missing) {
-    process.exit(1);
-  }
+  }, true);
 }
 
 module.exports = {
-  getClient: getClient,
-  isValidFile: isValidFile,
-  assertConfig: assertConfig
+  getClient,
+  isValidFile,
+  hasRequiredKeys
 };
