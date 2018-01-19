@@ -17,6 +17,7 @@ services:
       - "8080:80"
     depends_on:
       - providers
+      - photos_api
 
   providers:
     build:
@@ -35,3 +36,8 @@ services:
       - "./providers/:/usr/src/app"
     ports:
       - "3000"
+
+  photos_api:
+    build: apis/photos-api
+    volumes:
+      - "./apis/photos-api/:/usr/src/app"
