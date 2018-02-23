@@ -1,5 +1,11 @@
 version: "3"
 services:
+  admin:
+    build: admin
+    command: ./setup-photo-garden.sh
+    depends_on:
+      - db
+
   queue:
     image: rabbitmq:3-management
     ports:
@@ -42,3 +48,9 @@ services:
     build: apis/photos-api
     volumes:
       - "./apis/photos-api/:/usr/src/app"
+    depends_on:
+      - db
+    environment:
+      - PGUSER=the_gardener
+      - PGHOST=db
+      - PGDATABASE=photo_garden

@@ -1,0 +1,2 @@
+DELETE FROM photos;
+DELETE FROM users;

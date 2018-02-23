@@ -1,2 +1,2 @@
 FROM postgres:10-alpine
-ADD 0002-schema.sql /docker-entrypoint-initdb.d/0002-schema.sql
+ADD 0001-users-and-db.sql /docker-entrypoint-initdb.d/0001-users-and-db.sql

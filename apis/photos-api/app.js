@@ -1,41 +1,36 @@
 //drive-api
-var express = require('express');
+const express = require('express');
+const Router = require('express-promise-router');
+
+const { Client: PgClient } = require('pg');
+const dbClient = new PgClient();
+dbClient.connect();
 
 const app = express();
+const router = new Router();
 let accessToken;
 app.use(express.static('public'));
+app.use(router);
 
 
-app.get('/test', function (req, res) {
-	var jsn = {} 
-	var data = 'data';
-	jsn[data] = []; 
-	
-	
-	var photo = {
-			type: 'photo',
-			id: '1',
-			user: '1450632410296',
-			url: 'https://www.google.se/search?q=nadadores&source=lnms&tbm=isch&sa=X&ved=0ahUKEwjIx9-QneTYAhUK1ywKHX7dBvYQ_AUICigB&biw=1226&bih=688&dpr=2#imgrc=20qQ0orUe3O7PM:',
-			guid:'1asdq6',
-			mimeType:'image/jpeg'
-			
+router.get('/photos', async function (req, res) {
+  const viewerId = req.query.user_id;
 
-	};
-	var photo2 = {
-		type: 'photo',
-		id: '3',
-		user: '145063272542',
-		url: 'https://www.google.se/search?q=nadadores&source=lnms&tbm=isch&sa=X&ved=0ahUKEwjIx9-QneTYAhUK1ywKHX7dBvYQ_AUICigB&biw=1226&bih=688&dpr=2#imgrc=20qQ0orUe3O7PM:',
-		guid:'1450632asd496',
-		mimeType:'image/jpeg'
-	};
-	jsn[data].push(photo);
-	jsn[data].push(photo2);
-	res.send(jsn);
+  const dbImages = await dbClient.query("SELECT id, url, mime_type FROM photos WHERE (owner=$1 OR $1 IS NULL)", [viewerId]);
+  res.send(dbImages.rows);
+});
+
+router.post('/photos', async function (req, res) {
+  const owner = req.query.user_id;
+  const url = req.query.url;
+  const mimeType = req.query.mime_type;
+
+  const dbResult = await dbClient.query("INSERT INTO photos(owner, url, mime_type) VALUES($1, $2, $3) RETURNING id", [owner, url, mimeType]);
+  res.send({
+    id: dbResult.rows[0].id
+  });
 });
 
 
 app.listen(3000);
 console.log("Listening on localhost:3000")
-
