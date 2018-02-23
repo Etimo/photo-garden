@@ -16,7 +16,7 @@ app.use(router);
 router.get('/photos', async function (req, res) {
   const viewerId = req.query.user_id;
 
-  const dbImages = await dbClient.query("SELECT id, url, mime_type FROM photos WHERE owner=$1", [viewerId]);
+  const dbImages = await dbClient.query("SELECT id, url, mime_type FROM photos WHERE (owner=$1 OR $1 IS NULL)", [viewerId]);
   res.send(dbImages.rows);
 });
 
