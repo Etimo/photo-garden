@@ -1,5 +1,11 @@
 version: "3"
 services:
+  admin:
+    build: admin
+    command: ./setup-photo-garden.sh
+    depends_on:
+      - db
+
   queue:
     image: rabbitmq:3-management
     ports:
