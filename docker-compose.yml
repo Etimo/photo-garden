@@ -48,3 +48,9 @@ services:
     build: apis/photos-api
     volumes:
       - "./apis/photos-api/:/usr/src/app"
+    depends_on:
+      - db
+    environment:
+      - PGUSER=the_gardener
+      - PGHOST=db
+      - PGDATABASE=photo_garden
