@@ -1,4 +1,4 @@
-DROP TABLE photo;
-DROP TABLE user_identity;
-DROP TABLE "user";
+DROP TABLE photos;
+DROP TABLE user_identities;
+DROP TABLE users;
 DROP TYPE identity_provider;
