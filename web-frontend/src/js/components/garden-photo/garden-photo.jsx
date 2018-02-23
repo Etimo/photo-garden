@@ -1,6 +1,5 @@
 import React from "react";
 import gardenphoto from "./garden-photo.scss";
-import * as ColorService from "image-color-styles";
 import SinglePhoto from "../single-photo/single-photo";
 
 class GardenPhoto extends React.Component {
