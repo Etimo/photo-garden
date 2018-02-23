@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/Etimo/photo-garden#readme",
   "dependencies": {
+    "pg" : "^7.4.1", 
     "amqp10": "^3.5.3",
     "amqplib": "^0.5.2",
     "express": "^4.16.2",
@@ -30,7 +31,8 @@
     "request": "^2.83.0",
     "rhea": "^0.2.9",
     "stomp-client": "^0.9.0",
-    "stompit": "^0.25.0"
+    "stompit": "^0.25.0",
+    "client-sessions": "^0.8.0"
   },
   "devDependencies": {
     "chai": "^4.1.2",
