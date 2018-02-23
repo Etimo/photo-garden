@@ -7,7 +7,7 @@ const dbClient = new PgClient();
 dbClient.connect();
 
 const app = express();
-const router = new Router()
+const router = new Router();
 let accessToken;
 app.use(express.static('public'));
 app.use(router);
