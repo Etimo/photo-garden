@@ -21,7 +21,7 @@
   },
   "homepage": "https://github.com/Etimo/photo-garden#readme",
   "dependencies": {
-    "pg" : "^7.4.1", 
+    "pg": "^7.4.1",
     "amqp10": "^3.5.3",
     "amqplib": "^0.5.2",
     "express": "^4.16.2",

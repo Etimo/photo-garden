@@ -8,6 +8,16 @@
         var xhr = new XMLHttpRequest();
         const reply = {idToken:id_token};
         xhr.open('POST', '/actuallylogin');
+        xhr.onreadystatechange = function() {
+        if (xhr.readyState == XMLHttpRequest.DONE) {
+          if(xhr.status == 200){
+            window.location = "/";
+          }
+          else{
+            window.location = "/logout";
+          }
+        }
+}
         xhr.setRequestHeader("content-type","application/json")
         console.log("I WAS TOKEN WITH THIS: "+id_token);
         xhr.send(JSON.stringify(reply));
