@@ -2,4 +2,6 @@
 node_modules
 dist
 .cache
+dist/
+package-lock.json
 *.swp
