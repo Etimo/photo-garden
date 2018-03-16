@@ -1,5 +1,0 @@
---timeout 1000
---recursive
---reporter spec
---ui mocha-cakes-2
---require ./test/helpers/setup.js

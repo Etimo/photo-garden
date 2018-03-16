@@ -19,20 +19,9 @@ services:
     ports:
       - "5432:5432"
 
-  proxy:
-    build: proxy
-    ports:
-      - "8080:80"
-    depends_on:
-      - providers
-      - photos_api
-    links:
-      - providers
-      - photos_api
-
-  providers:
+  gateway:
     build:
-      context: ./providers
+      context: ./apis/gateway
       dockerfile: Dockerfile.dev
     environment:
       - ENVIRONMENT=development
@@ -45,14 +34,14 @@ services:
     links:
       - queue
     volumes:
-      - "./providers/:/usr/src/app"
+      - "./apis/gateway/:/usr/src/app"
     ports:
-      - "3000"
+      - "3000:3000"
 
   photos_api:
-    build: apis/photos-api
+    build: ./apis/photos
     volumes:
-      - "./apis/photos-api/:/usr/src/app"
+      - "./apis/photos/:/usr/src/app"
     depends_on:
       - db
       - queue

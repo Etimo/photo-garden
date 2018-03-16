@@ -1,18 +1,14 @@
 'use strict'
-const express = require("express");
-const secret = process.argv.secret ? process.argv.secret : "NotAGoodSecret";
-const path = require("path");
-const sessions = require("client-sessions");
-const GoogleAuth = require("google-auth-library");
-const auth = new GoogleAuth;
-const CLIENT_ID = "212991127628-8rj19c00v2d1tpl9v3rpd2vd740o6d96.apps.googleusercontent.com";
+const providersApp = require("./providers/app");
+
+const express = require("express"); const secret = process.argv.secret ? process.argv.secret : "NotAGoodSecret"; const path = require("path"); const sessions = require("client-sessions"); const GoogleAuth = require("google-auth-library"); const auth = new GoogleAuth;const CLIENT_ID = "212991127628-8rj19c00v2d1tpl9v3rpd2vd740o6d96.apps.googleusercontent.com";
 const client = new auth.OAuth2(CLIENT_ID, '', '');
 const bodyParser = require('body-parser');
 const app = express();
-
-const asyncWrapper = (fn) =>
+//Login-block
+const asyncWrapper = (wrapFunction) =>
   (req, res, next) => {
-    Promise.resolve(fn(req, res, next))
+    Promise.resolve(wrapFunction(req, res, next))
       .catch(next);
   };
 
@@ -23,24 +19,26 @@ app.use(sessions({
   activeDuration: 10 * 60 * 1000,
 }));
 
-app.use(bodyParser.json());
-app.use(express.static("public"));
+app.use(
+  bodyParser.json());
+app.use(
+  express.static("public"));
 
 app.get("/", (req, res) => {
   const gardener = req.gardenSession.userIdentity;
-  if (gardener) {
-    res.sendFile(path.join(__dirname + "/public/html/main.html"));
+  if (gardener && gardener.length > 0) {
+    res.sendFile(path.join(__dirname, "/public/spa.html"));
   } else {
     res.redirect("/login");
   }
 });
 
 app.get("/login", (req, res) => {
-  res.sendFile(path.join(__dirname + "/public/html/login.html"));
+  res.sendFile(path.join(__dirname, "/public/html/login.html"));
 });
 app.get("/logout", (req, res) => {
   req.gardenSession.reset();
-  res.sendFile(path.join(__dirname + "/public/html/logout.html"));
+  res.sendFile(path.join(__dirname, "/public/html/logout.html"));
 });
 
 const getUserIdentity = (verified, userIdentifier, req) => {
@@ -58,7 +56,7 @@ const getUserIdentity = (verified, userIdentifier, req) => {
 
 };
 
-app.post("/actuallylogin", asyncWrapper(async (req, res, next) => {
+app.post("/actuallylogin", asyncWrapper(async (req, res) => {
   const key = req.body.idToken;
   client.verifyIdToken(
     key,
@@ -68,14 +66,14 @@ app.post("/actuallylogin", asyncWrapper(async (req, res, next) => {
       res.status = getUserIdentity(payload.verified, payload.email, req, res) ? 200 : 401;
       res.send("Done");
     });
-})
-);
+}));
 
+
+app.use(providersApp);
 app.listen(3000);
-console.log("Listening on localhost:3000");
-app.use(function (err, req, res, next) {
-  console.error(err);
-  res.status(500).json({ message: "It's dead jim" });
-});
-module.exports = express();
+console.log("I can hear you!",3000);
+
+// module.exports = express();
+
+//Providers block
 
