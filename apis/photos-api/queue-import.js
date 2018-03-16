@@ -30,6 +30,7 @@ async function connect() {
   }
   console.log("Connected to rmq!");
   const ch = await conn.createChannel();
+  ch.assertQueue(queueName, {durable: false});
   ch.consume(queueName, msg => addImage(msg, ch), {
     consumerTag: 'photos-api'
   });
