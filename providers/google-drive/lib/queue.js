@@ -3,7 +3,7 @@ var config = require("../../config");
 
 var connectionString = `amqp://${config.QUEUE_HOST}:${config.QUEUE_PORT}`;
 var channel;
-var queueName = "google-drive";
+var queueName = "image-import";
 
 function connect() {
   console.log(`Connecting to rmq at ${connectionString}...`);
