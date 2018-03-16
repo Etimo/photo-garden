@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!/bin/bash
 set +uex
 
 if [ "${TRAVIS_PULL_REQUEST}" ] || [ "${TRAVIS_PULL_REQUEST}" == "false" ]; then

@@ -1,3 +1,6 @@
+#!/bin/bash
+set +uex
+
 if [ -z "${TRAVIS_PULL_REQUEST}" ] || [ "${TRAVIS_PULL_REQUEST}" == "false" ]; then
   if [ "${TRAVIS_BRANCH}" == "master" ]; then
     pip install --user awscli
@@ -7,7 +10,6 @@ if [ -z "${TRAVIS_PULL_REQUEST}" ] || [ "${TRAVIS_PULL_REQUEST}" == "false" ]; t
     docker tag photo-garden-providers-api:latest ${PROVIDERS_API_REMOTE_IMAGE_URL}
     docker push ${SEARCH_API_REMOTE_IMAGE_URL}
     docker push ${PROVIDERS_API_REMOTE_IMAGE_URL}
-    echo no-op!
   else
     echo "Not master, not deploying"
   fi
