@@ -5,4 +5,6 @@ WORKDIR /usr/src/app
 ADD package.json .
 RUN yarn install --production
 
+ADD . .
+
 ENTRYPOINT ["yarn", "run", "start:prod"]
