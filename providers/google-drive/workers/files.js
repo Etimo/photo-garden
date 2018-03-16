@@ -11,6 +11,7 @@ function normalizePhotoInfo(fileInfo) {
     url: fileInfo.thumbnailLink,
     mimeType: fileInfo.mimeType,
     provider: "Google",
+    providerId: fileInfo.id,
     original: fileInfo
   };
 }

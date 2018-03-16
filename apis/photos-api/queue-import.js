@@ -10,7 +10,9 @@ async function addImage(msg, channel) {
     const image = JSON.parse(msg.content);
     const id = await model.insert(image);
     await channel.ack(msg);
-    console.log(`Imported image as ${id}`);
+    if (id !== undefined) {
+      console.log(`Imported image as ${id}`);
+    }
   } catch (err) {
     await channel.nack(msg);
     console.log(`Failed to import image: ${err}, returning to the queue...`);

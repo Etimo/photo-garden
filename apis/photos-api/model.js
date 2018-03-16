@@ -12,14 +12,15 @@ async function findAll(filters) {
 
 async function insert(image) {
   const response = await dbClient.query(
-    "INSERT INTO photos(owner, url, mime_type, provider, original) VALUES($1, $2, $3, $4, $5) RETURNING id",
+    "INSERT INTO photos(owner, url, mime_type, provider, provider_id, original) VALUES($1, $2, $3, $4, $5, $6) ON CONFLICT ON CONSTRAINT provider_id_unique DO NOTHING RETURNING id",
     [image.owner,
      image.url,
      image.mimeType,
      image.provider,
+     image.providerId,
      image.original]
   );
-  return response.rows[0].id;
+  return response.rows[0] !== undefined ? response.rows[0].id : undefined;
 }
 
 module.exports = {
