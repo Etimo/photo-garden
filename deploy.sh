@@ -8,7 +8,7 @@ if [ "${TRAVIS_PULL_REQUEST}" ] || [ "${TRAVIS_PULL_REQUEST}" == "false" ]; then
     chmod +x kubectl
 
     sed -i "s|KUBE_CA_CERT|$KUBE_CA_CERT|g; s|KUBE_ENDPOINT|$KUBE_ENDPOINT|g; s|KUBE_ADMIN_CERT|$KUBE_ADMIN_CERT|g; s|KUBE_ADMIN_KEY|$KUBE_ADMIN_KEY|g; s|KUBE_USERNAME|$KUBE_USERNAME|g" kubeconfig
-    ./kubectl --kubeconfig=kubeconfig set image deployment/gateway-api gateway-api=${GATEWAY_API_REMOTE_IMAGE_URL}:latest
+    ./kubectl --kubeconfig=kubeconfig set image deploy/gateway-api gateway-api=${GATEWAY_API_REMOTE_IMAGE_URL}:latest
   else
     echo "Not master, not deploying"
   fi
