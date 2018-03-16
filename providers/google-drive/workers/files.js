@@ -4,6 +4,17 @@ var auth = new GoogleAuth();
 var util = require("../lib/util");
 var queue = require("../lib/queue");
 
+function normalizePhotoInfo(fileInfo) {
+  return {
+    // FIXME: Replace with user id from login-api
+    owner: 'd88774ad-91de-413a-bb3d-270e82bf2176',
+    url: fileInfo.thumbnailLink,
+    mimeType: fileInfo.mimeType,
+    provider: "Google",
+    original: fileInfo
+  };
+}
+
 function filesListCallback(client, err, response) {
   if (err) {
     console.log("The API returned an error: " + err);
@@ -16,6 +27,7 @@ function filesListCallback(client, err, response) {
   var files = response.files;
   files
     .filter(util.isValidFile)
+    .map(normalizePhotoInfo)
     .forEach(queue.publish);
 
 }
