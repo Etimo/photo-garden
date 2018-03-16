@@ -2,13 +2,11 @@
 const express = require('express');
 const Router = require('express-promise-router');
 
-const { Client: PgClient } = require('pg');
-const dbClient = new PgClient();
-dbClient.connect();
+const model = require('./model.js');
+const queueImport = require('./queue-import.js');
 
 const app = express();
 const router = new Router();
-let accessToken;
 app.use(express.static('public'));
 app.use(router);
 
@@ -16,8 +14,10 @@ app.use(router);
 router.get('/photos', async function (req, res) {
   const viewerId = req.query.user_id;
 
-  const dbImages = await dbClient.query("SELECT id, url, mime_type FROM photos WHERE (owner=$1 OR $1 IS NULL)", [viewerId]);
-  res.send(dbImages.rows);
+  const images = await model.findAll({
+    owner: viewerId
+  });
+  res.send(images);
 });
 
 router.post('/photos', async function (req, res) {
@@ -25,12 +25,13 @@ router.post('/photos', async function (req, res) {
   const url = req.query.url;
   const mimeType = req.query.mime_type;
 
-  const dbResult = await dbClient.query("INSERT INTO photos(owner, url, mime_type) VALUES($1, $2, $3) RETURNING id", [owner, url, mimeType]);
-  res.send({
-    id: dbResult.rows[0].id
+  const id = await model.insert({
+    owner, url, mimeType
   });
+  res.send({id});
 });
 
 
 app.listen(3000);
-console.log("Listening on localhost:3000")
+queueImport.start();
+console.log("Listening on localhost:3000");
