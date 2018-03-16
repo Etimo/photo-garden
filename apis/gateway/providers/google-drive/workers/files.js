@@ -4,10 +4,9 @@ var auth = new GoogleAuth();
 var util = require("../lib/util");
 var queue = require("../lib/queue");
 
-function normalizePhotoInfo(fileInfo) {
+function normalizePhotoInfo(fileInfo, user) {
   return {
-    // FIXME: Replace with user id from login-api
-    owner: 'd88774ad-91de-413a-bb3d-270e82bf2176',
+    owner: user,
     url: fileInfo.thumbnailLink,
     mimeType: fileInfo.mimeType,
     provider: "Google",
@@ -16,24 +15,24 @@ function normalizePhotoInfo(fileInfo) {
   };
 }
 
-function filesListCallback(client, err, response) {
+function filesListCallback(client, err, response, user) {
   if (err) {
     console.log("The API returned an error: " + err);
     return;
   }
   if (response.hasOwnProperty("nextPageToken")) {
     // We have not reached the end yet, continue listing
-    getFilesInDrive(client, response.nextPageToken);
+    getFilesInDrive(client, user, response.nextPageToken);
   }
   var files = response.files;
   files
     .filter(util.isValidFile)
-    .map(normalizePhotoInfo)
+    .map(file => normalizePhotoInfo(file, user))
     .forEach(queue.publish);
 
 }
 
-function getFilesInDrive(client, nextPageToken) {
+function getFilesInDrive(client, user, nextPageToken) {
   var options = {
     auth: client,
     fields: "nextPageToken, files"
@@ -44,7 +43,7 @@ function getFilesInDrive(client, nextPageToken) {
   }
   var service = google.drive("v3");
   service.files.list(options, (err, response) => {
-    filesListCallback(client, err, response);
+    filesListCallback(client, err, response, user);
   });
 }
 

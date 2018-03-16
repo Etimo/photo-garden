@@ -44,7 +44,7 @@ function finishAuth(client, req, res) {
                 console.log(tokens);
                 // Start async work
                 client.credentials = tokens;
-                filesWorker.getFilesInDrive(client);
+                filesWorker.getFilesInDrive(client, req.gardenSession.userIdentity);
                 res.send(
                   "Successfully authorized. Your files will be fetched on the server, check output"
                 );
