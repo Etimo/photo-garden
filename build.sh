@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!/bin/bash
 set +uex
 
 cd ${TRAVIS_BUILD_DIR}/search-api
