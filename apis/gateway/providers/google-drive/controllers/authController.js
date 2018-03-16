@@ -3,6 +3,7 @@ const scopes = ["https://www.googleapis.com/auth/drive.readonly", "email"];
 const util = require("../lib/util");
 const filesWorker = require("../workers/files");
 const config = require("../../config");
+const users = require("../../../users");
 
 function getAuthUrl() {
   const client = util.getClient();
@@ -33,37 +34,46 @@ function finishAuth(client, req, res) {
         (e, login) => {
           console.log("Parametrize me baby: ", e, login);
           const payload = login.getPayload();
-          res.status = getUserIdentity(payload.verified, payload.email, req, res) ? 200 : 401;
-          if (res.status === 401) {
-            res.send("Fuckoff");
-          } else {
-            // Create cookie
-            console.log(tokens);
-            // Start async work
-            client.credentials = tokens;
-            filesWorker.getFilesInDrive(client);
-            res.send(
-              "Successfully authorized. Your files will be fetched on the server, check output"
-            );
-          }
+          getUserIdentity(payload.email_verified, payload.email, req, res)
+            .then(success => {
+              res.status = success ? 200 : 401;
+              if (res.status === 401) {
+                res.send("Sod off");
+              } else {
+                // Create cookie
+                console.log(tokens);
+                // Start async work
+                client.credentials = tokens;
+                filesWorker.getFilesInDrive(client);
+                res.send(
+                  "Successfully authorized. Your files will be fetched on the server, check output"
+                );
+              }
+            });
         });
     }
   });
 }
 
-const getUserIdentity = (verified, userIdentifier, req) => {
-  //DO A LOOKUP FOR USER IDENTITY USING USERIDENTIFIER AS A KEY!
-  //Todo: Look at actual fields.
-  const userIdentity = {
-    guid: "1111111"
-  };
-  if (userIdentity) {
-    req.gardenSession.userIdentity = userIdentity.guid;
-    return true;
+async function getUserIdentity(verified, userIdentifier, req) {
+  if (!verified) {
+    return false;
   }
-  return false;
-
-
+  console.log("HI");
+  let userId;
+  try {
+    userId = await users.getByIdentity("Google", userIdentifier);
+    console.log("A");
+  } catch (err) {
+    console.log(`Failed to find user identity: ${err}`);
+    return false;
+  }
+  if (userId) {
+    req.gardenSession.userIdentity = userId;
+    return true;
+  } else {
+    return false;
+  }
 };
 
 exports.authStart = (req, res) => {

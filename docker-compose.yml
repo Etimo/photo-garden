@@ -29,10 +29,15 @@ services:
       - GOOGLE_CLIENT_ID
       - GOOGLE_CLIENT_SECRET
       - GOOGLE_CLIENT_REDIRECT_URI
+      - PGUSER=the_gardener
+      - PGHOST=db
+      - PGDATABASE=photo_garden
     depends_on:
       - queue
+      - db
     links:
       - queue
+      - db
     volumes:
       - "./apis/gateway/:/usr/src/app"
     ports:

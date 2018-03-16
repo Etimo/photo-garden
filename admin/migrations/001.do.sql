@@ -6,7 +6,7 @@ username TEXT NOT NULL UNIQUE
 );
 
 CREATE TABLE user_identities(
-id UUID PRIMARY KEY NOT NULL,
+id UUID PRIMARY KEY NOT NULL DEFAULT gen_random_uuid(),
 user_id UUID NOT NULL REFERENCES users,
 provider identity_provider NOT NULL,
 provider_id TEXT NOT NULL,
