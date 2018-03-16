@@ -5,6 +5,8 @@ services:
     command: ./setup-photo-garden.sh
     depends_on:
       - db
+    links:
+      - db
 
   queue:
     image: rabbitmq:3-management
@@ -22,6 +24,9 @@ services:
     ports:
       - "8080:80"
     depends_on:
+      - providers
+      - photos_api
+    links:
       - providers
       - photos_api
 
@@ -50,6 +55,10 @@ services:
       - "./apis/photos-api/:/usr/src/app"
     depends_on:
       - db
+      - queue
+    links:
+      - db
+      - queue
     environment:
       - PGUSER=the_gardener
       - PGHOST=db
