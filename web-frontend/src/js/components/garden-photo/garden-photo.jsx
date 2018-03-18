@@ -1,8 +1,13 @@
-import React from "react";
+import React, { Component } from "react";
 import gardenphoto from "./garden-photo.scss";
 import SinglePhoto from "../single-photo/single-photo";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
+import uuidv1 from "uuid";
+import { addGardenPhoto } from "../../actions/index";
+import { selectGardenPhoto } from "../../actions/index";
 
-class GardenPhoto extends React.Component {
+class ConnectedGardenPhoto extends React.Component {
   touchTimer;
 
   constructor(props) {
@@ -10,6 +15,7 @@ class GardenPhoto extends React.Component {
     this.onLongTouch = this.onLongTouch.bind(this);
     this.touchStart = this.touchStart.bind(this);
     this.touchEnd = this.touchEnd.bind(this);
+    // console.log(this.state);
     this.state = { isSelected: false };
   }
   onLongTouch() {
@@ -33,29 +39,46 @@ class GardenPhoto extends React.Component {
   }
   render() {
     return (
-      <div
+      <figure
         className="garden-photo"
         style={this.getGardenPhotoStyle(this.props.thumbnail)}
         onClick={() => {
-          this.props.photoSelected(this.props.source);
+          this.props.selectGardenPhoto(this.props.source);
         }}
         onTouchStart={this.touchStart}
         onTouchEnd={this.touchEnd}
       >
         {this.renderSelected()}
-      </div>
+      </figure>
     );
   }
 
   renderSelected() {
     if (this.state.isSelected) {
       return (
-        <div className="garden-photo-preview-backdrop">
+        <section className="garden-photo-preview-backdrop">
           <SinglePhoto source={this.props.source} />
-        </div>
+        </section>
       );
     }
   }
 }
+
+const GardenPhoto = connect(
+  state => {
+    return {};
+  },
+  dispatch => {
+    return {
+      selectGardenPhoto: gardenPhoto => dispatch(selectGardenPhoto(gardenPhoto))
+    };
+  }
+)(ConnectedGardenPhoto);
+
+
+
+ConnectedGardenPhoto.propTypes = {
+  selectGardenPhoto: PropTypes.func.isRequired
+};
 
 export default GardenPhoto;
