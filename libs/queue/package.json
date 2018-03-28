@@ -1,0 +1,18 @@
+{
+  "name": "@photo-garden/queue",
+  "version": "1.0.0",
+  "description": "",
+  "publishConfig": {
+    "access": "public"
+  },
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "amqp10": "^3.5.3",
+    "amqplib": "^0.5.2"
+  }
+}

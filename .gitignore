@@ -6,3 +6,4 @@ dist/
 package-lock.json
 *.swp
 terraform
+lerna-debug.log

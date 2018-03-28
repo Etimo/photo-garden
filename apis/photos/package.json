@@ -23,6 +23,7 @@
   "dependencies": {
     "amqp10": "^3.5.3",
     "amqplib": "^0.5.2",
+    "config": "^1.30.0",
     "express": "^4.16.2",
     "express-promise-router": "^3.0.1",
     "google-auth-library": "^0.12.0",
