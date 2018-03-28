@@ -1,7 +1,18 @@
 const winston = require("winston");
+const logzioWinstonTransport = require('winston-logzio');
 const moment = require("moment");
+const path = require("path");
+
+const argvs = process.argv[1].split(path.sep);
+const appName = argvs[argvs.length - 2];
+
 
 const config = winston.config;
+const loggerOptions = {
+    token: process.env.LOGZ_TOKEN,
+    host: 'listener.logz.io',
+    type: appName
+};
 const logger = new (winston.Logger)({
   transports: [
     new (winston.transports.Console)({
@@ -12,7 +23,11 @@ const logger = new (winston.Logger)({
       formatter: function(options) {
         const res = [
         	options.timestamp(),
+          " [",
         	config.colorize(options.level, options.level.toUpperCase().padEnd(8)),
+          "] (",
+          appName,
+          ") - "
         ];
         if (options.message) {
         	res.push(options.message);
@@ -21,9 +36,10 @@ const logger = new (winston.Logger)({
         	res.push(" - ");
         	res.push(JSON.stringify(options.meta));
         }
-        return res.join(" ");
+        return res.join("");
       }
-    })
+    }),
+    new (logzioWinstonTransport)(loggerOptions)
   ]
 });
 

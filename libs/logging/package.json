@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "moment": "^2.21.0",
-    "winston": "^2.4.1"
+    "winston": "^2.4.1",
+    "winston-logzio": "^1.0.6"
   }
 }

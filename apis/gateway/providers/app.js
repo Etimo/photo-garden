@@ -1,14 +1,17 @@
 "use strict";
 const express = require("express");
-const morgan = require("morgan");
+const logger = require("logging").logger;
+
 const app = express();
 const port = process.env.PROVIDERS_PORT | 3000;
 
-// Enable access log
-app.use(morgan("dev"));
-
+logger.info("Starting app...");
 // Mount google drive provider
-app.use("/google-drive", require("./google-drive"));
+const providers = ["google-drive"];
+providers.forEach(provider => {
+	logger.info(`Mounting provider ${provider}...`);
+	app.use(`/${provider}`, require(`./${provider}`));
+});
 
 // app.use("/facebook", ...);
 // app.use("/instagram", ...);
@@ -18,7 +21,7 @@ app.use("/google-drive", require("./google-drive"));
 if (!module.parent) {
   // Start
   app.listen(port);
-  console.log("Listening on port", port);
+  logger.info("Listening on port", port);
 }
 
 module.exports = app;

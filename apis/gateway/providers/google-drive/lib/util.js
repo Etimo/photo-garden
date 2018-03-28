@@ -1,4 +1,5 @@
 var google = require("googleapis");
+const logger = require("logging").logger;
 var GoogleAuth = require("google-auth-library");
 var auth = new GoogleAuth();
 var config = require("../../config");
@@ -18,7 +19,7 @@ function getClient() {
 function hasRequiredKeys(config, keys) {
   return keys.reduce((prev, key) => {
     if (!config[key]) {
-      console.error(`Missing config key ${key}`);
+      logger.error(`Missing config key ${key}`);
       return false;
     }
     return prev;

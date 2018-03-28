@@ -1,8 +1,8 @@
+const logger = require("logging").logger;
 var google = require("googleapis");
 var GoogleAuth = require("google-auth-library");
 var auth = new GoogleAuth();
 var util = require("../lib/util");
-var queue = require("../lib/queue");
 
 function normalizePhotoInfo(fileInfo, user) {
   return {
@@ -17,7 +17,7 @@ function normalizePhotoInfo(fileInfo, user) {
 
 function filesListCallback(client, err, response, user) {
   if (err) {
-    console.log("The API returned an error: " + err);
+    logger.error("The API returned an error: " + err);
     return;
   }
   if (response.hasOwnProperty("nextPageToken")) {

@@ -1,6 +1,6 @@
 'use strict'
 const providersApp = require("./providers/app");
-
+const logger = require("logging").logger;
 const express = require("express");
 const secret = process.argv.secret ? process.argv.secret : "NotAGoodSecret";
 const path = require("path");
@@ -11,6 +11,8 @@ const CLIENT_ID = "212991127628-8rj19c00v2d1tpl9v3rpd2vd740o6d96.apps.googleuser
 const client = new auth.OAuth2(CLIENT_ID, '', '');
 const bodyParser = require('body-parser');
 const app = express();
+const port = 3000;
+
 //Login-block
 const asyncWrapper = (wrapFunction) =>
   (req, res, next) => {
@@ -48,8 +50,8 @@ app.get("/logout", (req, res) => {
 });
 
 app.use(providersApp);
-app.listen(3000);
-console.log("I can hear you!",3000);
+app.listen(port);
+logger.info(`Listening on port ${port}`);
 
 // module.exports = express();
 

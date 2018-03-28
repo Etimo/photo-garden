@@ -12,6 +12,5 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "moment": "^2.21.0"
   }
 }

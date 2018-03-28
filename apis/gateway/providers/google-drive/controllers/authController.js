@@ -1,4 +1,5 @@
 "use strict";
+const logger = require("logging").logger;
 const scopes = ["https://www.googleapis.com/auth/drive.readonly", "email"];
 const util = require("../lib/util");
 const filesWorker = require("../workers/files");
@@ -26,13 +27,13 @@ function finishAuth(client, req, res) {
       res.redirect("/error");
     } else {
       // Verify id token
-      console.log("CLIENTELE: ", client);
+      logger.info("CLIENTELE: ", client);
       const key = tokens.id_token;//req.body.idToken;
       client.verifyIdToken(
         key,
         client._clientId,
         (e, login) => {
-          console.log("Parametrize me baby: ", e, login);
+          logger.info("Parametrize me baby: ", e, login);
           const payload = login.getPayload();
           getUserIdentity(payload.email_verified, payload.email, req, res)
             .then(success => {
@@ -41,7 +42,7 @@ function finishAuth(client, req, res) {
                 res.send("Sod off");
               } else {
                 // Create cookie
-                console.log(tokens);
+                logger.info(tokens);
                 // Start async work
                 client.credentials = tokens;
                 filesWorker.getFilesInDrive(client, req.gardenSession.userIdentity);
@@ -59,13 +60,11 @@ async function getUserIdentity(verified, userIdentifier, req) {
   if (!verified) {
     return false;
   }
-  console.log("HI");
   let userId;
   try {
     userId = await users.getByIdentity("Google", userIdentifier);
-    console.log("A");
   } catch (err) {
-    console.log(`Failed to find user identity: ${err}`);
+    logger.error(`Failed to find user identity: ${err}`);
     return false;
   }
   if (userId) {
@@ -77,7 +76,6 @@ async function getUserIdentity(verified, userIdentifier, req) {
 };
 
 exports.authStart = (req, res) => {
-  console.log(req, res);
   res.redirect(getAuthUrl());
 };
 
