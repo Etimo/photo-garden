@@ -12,5 +12,10 @@
     "moment": "^2.21.0",
     "winston": "^2.4.1",
     "winston-logzio": "^1.0.6"
+  },
+  "devDependencies": {
+    "husky": "^0.14.3",
+    "lint-staged": "^7.0.0",
+    "prettier": "^1.11.1"
   }
 }
