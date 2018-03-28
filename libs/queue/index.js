@@ -15,6 +15,7 @@ async function connect() {
   conn = await amqp.connect(connectionString);
   channel = await conn.createChannel();
   logger.info("Connected to rmq!");
+  return Promise.resolve(conn);
 }
 
 async function onMessage(name, callback) {
@@ -51,11 +52,11 @@ async function publishNotification(name, message) {
     await connect();
   }
   if (channel) {
-    const exchangeName = `pubsub-${name}`;
+    const exchangeName = `pubsub`;
     const msg = JSON.stringify(message);
-    await channel.assertExchange(exchangeName, "fanout", { durable: false });
+    await channel.assertExchange(exchangeName, "topic", { durable: false });
     logger.debug(`Notify to ${name}: ${msg}`);
-    return channel.publish(exchangeName, "", new Buffer(msg));
+    return channel.publish(exchangeName, name, new Buffer(msg));
   }
 }
 
@@ -64,15 +65,16 @@ async function onNotification(name, callback) {
     await connect();
   }
   if (channel) {
-    const exchangeName = `pubsub-${name}`;
+    const exchangeName = `pubsub`;
     const queue = await channel.assertQueue("", { exclusive: true });
-    await channel.bindQueue(queue.queue, exchangeName, "");
+    await channel.assertExchange(exchangeName, "topic", { durable: false });
+    await channel.bindQueue(queue.queue, exchangeName, name);
     return channel.consume(
       queue.queue,
       function(msg) {
         if (msg !== null) {
-          logger.debug(`Notification received on ${name}: ${msg.content}`);
-          callback(msg.content);
+          logger.debug(`Notification received on ${name}: ${msg}`);
+          callback(msg.content, msg.fields);
         }
       },
       { noAck: true }
@@ -80,25 +82,14 @@ async function onNotification(name, callback) {
   }
 }
 
+async function close() {
+  await conn.close();
+}
+
 module.exports = {
   onMessage,
   onNotification,
   publishMessage,
-  publishNotification
+  publishNotification,
+  close
 };
-
-async function main() {
-  await publishMessage("Hello", "World");
-  await onMessage("Hello", function(msg) {
-    console.log("MSG: ", JSON.parse(msg.toString()));
-    return true;
-  });
-  await publishNotification("Hello", "World");
-  await onNotification("Hello", function(msg) {
-    console.log("Notification: ", JSON.parse(msg.toString()));
-    return true;
-  });
-  await conn.close();
-}
-
-main();
