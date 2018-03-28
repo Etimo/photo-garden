@@ -2,8 +2,10 @@
   "name": "admin",
   "version": "1.0.0",
   "scripts": {
-    "test": "mocha $(find . -name \"*.spec.js\" -not -path \"./node_modules/*\")",
-    "prettier": "prettier */**/*.js --ignore-path ./.prettierignore --write && git add . && git status"
+    "test":
+      "mocha $(find . -name \"*.spec.js\" -not -path \"./node_modules/*\")",
+    "prettier":
+      "prettier */**/*.js --ignore-path ./.prettierignore --write && git add . && git status"
   },
   "repository": {
     "type": "git",

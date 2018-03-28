@@ -29,7 +29,6 @@ function filesListCallback(client, err, response, user) {
     .filter(util.isValidFile)
     .map(file => normalizePhotoInfo(file, user))
     .forEach(queue.publish);
-
 }
 
 function getFilesInDrive(client, user, nextPageToken) {

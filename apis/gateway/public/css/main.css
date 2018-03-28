@@ -1,6 +1,6 @@
 body {
   overflow: hidden;
-  font-family: 'Merriweather Sans', sans-serif;
+  font-family: "Merriweather Sans", sans-serif;
 }
 header {
   display: flex;
@@ -8,7 +8,6 @@ header {
   align-items: center;
   text-align: center;
   height: 20vh;
-
 }
 main {
   display: flex;
@@ -16,11 +15,10 @@ main {
   align-items: center;
   text-align: center;
   height: 80vh;
-
 }
 .middle-box {
-max-width: 50%;
-width: 50%;
+  max-width: 50%;
+  width: 50%;
 }
 .g-signin2,
 .abcRioButtonLightBlue,

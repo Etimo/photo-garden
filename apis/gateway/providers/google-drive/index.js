@@ -6,8 +6,14 @@ var config = require("../config");
 var util = require("./lib/util");
 
 // Don't start unless config has been set
-if (!util.hasRequiredKeys(config, ["GOOGLE_CLIENT_ID", "GOOGLE_CLIENT_SECRET", "GOOGLE_CLIENT_REDIRECT_URI"])) {
-    process.exit(1);
+if (
+  !util.hasRequiredKeys(config, [
+    "GOOGLE_CLIENT_ID",
+    "GOOGLE_CLIENT_SECRET",
+    "GOOGLE_CLIENT_REDIRECT_URI"
+  ])
+) {
+  process.exit(1);
 }
 
 // Routes for authorization flow

@@ -1,6 +1,6 @@
-const amqp = require('amqplib');
+const amqp = require("amqplib");
 
-const model = require('./model.js');
+const model = require("./model.js");
 
 const connectionString = "amqp://queue:5672";
 const queueName = "image-import";
@@ -32,9 +32,9 @@ async function connect() {
   }
   console.log("Connected to rmq!");
   const ch = await conn.createChannel();
-  ch.assertQueue(queueName, {durable: false});
+  ch.assertQueue(queueName, { durable: false });
   ch.consume(queueName, msg => addImage(msg, ch), {
-    consumerTag: 'photos-api'
+    consumerTag: "photos-api"
   });
 }
 

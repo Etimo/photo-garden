@@ -66,17 +66,19 @@
     "no-var": 2,
     "no-with": 2,
     "prefer-arrow-callback": 2,
-    "prefer-const": ["error", {"destructuring": "all"}],
+    "prefer-const": ["error", { "destructuring": "all" }],
     "prefer-template": 1,
     "quotes": [1, "double"],
     "semi": [2, "always"],
-    "semi-spacing": [1, {"before": false, "after": true}],
+    "semi-spacing": [1, { "before": false, "after": true }],
     "space-before-blocks": 1,
-    "space-before-function-paren": [1, {"anonymous": "always", "named": "never"}],
+    "space-before-function-paren": [
+      1,
+      { "anonymous": "always", "named": "never" }
+    ],
     "space-infix-ops": 1,
     "space-unary-ops": [1, { "words": true, "nonwords": false }],
     "strict": [2, "global"],
     "yoda": [1, "never"]
   }
 }
-

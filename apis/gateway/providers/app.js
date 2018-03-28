@@ -9,8 +9,8 @@ logger.info("Starting app...");
 // Mount google drive provider
 const providers = ["google-drive"];
 providers.forEach(provider => {
-	logger.info(`Mounting provider ${provider}...`);
-	app.use(`/${provider}`, require(`./${provider}`));
+  logger.info(`Mounting provider ${provider}...`);
+  app.use(`/${provider}`, require(`./${provider}`));
 });
 
 // app.use("/facebook", ...);

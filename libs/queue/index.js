@@ -1,4 +1,4 @@
-const amqp = require('amqplib');
+const amqp = require("amqplib");
 const logger = require("logging").logger;
 
 const host = "localhost";
@@ -22,7 +22,7 @@ async function onMessage(name, callback) {
   }
   if (channel) {
     logger.info(`Consume messages from ${name}`);
-    await channel.assertQueue(name, {durable: false});
+    await channel.assertQueue(name, { durable: false });
     return channel.consume(name, function(msg) {
       if (msg !== null) {
         logger.debug(`Message received on ${name}: ${msg.content}`);
@@ -40,7 +40,7 @@ async function publishMessage(name, message) {
   if (channel) {
     const msg = JSON.stringify(message);
     logger.debug(`Publish message to ${name}: ${msg}`);
-    await channel.assertQueue(name, {durable: false});
+    await channel.assertQueue(name, { durable: false });
     return channel.sendToQueue(name, new Buffer(msg));
   }
 }
@@ -52,7 +52,7 @@ async function publishNotification(name, message) {
   if (channel) {
     const exchangeName = `pubsub-${name}`;
     const msg = JSON.stringify(message);
-    await channel.assertExchange(exchangeName, 'fanout', {durable: false})
+    await channel.assertExchange(exchangeName, "fanout", { durable: false });
     logger.debug(`Notify to ${name}: ${msg}`);
     return channel.publish(exchangeName, "", new Buffer(msg));
   }
@@ -64,14 +64,18 @@ async function onNotification(name, callback) {
   }
   if (channel) {
     const exchangeName = `pubsub-${name}`;
-    const queue = await channel.assertQueue("", {exclusive: true});
+    const queue = await channel.assertQueue("", { exclusive: true });
     await channel.bindQueue(queue.queue, exchangeName, "");
-    return channel.consume(queue.queue, function(msg) {
-      if (msg !== null) {
-        logger.debug(`Notification received on ${name}: ${msg.content}`);
-        callback(msg.content);
-      }
-    }, {noAck: true});
+    return channel.consume(
+      queue.queue,
+      function(msg) {
+        if (msg !== null) {
+          logger.debug(`Notification received on ${name}: ${msg.content}`);
+          callback(msg.content);
+        }
+      },
+      { noAck: true }
+    );
   }
 }
 
@@ -79,7 +83,7 @@ module.exports = {
   onMessage,
   onNotification,
   publishMessage,
-  publishNotification,
+  publishNotification
 };
 
 // async function main() {

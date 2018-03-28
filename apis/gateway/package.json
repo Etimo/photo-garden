@@ -7,8 +7,10 @@
     "start:dev": "nodemon app.js",
     "start:debug": "node --inspect app.js",
     "start:prod": "node app.js",
-    "test": "mocha $(find . -name \"*.spec.js\" -not -path \"./node_modules/*\")",
-    "prettier": "prettier */**/*.js --ignore-path ./.prettierignore --write && git add . && git status"
+    "test":
+      "mocha $(find . -name \"*.spec.js\" -not -path \"./node_modules/*\")",
+    "prettier":
+      "prettier */**/*.js --ignore-path ./.prettierignore --write && git add . && git status"
   },
   "repository": {
     "type": "git",
