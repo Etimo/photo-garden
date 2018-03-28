@@ -1,5 +1,5 @@
 {
-  "name": "photos-api",
+  "name": "photos",
   "version": "1.0.0",
   "description": "",
   "main": "app.js",
@@ -28,6 +28,7 @@
     "express-promise-router": "^3.0.1",
     "google-auth-library": "^0.12.0",
     "googleapis": "^23.0.0",
+    "moment": "^2.21.0",
     "morgan": "^1.9.0",
     "pg": "^7.4.1",
     "request": "^2.83.0",

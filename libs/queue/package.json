@@ -1,5 +1,5 @@
 {
-  "name": "@photo-garden/queue",
+  "name": "queue",
   "version": "1.0.0",
   "description": "",
   "publishConfig": {
@@ -13,6 +13,9 @@
   "license": "ISC",
   "dependencies": {
     "amqp10": "^3.5.3",
-    "amqplib": "^0.5.2"
+    "amqplib": "^0.5.2",
+    "logging": "^1.0.0",
+    "moment": "^2.21.0",
+    "uuid": "^3.2.1"
   }
 }

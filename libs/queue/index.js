@@ -1,4 +1,5 @@
-var amqp = require('amqplib');
+const amqp = require('amqplib');
+const logger = require("logging").logger;
 
 const host = "localhost";
 const port = 5672;
@@ -9,10 +10,10 @@ var timeout = 2000;
 var conn;
 
 async function connect() {
-  console.log(`Connecting to rmq at ${connectionString}...`);
+  logger.info(`Connecting to rmq at ${connectionString}...`);
   conn = await amqp.connect(connectionString);
   channel = await conn.createChannel();
-  console.log("Connected to rmq!");
+  logger.info("Connected to rmq!");
 }
 
 async function onMessage(name, callback) {
@@ -20,10 +21,11 @@ async function onMessage(name, callback) {
     await connect();
   }
   if (channel) {
-    console.log("Consume msg");
+    logger.info(`Consume messages from ${name}`);
     await channel.assertQueue(name, {durable: false});
     return channel.consume(name, function(msg) {
       if (msg !== null) {
+        logger.debug(`Message received on ${name}: ${msg.content}`);
         channel.ack(msg);
         callback(msg.content);
       }
@@ -34,26 +36,64 @@ async function onMessage(name, callback) {
 async function publishMessage(name, message) {
   if (!channel) {
     await connect();
-    console.log("Connected");
   }
   if (channel) {
+    const msg = JSON.stringify(message);
+    logger.debug(`Publish message to ${name}: ${msg}`);
     await channel.assertQueue(name, {durable: false});
-    return channel.sendToQueue(name, new Buffer(JSON.stringify(message)));
+    return channel.sendToQueue(name, new Buffer(msg));
+  }
+}
+
+async function publishNotification(name, message) {
+  if (!channel) {
+    await connect();
+  }
+  if (channel) {
+    const exchangeName = `pubsub-${name}`;
+    const msg = JSON.stringify(message);
+    await channel.assertExchange(exchangeName, 'fanout', {durable: false})
+    logger.debug(`Notify to ${name}: ${msg}`);
+    return channel.publish(exchangeName, "", new Buffer(msg));
+  }
+}
+
+async function onNotification(name, callback) {
+  if (!channel) {
+    await connect();
+  }
+  if (channel) {
+    const exchangeName = `pubsub-${name}`;
+    const queue = await channel.assertQueue("", {exclusive: true});
+    await channel.bindQueue(queue.queue, exchangeName, "");
+    return channel.consume(queue.queue, function(msg) {
+      if (msg !== null) {
+        logger.debug(`Notification received on ${name}: ${msg.content}`);
+        callback(msg.content);
+      }
+    }, {noAck: true});
   }
 }
 
 module.exports = {
   onMessage,
+  onNotification,
   publishMessage,
+  publishNotification,
 };
 
-async function main() {
-  await publishMessage("Hello", "World");
-  await onMessage("Hello", function(msg) {
-    console.log("MSG: ", JSON.parse(msg.toString()));
-    return true;
-  });
-  await conn.close();
-}
+// async function main() {
+//   await publishMessage("Hello", "World");
+//   await onMessage("Hello", function(msg) {
+//     console.log("MSG: ", JSON.parse(msg.toString()));
+//     return true;
+//   });
+//   await publishNotification("Hello", "World");
+//   await onNotification("Hello", function(msg) {
+//     console.log("Notification: ", JSON.parse(msg.toString()));
+//     return true;
+//   });
+//   await conn.close();
+// }
 
-main();
+// main();
