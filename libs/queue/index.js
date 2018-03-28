@@ -1,8 +1,9 @@
 const amqp = require("amqplib");
 const logger = require("logging").logger;
+const config = require("config");
 
-const host = "localhost";
-const port = 5672;
+const host = config.get("queue.host");
+const port = config.get("queue.port");
 
 var connectionString = `amqp://${host}:${port}`;
 var channel = null;
@@ -86,18 +87,18 @@ module.exports = {
   publishNotification
 };
 
-// async function main() {
-//   await publishMessage("Hello", "World");
-//   await onMessage("Hello", function(msg) {
-//     console.log("MSG: ", JSON.parse(msg.toString()));
-//     return true;
-//   });
-//   await publishNotification("Hello", "World");
-//   await onNotification("Hello", function(msg) {
-//     console.log("Notification: ", JSON.parse(msg.toString()));
-//     return true;
-//   });
-//   await conn.close();
-// }
+async function main() {
+  await publishMessage("Hello", "World");
+  await onMessage("Hello", function(msg) {
+    console.log("MSG: ", JSON.parse(msg.toString()));
+    return true;
+  });
+  await publishNotification("Hello", "World");
+  await onNotification("Hello", function(msg) {
+    console.log("Notification: ", JSON.parse(msg.toString()));
+    return true;
+  });
+  await conn.close();
+}
 
-// main();
+main();

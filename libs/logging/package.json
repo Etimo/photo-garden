@@ -3,18 +3,13 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "moment": "^2.21.0",
+    "nodemon": "^1.17.2",
     "winston": "^2.4.1",
-    "winston-logzio": "^1.0.6"
-  },
-  "devDependencies": {
-    "lint-staged": "^7.0.0",
-    "prettier": "^1.11.1"
+    "winston-logzio": "^1.0.6",
+    "config": "^1.0.0"
   }
 }

@@ -2,24 +2,13 @@
   "name": "queue",
   "version": "1.0.0",
   "description": "",
-  "publishConfig": {
-    "access": "public"
-  },
   "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "amqp10": "^3.5.3",
     "amqplib": "^0.5.2",
     "logging": "^1.0.0",
-    "uuid": "^3.2.1"
-  },
-  "devDependencies": {
-    "husky": "^0.14.3",
-    "lint-staged": "^7.0.0",
-    "prettier": "^1.11.1"
+    "config": "1.0.0"
   }
 }

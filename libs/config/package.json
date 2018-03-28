@@ -1,5 +1,5 @@
 {
-  "name": "@photo-garden/config",
+  "name": "config",
   "version": "1.0.0",
   "description": "",
   "publishConfig": {
@@ -15,5 +15,7 @@
     "lint-staged": "^7.0.0",
     "prettier": "^1.11.1"
   },
-  "dependencies": {}
+  "dependencies": {
+    "nodemon": "^1.17.2"
+  }
 }
