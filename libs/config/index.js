@@ -12,6 +12,11 @@ const get = key => {
       curr = config[s];
     }
   });
+  if (typeof curr === "undefined") {
+    // Not found in config file, try env
+    key = "PHOTO_GARDEN_" + key.toUpperCase().replace(".", "_");
+    console.log(key);
+  }
   return curr;
 };
 
