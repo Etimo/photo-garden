@@ -2,15 +2,15 @@ var express = require("express");
 var router = express.Router();
 var authController = require("./controllers/authController");
 var subscriptionController = require("./controllers/subscriptionController");
-var config = require("../config");
+var config = require("config");
 var util = require("./lib/util");
 
 // Don't start unless config has been set
 if (
-  !util.hasRequiredKeys(config, [
-    "GOOGLE_CLIENT_ID",
-    "GOOGLE_CLIENT_SECRET",
-    "GOOGLE_CLIENT_REDIRECT_URI"
+  !config.hasAll([
+    "providers.google-drive.clientId",
+    "providers.google-drive.clientSecret",
+    "providers.google-drive.clientRedirectUri"
   ])
 ) {
   process.exit(1);

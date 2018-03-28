@@ -1,4 +1,5 @@
 const logger = require("logging").logger;
+const queue = require("queue");
 var google = require("googleapis");
 var GoogleAuth = require("google-auth-library");
 var auth = new GoogleAuth();
@@ -28,7 +29,11 @@ function filesListCallback(client, err, response, user) {
   files
     .filter(util.isValidFile)
     .map(file => normalizePhotoInfo(file, user))
-    .forEach(queue.publish);
+    .forEach(publishToQueue);
+}
+
+function publishToQueue(item) {
+  queue.publishMessage("new-photo", item);
 }
 
 function getFilesInDrive(client, user, nextPageToken) {

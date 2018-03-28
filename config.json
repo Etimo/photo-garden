@@ -2,5 +2,12 @@
   "queue": {
     "host": "localhost",
     "port": 5672
+  },
+  "providers": {
+    "google-drive": {
+      "clientId": "todo",
+      "clientSecret": "todo",
+      "clientRedirectUri2": "todo"
+    }
   }
 }
