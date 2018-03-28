@@ -1,13 +1,11 @@
 {
-	"devDependencies": {
-		"lerna": "^2.9.0"
-	},
-  	"husky": {
-  		"hooks": {
-  			"pre-commit": "lint-staged"
-  		}
-  	},
-  	"lint-staged": {
-    	"*.{js,json,css,md}": ["prettier --write ", "git add"]
-  	}
+  "devDependencies": {
+    "husky": "^0.14.3",
+    "lerna": "^2.9.0",
+    "prettier": "^1.11.1"
+  },
+  "scripts": {
+    "precommit": "prettier --write \"**/*.{js,json,css,md}\""
+  },
+  "dependencies": {}
 }

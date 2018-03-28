@@ -44,6 +44,8 @@ transports.push(
     );
 
 
+
+
 // Setup Logz io transport, if available
 if (loggerOptions.token) {
   transports.push(new (logzioWinstonTransport)(loggerOptions));

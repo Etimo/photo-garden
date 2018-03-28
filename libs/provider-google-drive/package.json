@@ -15,7 +15,5 @@
     "lint-staged": "^7.0.0",
     "prettier": "^1.11.1"
   },
-  "dependencies": {
-    "husky": "^0.14.3"
-  }
+  "dependencies": {}
 }
