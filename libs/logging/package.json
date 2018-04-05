@@ -7,7 +7,6 @@
   "license": "ISC",
   "dependencies": {
     "moment": "^2.21.0",
-    "nodemon": "^1.17.2",
     "winston": "^2.4.1",
     "winston-logzio": "^1.0.6",
     "config": "^1.0.0"

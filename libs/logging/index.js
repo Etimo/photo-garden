@@ -59,6 +59,4 @@ logger.info(
   } transport(s): ${transportNames.join(", ")}`
 );
 
-module.exports = {
-  logger
-};
+module.exports = logger;

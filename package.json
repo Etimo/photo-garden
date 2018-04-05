@@ -1,16 +1,19 @@
 {
+  "private": true,
+  "bugs": {
+    "url": "https://github.com/Etimo/photo-garden/issues"
+  },
+  "homepage": "https://github.com/Etimo/photo-garden#readme",
+  "workspaces": ["apis/*", "libs/*"],
+  "scripts": {
+    "prettier": "prettier --write \"**/*.{js,json,css,md}\" && git add"
+  },
+  "pre-commit": ["prettier"],
+  "dependencies": {},
   "devDependencies": {
     "husky": "^0.14.3",
     "lint-staged": "^7.0.0",
+    "pre-commit": "^1.2.2",
     "prettier": "^1.11.1"
-  },
-  "private": true,
-  "workspaces": ["apis/*", "libs/*"],
-  "scripts": {
-    "precommit": "lint-staged"
-  },
-  "lint-staged": {
-    "*.{js,json,css,md}": ["prettier --write", "git add"]
-  },
-  "dependencies": {}
+  }
 }

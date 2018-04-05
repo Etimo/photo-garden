@@ -1,4 +1,5 @@
 var express = require("express");
+const logger = require("logging");
 var router = express.Router();
 var authController = require("./controllers/authController");
 var subscriptionController = require("./controllers/subscriptionController");
@@ -8,11 +9,12 @@ var util = require("./lib/util");
 // Don't start unless config has been set
 if (
   !config.hasAll([
-    "providers.google-drive.clientId",
-    "providers.google-drive.clientSecret",
-    "providers.google-drive.clientRedirectUri"
+    "providers.googleDrive.clientId",
+    "providers.googleDrive.clientSecret",
+    "providers.googleDrive.clientRedirectUri"
   ])
 ) {
+  logger.error("Missing config keys");
   process.exit(1);
 }
 

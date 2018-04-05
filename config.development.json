@@ -1,0 +1,19 @@
+{
+  "queue": {
+    "host": "localhost",
+    "port": 5672
+  },
+  "db": {
+    "host": "localhost",
+    "port": 5432,
+    "user": "postgres",
+    "password": "mysecretpassword",
+    "database": "postgres"
+  },
+  "providers": {
+    "googleDrive": {
+      "validPhotos": ["image/jpeg"],
+      "scopes": ["https://www.googleapis.com/auth/drive.readonly", "email"]
+    }
+  }
+}

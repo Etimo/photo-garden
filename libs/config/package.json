@@ -10,12 +10,5 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
-  "license": "ISC",
-  "devDependencies": {
-    "lint-staged": "^7.0.0",
-    "prettier": "^1.11.1"
-  },
-  "dependencies": {
-    "nodemon": "^1.17.2"
-  }
+  "license": "ISC"
 }

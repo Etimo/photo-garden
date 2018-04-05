@@ -1,6 +1,5 @@
-"use strict";
-const providersApp = require("./providers/app");
-const logger = require("logging").logger;
+const providers = require("./providers");
+const logger = require("logging");
 const express = require("express");
 const secret = process.argv.secret ? process.argv.secret : "NotAGoodSecret";
 const path = require("path");
@@ -48,10 +47,8 @@ app.get("/logout", (req, res) => {
   res.sendFile(path.join(__dirname, "/public/html/logout.html"));
 });
 
-app.use(providersApp);
+// Mount providers
+app.use(providers);
+
 app.listen(port);
 logger.info(`Listening on port ${port}`);
-
-// module.exports = express();
-
-//Providers block

@@ -1,19 +1,9 @@
-"use strict";
-const logger = require("logging").logger;
-const scopes = ["https://www.googleapis.com/auth/drive.readonly", "email"];
+const logger = require("logging");
+const config = require("config");
+const users = require("provider-user");
+
 const util = require("../lib/util");
 const filesWorker = require("../workers/files");
-const config = require("../../config");
-const users = require("../../../users");
-
-function getAuthUrl() {
-  const client = util.getClient();
-  return client.generateAuthUrl({
-    access_type: "offline",
-    scope: scopes,
-    redirect_uri: config.GOOGLE_CLIENT_REDIRECT_URI
-  });
-}
 
 function finishAuth(client, req, res) {
   const code = req.query.code;
@@ -77,7 +67,7 @@ async function getUserIdentity(verified, userIdentifier, req) {
 }
 
 exports.authStart = (req, res) => {
-  res.redirect(getAuthUrl());
+  res.redirect(util.getAuthUrl());
 };
 
 exports.authFinish = (req, res) => {

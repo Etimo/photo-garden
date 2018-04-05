@@ -1,20 +1,9 @@
-const logger = require("logging").logger;
-const queue = require("queue");
+const logger = require("logging");
+const communication = require("communication");
 var google = require("googleapis");
 var GoogleAuth = require("google-auth-library");
 var auth = new GoogleAuth();
 var util = require("../lib/util");
-
-function normalizePhotoInfo(fileInfo, user) {
-  return {
-    owner: user,
-    url: fileInfo.thumbnailLink,
-    mimeType: fileInfo.mimeType,
-    provider: "Google",
-    providerId: fileInfo.id,
-    original: fileInfo
-  };
-}
 
 function filesListCallback(client, err, response, user) {
   if (err) {
@@ -28,12 +17,12 @@ function filesListCallback(client, err, response, user) {
   var files = response.files;
   files
     .filter(util.isValidFile)
-    .map(file => normalizePhotoInfo(file, user))
+    .map(file => util.normalizePhotoInfo(file, user))
     .forEach(publishToQueue);
 }
 
 function publishToQueue(item) {
-  queue.publishMessage("new-photo", item);
+  communication.queue.publishMessage("new-photo", item);
 }
 
 function getFilesInDrive(client, user, nextPageToken) {

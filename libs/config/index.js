@@ -1,6 +1,10 @@
 const fs = require("fs");
+const changeCase = require("change-case");
+const logger = require("logging");
 
-const buffer = fs.readFileSync(__dirname + "/../../config.json");
+const currentEnv = process.env.NODE_ENV || "development";
+const filename = __dirname + "/../../" + `config.${currentEnv}.json`;
+const buffer = fs.existsSync(filename) ? fs.readFileSync(filename) : "{}";
 const config = JSON.parse(buffer);
 
 const get = key => {
@@ -12,10 +16,12 @@ const get = key => {
       curr = config[s];
     }
   });
+  logger.silly("Config key", key, "got value", curr);
   if (typeof curr === "undefined") {
     // Not found in config file, try env
-    key = "PHOTO_GARDEN_" + key.toUpperCase().replace(/[^A-Z0-9]/g, "_");
-    console.log(key);
+    key = "PHOTO_GARDEN_" + changeCase.constant(key);
+    logger.debug("Falling back to env for key", key);
+    return process.env[key];
   }
   return curr;
 };

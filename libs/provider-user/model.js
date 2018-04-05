@@ -1,8 +1,18 @@
+const config = require("config");
+const logger = require("logging");
+
 const { Pool: PgPool } = require("pg");
-const dbClient = new PgPool();
+const dbClient = new PgPool({
+  user: config.get("db.user"),
+  host: config.get("db.host"),
+  database: config.get("db.database"),
+  password: config.get("db.password"),
+  port: config.get("db.port")
+});
 
 async function attachIdentity(provider, providerIdentity) {
   // FIXME: Ask for username?
+  logger.info(`Attaching identity ${providerIdentity} to ${provider}`);
   const db = await dbClient.connect();
   try {
     db.query("BEGIN");
@@ -26,6 +36,7 @@ async function attachIdentity(provider, providerIdentity) {
 }
 
 async function getByIdentity(provider, providerIdentity) {
+  logger.info(`Get identity for ${providerIdentity} for provider ${provider}`);
   const response = await dbClient.query(
     "SELECT user_id FROM user_identities WHERE provider=$1 AND provider_id=$2",
     [provider, providerIdentity]

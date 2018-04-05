@@ -1,5 +1,6 @@
 const amqp = require("amqplib");
-const logger = require("logging").logger;
+const retry = require("async-retry");
+const logger = require("logging");
 const config = require("config");
 
 const host = config.get("queue.host");
@@ -11,13 +12,31 @@ var timeout = 2000;
 var conn;
 
 async function connect() {
-  logger.info(`Connecting to rmq at ${connectionString}...`);
-  conn = await amqp.connect(connectionString);
-  channel = await conn.createChannel();
-  logger.info("Connected to rmq!");
-  return Promise.resolve(conn);
+  await retry(
+    async (bail, attempt) => {
+      logger.info(
+        `Connecting to rmq at ${connectionString} (attempt ${attempt})...`
+      );
+      conn = await amqp.connect(connectionString);
+      channel = await conn.createChannel();
+      logger.info("Connected to rmq!");
+      return conn;
+    },
+    {
+      minTimeout: 2000,
+      retries: 10,
+      onRetry: err => {
+        logger.warn("Unable to connect to rmq, retrying...");
+      }
+    }
+  );
 }
 
+/**
+ * @param name {string} The name of the queue to consume.
+ * @param callback {Function} A callback function to invoke for each received message.
+ * @return {[type]}
+ */
 async function onMessage(name, callback) {
   if (!channel) {
     await connect();
@@ -73,7 +92,7 @@ async function onNotification(name, callback) {
       queue.queue,
       function(msg) {
         if (msg !== null) {
-          logger.debug(`Notification received on ${name}: ${msg}`);
+          logger.debug(`Notification received on ${name}:`, msg);
           callback(msg.content, msg.fields);
         }
       },
@@ -82,14 +101,26 @@ async function onNotification(name, callback) {
   }
 }
 
+/**
+ * Close the open connection.
+ * @return null
+ */
 async function close() {
-  await conn.close();
+  return await conn.close();
 }
 
+const pubsub = {
+  publish: publishNotification,
+  subscribe: onNotification
+};
+
+const queue = {
+  publish: publishMessage,
+  consume: onMessage
+};
+
 module.exports = {
-  onMessage,
-  onNotification,
-  publishMessage,
-  publishNotification,
+  pubsub,
+  queue,
   close
 };

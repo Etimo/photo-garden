@@ -1,5 +1,5 @@
 {
-  "name": "queue",
+  "name": "communication",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -8,7 +8,8 @@
   "dependencies": {
     "amqp10": "^3.5.3",
     "amqplib": "^0.5.2",
-    "logging": "^1.0.0",
-    "config": "1.0.0"
+    "async-retry": "^1.2.1",
+    "config": "1.0.0",
+    "logging": "^1.0.0"
   }
 }

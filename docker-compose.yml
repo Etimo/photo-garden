@@ -20,40 +20,31 @@ services:
       - "5432:5432"
 
   gateway:
-    build:
-      context: ./apis/gateway
-      dockerfile: Dockerfile.dev
+    build: ./apis/gateway
     environment:
-      - ENVIRONMENT=development
-      - DEBUG=true
-      - GOOGLE_CLIENT_ID
-      - GOOGLE_CLIENT_SECRET
-      - GOOGLE_CLIENT_REDIRECT_URI
-      - PGUSER=the_gardener
-      - PGHOST=db
-      - PGDATABASE=photo_garden
+      - PHOTO_GARDEN_PROVIDERS_GOOGLE_DRIVE_CLIENT_ID
+      - PHOTO_GARDEN_PROVIDERS_GOOGLE_DRIVE_CLIENT_SECRET
+      - PHOTO_GARDEN_PROVIDERS_GOOGLE_DRIVE_CLIENT_REDIRECT_URI
     depends_on:
       - queue
       - db
     links:
       - queue
       - db
-    volumes:
-      - "./apis/gateway/:/usr/src/app"
     ports:
       - "3000:3000"
 
-  photos_api:
-    build: ./apis/photos
-    volumes:
-      - "./apis/photos/:/usr/src/app"
-    depends_on:
-      - db
-      - queue
-    links:
-      - db
-      - queue
-    environment:
-      - PGUSER=the_gardener
-      - PGHOST=db
-      - PGDATABASE=photo_garden
+  # photos_api:
+  #   build: ./apis/photos
+  #   volumes:
+  #     - "./apis/photos/:/usr/src/app"
+  #   depends_on:
+  #     - db
+  #     - queue
+  #   links:
+  #     - db
+  #     - queue
+  #   environment:
+  #     - PGUSER=the_gardener
+  #     - PGHOST=db
+  #     - PGDATABASE=photo_garden
