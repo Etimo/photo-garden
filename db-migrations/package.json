@@ -2,10 +2,6 @@
   "name": "admin",
   "version": "1.0.0",
   "scripts": {
-    "test":
-      "mocha $(find . -name \"*.spec.js\" -not -path \"./node_modules/*\")",
-    "prettier":
-      "prettier */**/*.js --ignore-path ./.prettierignore --write && git add . && git status"
   },
   "repository": {
     "type": "git",
@@ -18,8 +14,6 @@
   },
   "homepage": "https://github.com/Etimo/photo-garden#readme",
   "devDependencies": {
-    "mocha": "^5.0.1",
-    "postgrator-cli": "^0.2.2",
-    "prettier": "^1.10.2"
+    "postgrator-cli": "^0.2.2"
   }
 }

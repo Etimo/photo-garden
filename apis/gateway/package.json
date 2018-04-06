@@ -6,11 +6,9 @@
   "scripts": {
     "start:dev": "nodemon --watch ../../libs --watch . app.js",
     "start:debug": "node --inspect app.js",
-    "start:prod": "node app.js",
-    "test":
-      "mocha $(find . -name \"*.spec.js\" -not -path \"./node_modules/*\")",
-    "prettier":
-      "prettier */**/*.js --ignore-path ./.prettierignore --write && git add . && git status"
+    "start:prod": "LOG_LEVEL=debug node app.js",
+    "test": "mocha $(find . -name \"*.spec.js\" -not -path \"./node_modules/*\")",
+    "prettier": "prettier */**/*.js --ignore-path ./.prettierignore --write && git add . && git status"
   },
   "repository": {
     "type": "git",
@@ -36,5 +34,7 @@
     "stomp-client": "^0.9.0",
     "stompit": "^0.25.0"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "nodemon": "^1.17.3"
+  }
 }

@@ -22,7 +22,7 @@ function filesListCallback(client, err, response, user) {
 }
 
 function publishToQueue(item) {
-  communication.queue.publishMessage("new-photo", item);
+  communication.queue.publish("new-photo", item);
 }
 
 function getFilesInDrive(client, user, nextPageToken) {

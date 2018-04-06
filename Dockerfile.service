@@ -1,0 +1,26 @@
+FROM node:9.3-alpine
+
+WORKDIR /usr/src
+
+ARG APP_NAME
+
+# Add repo dependencies to container
+ADD libs libs
+
+# Add app to container
+ADD apis/$APP_NAME apis/$APP_NAME
+
+# Add root npm dependencies
+ADD yarn.lock .
+ADD package.json .
+
+WORKDIR /usr/src/apis/$APP_NAME
+
+# Yarn install and resolve
+RUN yarn
+
+WORKDIR /usr/src
+ADD config.development.json .
+
+WORKDIR /usr/src/apis/$APP_NAME
+ENTRYPOINT ["yarn", "run", "start:dev"]

@@ -1,7 +1,7 @@
-version: "3"
+version: "3.2"
 services:
-  admin:
-    build: admin
+  db-migrations:
+    build: db-migrations
     command: ./setup-photo-garden.sh
     depends_on:
       - db
@@ -20,11 +20,17 @@ services:
       - "5432:5432"
 
   gateway:
-    build: ./apis/gateway
+    build:
+      context: .
+      dockerfile: Dockerfile.service
+      args:
+        APP_NAME: gateway
+    volumes:
+      - ${PWD}/apis:/usr/src/apis
+      - ${PWD}/libs:/usr/src/libs
     environment:
       - PHOTO_GARDEN_PROVIDERS_GOOGLE_DRIVE_CLIENT_ID
       - PHOTO_GARDEN_PROVIDERS_GOOGLE_DRIVE_CLIENT_SECRET
-      - PHOTO_GARDEN_PROVIDERS_GOOGLE_DRIVE_CLIENT_REDIRECT_URI
     depends_on:
       - queue
       - db

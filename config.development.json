@@ -1,18 +1,19 @@
 {
   "queue": {
-    "host": "localhost",
+    "host": "queue",
     "port": 5672
   },
   "db": {
-    "host": "localhost",
+    "host": "db",
     "port": 5432,
-    "user": "postgres",
+    "user": "the_gardener",
     "password": "mysecretpassword",
-    "database": "postgres"
+    "database": "photo_garden"
   },
   "providers": {
     "googleDrive": {
       "validPhotos": ["image/jpeg"],
+      "clientRedirectUri": "http://localhost:3000/google-drive/auth/finish",
       "scopes": ["https://www.googleapis.com/auth/drive.readonly", "email"]
     }
   }
