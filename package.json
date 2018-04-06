@@ -4,17 +4,12 @@
     "url": "https://github.com/Etimo/photo-garden/issues"
   },
   "homepage": "https://github.com/Etimo/photo-garden#readme",
-  "workspaces": [
-    "apps/*",
-    "libs/*"
-  ],
+  "workspaces": ["apps/*", "libs/*"],
   "scripts": {
     "prettier": "prettier --write \"**/*.{js,json,css,md}\" && git add",
     "update-docker-compose": "node update-docker-compose.js"
   },
-  "pre-commit": [
-    "prettier"
-  ],
+  "pre-commit": ["prettier"],
   "dependencies": {},
   "devDependencies": {
     "handlebars": "^4.0.11",

@@ -41,7 +41,7 @@ async function onMessage(name, callback) {
   if (!channel) {
     // Defer publish
     setTimeout(_ => {
-      onMessage(name, callback)
+      onMessage(name, callback);
     }, 1000);
   }
   if (channel) {
@@ -60,7 +60,7 @@ async function publishMessage(name, message) {
   if (!channel) {
     // Defer publish
     setTimeout(_ => {
-      publishMessage(name, message)
+      publishMessage(name, message);
     }, 1000);
   }
   if (channel) {
@@ -75,7 +75,7 @@ async function publishNotification(name, message) {
   if (!channel) {
     // Defer publish
     setTimeout(_ => {
-      publishNotification(name, message)
+      publishNotification(name, message);
     }, 1000);
   }
   if (channel) {
@@ -91,7 +91,7 @@ async function onNotification(name, callback) {
   if (!channel) {
     // Defer publish
     setTimeout(_ => {
-      onNotification(name, callback)
+      onNotification(name, callback);
     }, 1000);
   }
   if (channel) {
