@@ -6,20 +6,11 @@
   "scripts": {
     "start:dev": "nodemon --watch ../../libs --watch . app.js",
     "start:debug": "node --inspect app.js",
-    "start:prod": "LOG_LEVEL=debug node app.js",
-    "test": "mocha $(find . -name \"*.spec.js\" -not -path \"./node_modules/*\")",
-    "prettier": "prettier */**/*.js --ignore-path ./.prettierignore --write && git add . && git status"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Etimo/photo-garden.git"
+    "start:prod": "node app.js",
+    "test": "mocha $(find . -name \"*.spec.js\" -not -path \"./node_modules/*\")"
   },
   "author": "Etimo",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/Etimo/photo-garden/issues"
-  },
-  "homepage": "https://github.com/Etimo/photo-garden#readme",
   "dependencies": {
     "change-case": "^3.0.2",
     "client-sessions": "^0.8.0",

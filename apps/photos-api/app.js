@@ -3,7 +3,6 @@ const express = require("express");
 const Router = require("express-promise-router");
 
 const model = require("./model.js");
-const queueImport = require("./queue-import.js");
 
 const app = express();
 const router = new Router();
@@ -32,6 +31,20 @@ router.post("/photos", async function(req, res) {
   res.send({ id });
 });
 
+async function insert(image) {
+  const response = await dbClient.query(
+    "INSERT INTO photos(owner, url, mime_type, provider, provider_id, original) VALUES($1, $2, $3, $4, $5, $6) ON CONFLICT ON CONSTRAINT provider_id_unique DO NOTHING RETURNING id",
+    [
+      image.owner,
+      image.url,
+      image.mimeType,
+      image.provider,
+      image.providerId,
+      image.original
+    ]
+  );
+  return response.rows[0] !== undefined ? response.rows[0].id : undefined;
+}
+
 app.listen(3000);
-queueImport.start();
 console.log("Listening on localhost:3000");

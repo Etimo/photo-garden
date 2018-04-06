@@ -24,7 +24,7 @@ function normalizePhotoInfo(fileInfo, user) {
 }
 
 function isValidFile(file) {
-  return file.mimeType in validPhotos;
+  return validPhotos.indexOf(file.mimeType) > -1;
 }
 
 function getClient() {
@@ -42,5 +42,6 @@ function getAuthUrl() {
 module.exports = {
   getClient,
   isValidFile,
+  normalizePhotoInfo,
   getAuthUrl
 };

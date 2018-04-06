@@ -1,8 +1,7 @@
 {
   "name": "admin",
   "version": "1.0.0",
-  "scripts": {
-  },
+  "scripts": {},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Etimo/photo-garden.git"

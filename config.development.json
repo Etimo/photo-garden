@@ -10,6 +10,11 @@
     "password": "mysecretpassword",
     "database": "photo_garden"
   },
+  "gateway": {
+    "port": 3000,
+    "secret": "ThisIsNotSecret",
+    "cookieName": "gardenSession"
+  },
   "providers": {
     "googleDrive": {
       "validPhotos": ["image/jpeg"],

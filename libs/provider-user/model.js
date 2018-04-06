@@ -1,14 +1,7 @@
 const config = require("config");
 const logger = require("logging");
 
-const { Pool: PgPool } = require("pg");
-const dbClient = new PgPool({
-  user: config.get("db.user"),
-  host: config.get("db.host"),
-  database: config.get("db.database"),
-  password: config.get("db.password"),
-  port: config.get("db.port")
-});
+const dbClient = require("db").create();
 
 async function attachIdentity(provider, providerIdentity) {
   // FIXME: Ask for username?

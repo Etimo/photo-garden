@@ -39,7 +39,10 @@ async function connect() {
  */
 async function onMessage(name, callback) {
   if (!channel) {
-    await connect();
+    // Defer publish
+    setTimeout(_ => {
+      onMessage(name, callback)
+    }, 1000);
   }
   if (channel) {
     logger.info(`Consume messages from ${name}`);
@@ -47,8 +50,7 @@ async function onMessage(name, callback) {
     return channel.consume(name, function(msg) {
       if (msg !== null) {
         logger.debug(`Message received on ${name}: ${msg.content}`);
-        channel.ack(msg);
-        callback(msg.content);
+        callback(msg, channel);
       }
     });
   }
@@ -56,7 +58,10 @@ async function onMessage(name, callback) {
 
 async function publishMessage(name, message) {
   if (!channel) {
-    await connect();
+    // Defer publish
+    setTimeout(_ => {
+      publishMessage(name, message)
+    }, 1000);
   }
   if (channel) {
     const msg = JSON.stringify(message);
@@ -68,7 +73,10 @@ async function publishMessage(name, message) {
 
 async function publishNotification(name, message) {
   if (!channel) {
-    await connect();
+    // Defer publish
+    setTimeout(_ => {
+      publishNotification(name, message)
+    }, 1000);
   }
   if (channel) {
     const exchangeName = `pubsub`;
@@ -81,7 +89,10 @@ async function publishNotification(name, message) {
 
 async function onNotification(name, callback) {
   if (!channel) {
-    await connect();
+    // Defer publish
+    setTimeout(_ => {
+      onNotification(name, callback)
+    }, 1000);
   }
   if (channel) {
     const exchangeName = `pubsub`;
@@ -108,6 +119,8 @@ async function onNotification(name, callback) {
 async function close() {
   return await conn.close();
 }
+
+connect();
 
 const pubsub = {
   publish: publishNotification,

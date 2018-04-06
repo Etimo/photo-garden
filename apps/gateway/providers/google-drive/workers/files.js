@@ -6,6 +6,7 @@ var auth = new GoogleAuth();
 var util = require("../lib/util");
 
 function filesListCallback(client, err, response, user) {
+  logger.info("Get files from drive using v3", err);
   if (err) {
     logger.error("The API returned an error: " + err);
     return;

@@ -1,17 +1,16 @@
 const providers = require("./providers");
 const logger = require("logging");
 const express = require("express");
-const secret = process.argv.secret ? process.argv.secret : "NotAGoodSecret";
+const config = require("config");
+
 const path = require("path");
 const sessions = require("client-sessions");
 const GoogleAuth = require("google-auth-library");
-const auth = new GoogleAuth();
-const CLIENT_ID =
-  "212991127628-8rj19c00v2d1tpl9v3rpd2vd740o6d96.apps.googleusercontent.com";
-const client = new auth.OAuth2(CLIENT_ID, "", "");
 const bodyParser = require("body-parser");
+
+const auth = new GoogleAuth();
 const app = express();
-const port = 3000;
+const port = config.get("gateway.port");
 
 //Login-block
 const asyncWrapper = wrapFunction => (req, res, next) => {
@@ -20,8 +19,8 @@ const asyncWrapper = wrapFunction => (req, res, next) => {
 
 app.use(
   sessions({
-    cookieName: "gardenSession",
-    secret: secret,
+    cookieName: config.get("gateway.cookieName"),
+    secret: config.get("gateway.secret"),
     duration: 15 * 60 * 1000, // Refresh
     activeDuration: 10 * 60 * 1000
   })
