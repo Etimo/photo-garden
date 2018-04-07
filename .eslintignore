@@ -5,4 +5,4 @@ app/assets/js/vendor/**
 submodule/**
 logs/
 docs/
-
+node_modules/

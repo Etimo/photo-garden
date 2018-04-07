@@ -21,5 +21,10 @@
       "clientRedirectUri": "http://localhost:3000/google-drive/auth/finish",
       "scopes": ["https://www.googleapis.com/auth/drive.readonly", "email"]
     }
+  },
+  "apis": {
+    "photos": {
+      "port": 3000
+    }
   }
 }

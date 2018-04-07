@@ -4,8 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "parcel src/index.html"
+    "start:dev": "parcel src/index.html"
   },
   "keywords": [],
   "author": "",
@@ -17,15 +16,6 @@
     "redux": "^3.7.2",
     "uuid": "^3.1.0",
     "prop-types": "^15.6.0"
-  },
-  "postcss": {
-    "modules": false,
-    "plugins": {
-      "autoprefixer": {
-        "browsers": [">1%", "last 4 versions", "Firefox ESR", "not ie < 9"],
-        "flexbox": "no-2009"
-      }
-    }
   },
   "devDependencies": {
     "babel-preset-react-app": "^3.1.0",

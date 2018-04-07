@@ -1,8 +1,11 @@
 //drive-api
 const express = require("express");
 const Router = require("express-promise-router");
-
+const logger = require("logging");
+const config = require("config");
 const model = require("./model.js");
+
+const port = config.get("apis.photos.port");
 
 const app = express();
 const router = new Router();
@@ -46,5 +49,5 @@ async function insert(image) {
   return response.rows[0] !== undefined ? response.rows[0].id : undefined;
 }
 
-app.listen(3000);
-console.log("Listening on localhost:3000");
+app.listen(port);
+logger.info(`Listening on port ${port}`);
