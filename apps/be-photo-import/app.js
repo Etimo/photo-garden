@@ -1,6 +1,12 @@
 const communication = require("communication");
 const logger = require("logging");
+const config = require("config");
 const dbClient = require("db").create("garden");
+const downloader = require("image-downloader");
+const mkdir = require("mkdir-recursive");
+const destPath = config.get("images.path");
+
+mkdir.mkdirSync(destPath);
 
 async function insert(image) {
   const response = await dbClient.query(
@@ -28,6 +34,33 @@ async function addImage(msg, channel) {
   } catch (err) {
     await channel.nack(msg);
     logger.error(`Failed to import image: ${err}, returning to the queue...`);
+  }
+}
+
+async function downloadImage(msg, channel) {
+  try {
+    const image = JSON.parse(msg.content);
+
+    // Create path if not existing
+    const userPath = `${destPath}/${image.user}`;
+    if (!fs.existsSync(userPath)) {
+      fs.mkdirSync(userPath);
+    }
+
+    // Setup filename
+    const filename = `${userPath}/${image.id}.${image.extension}`;
+    const options = {
+      url: image.url,
+      dest: filename
+    };
+
+    // Download file
+    const result = await downloader.image(options);
+    await channel.ack(msg);
+    logger.info(`Downloaded image ${image.id}`);
+  } catch (err) {
+    await channel.nack(msg);
+    logger.error(`Failed to download image: ${err}, returning to the queue...`);
   }
 }
 

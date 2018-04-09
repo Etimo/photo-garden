@@ -9,10 +9,14 @@
     "prettier": "prettier --write \"**/*.{js,json,css,md}\" && git add",
     "update-docker-compose": "node update-docker-compose.js"
   },
-  "pre-commit": ["prettier", "eslint apps/**/*.js libs/**/*.js"],
+  "pre-commit": [
+    "prettier",
+    "eslint --cache --fix \"apps/**/*.js\" \"libs/**/*.js\""
+  ],
   "dependencies": {},
   "devDependencies": {
     "eslint": "^4.19.1",
+    "eslint-plugin-jasmine": "^2.9.3",
     "handlebars": "^4.0.11",
     "husky": "^0.14.3",
     "lint-staged": "^7.0.0",

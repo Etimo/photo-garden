@@ -6,21 +6,13 @@ ARG APP_NAME
 
 # Add repo dependencies to container
 ADD libs libs
-
-# Add app to container
-ADD apps/$APP_NAME apps/$APP_NAME
-
-# Add root npm dependencies
 ADD yarn.lock .
 ADD package.json .
 ADD scripts scripts
-
-# WORKDIR /usr/src/apps/$APP_NAME
-
-# # Yarn install and resolve
-
-# WORKDIR /usr/src
 ADD config.development.json .
+
+# Add app to container
+ADD apps/$APP_NAME apps/$APP_NAME
 
 WORKDIR /usr/src/apps/$APP_NAME
 RUN yarn install --no-progress

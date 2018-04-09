@@ -6,7 +6,8 @@
     "node": true,
     "es6": true
   },
-  "extends": "eslint:recommended",
+  "extends": ["eslint:recommended", "plugin:jasmine/recommended"],
+  "plugins": ["jasmine"],
   "rules": {
     "arrow-parens": 2,
     "arrow-spacing": 2,

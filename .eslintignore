@@ -6,3 +6,4 @@ submodule/**
 logs/
 docs/
 node_modules/
+dist/

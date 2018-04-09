@@ -16,22 +16,13 @@ function filesListCallback(client, err, response, user) {
     getFilesInDrive(client, user, response.nextPageToken);
   }
   const files = response.files;
-  files
-    .filter(util.isValidFile)
-    .map(file => util.normalizePhotoInfo(file, user))
-    .forEach(publishToQueue);
+  files.filter(util.isValidFile).forEach(file => publishToQueue(file, user));
 }
 
-function publishToQueue(item) {
+function publishToQueue(item, user) {
+  const normalized = util.normalizePhotoInfo(item, user);
   // Queue data to db
-  communication.queue.publish("new-photo", item);
-
-  // Queue download of thumbnail
-  communication.queue.publish("new-photo-url", {
-    id: item.id,
-    url: item.thumbnailLink,
-    user: item.user
-  });
+  communication.queue.publish("new-photo", normalized);
 }
 
 function getFilesInDrive(client, user, nextPageToken) {

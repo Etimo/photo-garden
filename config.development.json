@@ -35,5 +35,8 @@
     "photos": {
       "port": 3000
     }
+  },
+  "images": {
+    "path": "./../../images/"
   }
 }
