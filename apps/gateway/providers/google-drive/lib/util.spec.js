@@ -1,6 +1,8 @@
-var chai = require("chai");
-var expect = chai.expect;
-var util = require("./util");
+/* global it, describe, before */
+"use strict";
+const chai = require("chai");
+const expect = chai.expect;
+const util = require("./util");
 
 describe("util", () => {
   before(() => {});

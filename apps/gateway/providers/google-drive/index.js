@@ -1,10 +1,10 @@
-var express = require("express");
+const express = require("express");
 const logger = require("logging");
-var router = express.Router();
-var authController = require("./controllers/authController");
-var subscriptionController = require("./controllers/subscriptionController");
-var config = require("config");
-var util = require("./lib/util");
+const router = express.Router();
+const authController = require("./controllers/authController");
+const subscriptionController = require("./controllers/subscriptionController");
+const config = require("config");
+const util = require("./lib/util");
 
 // Don't start unless config has been set
 if (

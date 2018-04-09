@@ -6,10 +6,10 @@ const config = require("config");
 const host = config.get("queue.host");
 const port = config.get("queue.port");
 
-var connectionString = `amqp://${host}:${port}`;
-var channel = null;
-var timeout = 2000;
-var conn;
+const connectionString = `amqp://${host}:${port}`;
+let channel = null;
+const timeout = 2000;
+let conn;
 
 async function connect() {
   await retry(
@@ -47,7 +47,7 @@ async function onMessage(name, callback) {
   if (channel) {
     logger.info(`Consume messages from ${name}`);
     await channel.assertQueue(name, { durable: false });
-    return channel.consume(name, function(msg) {
+    return channel.consume(name, msg => {
       if (msg !== null) {
         logger.debug(`Message received on ${name}: ${msg.content}`);
         callback(msg, channel);
@@ -79,7 +79,7 @@ async function publishNotification(name, message) {
     }, 1000);
   }
   if (channel) {
-    const exchangeName = `pubsub`;
+    const exchangeName = "pubsub";
     const msg = JSON.stringify(message);
     await channel.assertExchange(exchangeName, "topic", { durable: false });
     logger.debug(`Notify to ${name}: ${msg}`);
@@ -95,13 +95,13 @@ async function onNotification(name, callback) {
     }, 1000);
   }
   if (channel) {
-    const exchangeName = `pubsub`;
+    const exchangeName = "pubsub";
     const queue = await channel.assertQueue("", { exclusive: true });
     await channel.assertExchange(exchangeName, "topic", { durable: false });
     await channel.bindQueue(queue.queue, exchangeName, name);
     return channel.consume(
       queue.queue,
-      function(msg) {
+      msg => {
         if (msg !== null) {
           logger.debug(`Notification received on ${name}:`, msg);
           callback(msg.content, msg.fields);

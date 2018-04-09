@@ -10,17 +10,17 @@ async function main() {
   await queue.publish("Hello", "World");
 
   // Consume queue
-  await queue.consume("Hello", function(msg) {
+  await queue.consume("Hello", msg => {
     logger.info("Message from queue 'Hello': ", JSON.parse(msg.toString()));
     return true;
   });
 
   // Subscribe to events
-  await pubsub.subscribe("event.*", function(msg, fields) {
+  await pubsub.subscribe("event.*", (msg, fields) => {
     logger.info("Notification from event.*: ", JSON.parse(msg), fields);
     return true;
   });
-  await pubsub.subscribe("#", function(msg) {
+  await pubsub.subscribe("#", msg => {
     logger.info("(Catch-all) Notification: ", JSON.parse(msg));
     return true;
   });
