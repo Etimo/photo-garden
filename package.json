@@ -6,12 +6,11 @@
   "homepage": "https://github.com/Etimo/photo-garden#readme",
   "workspaces": ["apps/*", "libs/*"],
   "scripts": {
-    "prettier": "prettier --write \"**/*.{js,json,css,md}\" && git add",
+    "prettier": "prettier --write \"**/*.{js,json,css,md}\"",
     "update-docker-compose": "node update-docker-compose.js"
   },
   "pre-commit": [
-    "prettier",
-    "eslint --cache --fix \"apps/**/*.js\" \"libs/**/*.js\""
+    "prettier"
   ],
   "dependencies": {},
   "devDependencies": {
