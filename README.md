@@ -8,8 +8,8 @@ An easy way for anyone to get an overview of a large amount of photos from diffe
 
 To be able to run everything you need to have the following settings configurerd in your environment:
 
-* PHOTO_GARDEN_PROVIDERS_GOOGLE_DRIVE_CLIENT_ID - The id of your client registered in Google API Console.
-* PHOTO_GARDEN_PROVIDERS_GOOGLE_DRIVE_CLIENT_SECRET - The secret of your same client as above.
+* `PHOTO_GARDEN_PROVIDERS_GOOGLE_DRIVE_CLIENT_ID` - The id of your client registered in Google API Console.
+* `PHOTO_GARDEN_PROVIDERS_GOOGLE_DRIVE_CLIENT_SECRET` - The secret of your same client as above.
 
 The application will refuse to start if the above parameters have not been set.
 
@@ -20,6 +20,8 @@ docker-compose up --build
 ```
 
 When the command is done you can open `http://localhost:3000` in your favorite browser.
+
+The photo gui is available at `http://localhost:3001`.
 
 ## Providers
 

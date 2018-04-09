@@ -23,7 +23,15 @@ function filesListCallback(client, err, response, user) {
 }
 
 function publishToQueue(item) {
+  // Queue data to db
   communication.queue.publish("new-photo", item);
+
+  // Queue download of thumbnail
+  communication.queue.publish("new-photo-url", {
+    id: item.id,
+    url: item.thumbnailLink,
+    user: item.user
+  });
 }
 
 function getFilesInDrive(client, user, nextPageToken) {

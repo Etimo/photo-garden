@@ -1,7 +1,8 @@
 version: "2.1"
 services:
+  # Other services
   db-migrations:
-    build: db-migrations
+    build: services/db-migrations
     command: ./setup-photo-garden.sh
     depends_on:
       - db
@@ -15,10 +16,11 @@ services:
       - "5672"
 
   db:
-    build: db
+    build: services/db
     ports:
       - "5432:5432"
 
+  # Apps
   gateway:
     extends:
       file: common-service.yml
@@ -70,8 +72,6 @@ services:
       args:
         APP_NAME: api-photos
     depends_on:
-      - queue
       - db
     links:
-      - queue
       - db

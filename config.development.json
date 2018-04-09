@@ -3,12 +3,21 @@
     "host": "queue",
     "port": 5672
   },
-  "db": {
-    "host": "db",
-    "port": 5432,
-    "user": "the_gardener",
-    "password": "mysecretpassword",
-    "database": "photo_garden"
+  "databases": {
+    "garden": {
+      "host": "db",
+      "port": 5432,
+      "user": "the_gardener",
+      "password": "mysecretpassword",
+      "database": "photo_garden"
+    },
+    "unleash": {
+      "host": "db",
+      "port": 5432,
+      "user": "unleash",
+      "password": "mysecretpassword",
+      "database": "unleash"
+    }
   },
   "gateway": {
     "port": 3000,

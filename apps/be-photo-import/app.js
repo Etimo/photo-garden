@@ -1,6 +1,6 @@
 const communication = require("communication");
 const logger = require("logging");
-const dbClient = require("db").create();
+const dbClient = require("db").create("garden");
 
 async function insert(image) {
   const response = await dbClient.query(

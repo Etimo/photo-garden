@@ -1,7 +1,7 @@
 const config = require("config");
 const logger = require("logging");
 
-const dbClient = require("db").create();
+const dbClient = require("db").create("garden");
 
 async function attachIdentity(provider, providerIdentity) {
   // FIXME: Ask for username?

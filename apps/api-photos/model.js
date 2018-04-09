@@ -1,4 +1,4 @@
-const dbClient = require("db").create();
+const dbClient = require("db").create("garden");
 dbClient.connect();
 
 async function findAll(filters) {
