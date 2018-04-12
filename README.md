@@ -69,10 +69,10 @@ This is done using the npm module `pre-commit`. The module runs the commands spe
 
 Libs are common dependencies that can be shared and used by all apps. They are implemented as npm modules to allow yarn to install them from other package.json files. No need to publish them to be able to install them in dev.
 
-* config - [libs/config/README.md](README)
-* logging - [libs/logging/README.md](README)
-* communication - [libs/communication/README.md](README)
-* db - [libs/db/README.md](README)
+* config - [README](libs/config/README.md)
+* logging - [README](libs/logging/README.md)
+* communication - [README](libs/communication/README.md)
+* db - [README](libs/db/README.md)
 
 # Apps
 
