@@ -1,0 +1,23 @@
+{
+  "name": "api-photos",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "start:dev": "nodemon app.js",
+    "start:debug": "node --inspect app.js",
+    "start:prod": "node app.js"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "config": "^1.0.0",
+    "db": "^1.0.0",
+    "logging": "^1.0.0",
+    "express": "^4.16.2",
+    "express-promise-router": "^3.0.1",
+    "request": "^2.83.0"
+  },
+  "devDependencies": {
+    "nodemon": "^1.17.3"
+  }
+}

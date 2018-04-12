@@ -1,0 +1,19 @@
+FROM node:9.3-alpine
+
+WORKDIR /usr/src
+
+ARG APP_NAME
+
+# Add repo dependencies to container
+COPY libs libs
+COPY yarn.lock .
+COPY package.json .
+COPY scripts scripts
+COPY config.development.json .
+
+COPY apps/$APP_NAME/package.json apps/$APP_NAME/package.json
+
+WORKDIR /usr/src/apps/$APP_NAME
+RUN yarn install --no-progress
+
+COPY apps/$APP_NAME apps/$APP_NAME

@@ -1,0 +1,21 @@
+{
+  "name": "be-photo-import",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "start:dev": "nodemon app.js",
+    "start:debug": "node --inspect app.js",
+    "start:prod": "node app.js"
+  },
+  "dependencies": {
+    "communication": "^1.0.0",
+    "config": "^1.0.0",
+    "db": "^1.0.0",
+    "image-downloader": "^3.3.0",
+    "mkdir-recursive": "^0.4.0"
+  },
+  "devDependencies": {
+    "nodemon": "^1.17.3"
+  }
+}

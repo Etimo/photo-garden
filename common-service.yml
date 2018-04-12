@@ -1,0 +1,12 @@
+version: "2.1"
+services:
+  base-service:
+    build:
+      context: .
+      dockerfile: Dockerfile.service.development
+    entrypoint:
+      - sh
+      - /usr/src/scripts/wait_and_run.sh
+    volumes:
+      - ./apps:/usr/src/apps
+      - ./libs:/usr/src/libs

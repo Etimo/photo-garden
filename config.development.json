@@ -1,0 +1,42 @@
+{
+  "queue": {
+    "host": "queue",
+    "port": 5672
+  },
+  "databases": {
+    "garden": {
+      "host": "db",
+      "port": 5432,
+      "user": "the_gardener",
+      "password": "mysecretpassword",
+      "database": "photo_garden"
+    },
+    "unleash": {
+      "host": "db",
+      "port": 5432,
+      "user": "unleash",
+      "password": "mysecretpassword",
+      "database": "unleash"
+    }
+  },
+  "gateway": {
+    "port": 3000,
+    "secret": "ThisIsNotSecret",
+    "cookieName": "gardenSession"
+  },
+  "providers": {
+    "googleDrive": {
+      "validPhotos": ["image/jpeg"],
+      "clientRedirectUri": "http://localhost:3000/google-drive/auth/finish",
+      "scopes": ["https://www.googleapis.com/auth/drive.readonly", "email"]
+    }
+  },
+  "apis": {
+    "photos": {
+      "port": 3000
+    }
+  },
+  "images": {
+    "path": "./../../images/"
+  }
+}

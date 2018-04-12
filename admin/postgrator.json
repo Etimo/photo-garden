@@ -1,9 +1,0 @@
-{
-    "migrationDirectory": "migrations",
-    "driver": "pg",
-    "host": "db",
-    "port": 5432,
-    "database": "photo_garden",
-    "username": "the_gardener",
-    "password": ""
-}
