@@ -59,7 +59,7 @@ The following services will be exposed to your machine when docker compose is ru
 
 # Linting and formatting
 
-Prettier is now applied automatically to all commits to make code styling more common. Also removes the need to care about formatting your code. Formatting is applied to *.{js,json,md,css} files when doing a `git commit`.
+Prettier is now applied automatically to all commits to make code styling more common. Also removes the need to care about formatting your code. Formatting is applied to \*.{js,json,md,css} files when doing a `git commit`.
 
 Will probably add automatic eslinting as well.
 
@@ -103,22 +103,22 @@ const comm = require("communication");
 comm.queue.publish("QueueName", "Hello world");
 // Listen to and consume queue "QueueName"
 comm.queue.consume("QueueName", (msg, channel) => {
-    logger.info(msg.content);
-    channel.ack(msg);
+  logger.info(msg.content);
+  channel.ack(msg);
 });
 // Listen to notifications using pubsub
 comm.pubsub.subscribe("user.created", (content, field) => {
-    logger.info(content);
+  logger.info(content);
 });
 // Publish a notification using pubsub
 comm.pubsub.publish("user.created", "Daniel");
 
 // Pubsub can also use patterns to listen for a group of events
 comm.pubsub.subscribe("user.*", (content, field) => {
-    logger.info(content);
+  logger.info(content);
 });
-comm.pubsub.publish("user.created", "Daniel");  // Will fire the user.* listener
-comm.pubsub.publish("user.deleted", "Daniel");  // Will fire the user.* listener
+comm.pubsub.publish("user.created", "Daniel"); // Will fire the user.* listener
+comm.pubsub.publish("user.deleted", "Daniel"); // Will fire the user.* listener
 ```
 
 ## db
@@ -169,5 +169,3 @@ Automatic migration handling for db using sql migration files. Just add a new mi
 
 * Deployment not fixed yet
 * Refactor unleash to an app
-
-
