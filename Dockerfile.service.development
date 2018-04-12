@@ -5,14 +5,15 @@ WORKDIR /usr/src
 ARG APP_NAME
 
 # Add repo dependencies to container
-ADD libs libs
-ADD yarn.lock .
-ADD package.json .
-ADD scripts scripts
-ADD config.development.json .
+COPY libs libs
+COPY yarn.lock .
+COPY package.json .
+COPY scripts scripts
+COPY config.development.json .
 
-# Add app to container
-ADD apps/$APP_NAME apps/$APP_NAME
+COPY apps/$APP_NAME/package.json apps/$APP_NAME/package.json
 
 WORKDIR /usr/src/apps/$APP_NAME
 RUN yarn install --no-progress
+
+COPY apps/$APP_NAME apps/$APP_NAME

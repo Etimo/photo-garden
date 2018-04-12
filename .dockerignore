@@ -1,4 +1,9 @@
 node_modules
+**/node_modules/*
 .cache
 .git
 *.md
+services/
+docs/
+unleash-docker-etimo/
+.vscode/
