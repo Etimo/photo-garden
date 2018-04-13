@@ -10,10 +10,9 @@ mkdir.mkdirSync(destPath);
 
 async function insert(image) {
   const response = await dbClient.query(
-    "INSERT INTO photos(owner, url, mime_type, provider, provider_id, original) VALUES($1, $2, $3, $4, $5, $6) ON CONFLICT ON CONSTRAINT provider_id_unique DO NOTHING RETURNING id",
+    "INSERT INTO photos(owner, mime_type, provider, provider_id, original) VALUES($1, $2, $3, $4, $5) ON CONFLICT ON CONSTRAINT provider_id_unique DO NOTHING RETURNING id",
     [
       image.owner,
-      image.url,
       image.mimeType,
       image.provider,
       image.providerId,
@@ -37,31 +36,4 @@ async function addImage(msg, channel) {
   }
 }
 
-async function downloadImage(msg, channel) {
-  try {
-    const image = JSON.parse(msg.content);
-
-    // Create path if not existing
-    const userPath = `${destPath}/${image.user}`;
-    if (!fs.existsSync(userPath)) {
-      fs.mkdirSync(userPath);
-    }
-
-    // Setup filename
-    const filename = `${userPath}/${image.id}.${image.extension}`;
-    const options = {
-      url: image.url,
-      dest: filename
-    };
-
-    // Download file
-    const result = await downloader.image(options);
-    await channel.ack(msg);
-    logger.info(`Downloaded image ${image.id}`);
-  } catch (err) {
-    await channel.nack(msg);
-    logger.error(`Failed to download image: ${err}, returning to the queue...`);
-  }
-}
-
-communication.queue.consume("new-photo", addImage);
+communication.queue.consume("new-photo-store-metadata", addImage);

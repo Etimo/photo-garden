@@ -54,6 +54,20 @@ services:
       - queue
       - db
 
+  be-download-photo-google-drive:
+    extends:
+      file: common-service.yml
+      service: base-service
+    build:
+      args:
+        APP_NAME: be-download-photo-google-drive
+    depends_on:
+      - queue
+      - db
+    links:
+      - queue
+      - db
+
   web-frontend:
     extends:
       file: common-service.yml

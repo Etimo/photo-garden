@@ -22,7 +22,8 @@ function filesListCallback(client, err, response, user) {
 function publishToQueue(item, user) {
   const normalized = util.normalizePhotoInfo(item, user);
   // Queue data to db
-  communication.queue.publish("new-photo", normalized);
+  communication.queue.publish("new-photo-store-metadata", normalized);
+  communication.queue.publish("new-photo-download-google-drive", item);
 }
 
 function getFilesInDrive(client, user, nextPageToken) {
