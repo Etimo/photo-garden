@@ -49,14 +49,16 @@ app.get("/logout", (req, res) => {
 app.get("/user", (req, res) => {
   res.header("Access-Control-Allow-Origin", "http://localhost:3001");
   res.header("Access-Control-Allow-Credentials", "true");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
+  );
 
   if (req.gardenSession.userIdentity) {
     const resp = JSON.stringify({ user: req.gardenSession.userIdentity });
     res.json({ user: req.gardenSession.userIdentity });
   } else {
-    res.send(401, 'You are not logged in');
-
+    res.send(401, "You are not logged in");
   }
 });
 
