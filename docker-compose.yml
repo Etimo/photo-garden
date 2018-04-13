@@ -75,3 +75,5 @@ services:
       - db
     links:
       - db
+    ports:
+      - "3002:3000"
