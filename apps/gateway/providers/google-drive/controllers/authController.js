@@ -36,9 +36,10 @@ function finishAuth(client, req, res) {
                 client,
                 req.gardenSession.userIdentity
               );
-              res.send(
-                "Successfully authorized. Your files will be fetched on the server, check output"
-              );
+              res.redirect('http://localhost:3001');
+              // res.send(
+              //   "Successfully authorized. Your files will be fetched on the server, check output"
+              // );
             }
           }
         );

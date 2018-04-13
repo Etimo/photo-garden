@@ -18,6 +18,8 @@ router.get("/photos", async (req, res) => {
   const images = await model.findAll({
     owner: viewerId
   });
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   res.send(images);
 });
 
