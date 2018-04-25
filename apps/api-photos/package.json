@@ -4,7 +4,7 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "start:dev": "nodemon app.js",
+    "start:dev": "nodemon --watch ../../libs --watch . app.js",
     "start:debug": "node --inspect app.js",
     "start:prod": "node app.js"
   },

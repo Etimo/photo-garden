@@ -10,8 +10,9 @@ mkdir.mkdirSync(destPath);
 
 async function insert(image) {
   const response = await dbClient.query(
-    "INSERT INTO photos(owner, mime_type, provider, provider_id, original) VALUES($1, $2, $3, $4, $5) ON CONFLICT ON CONSTRAINT provider_id_unique DO NOTHING RETURNING id",
+    "INSERT INTO photos(owner, url, mime_type, provider, provider_id, original) VALUES($1, $2, $3, $4, $5, $6) ON CONFLICT ON CONSTRAINT provider_id_unique DO NOTHING RETURNING id",
     [
+      image.url,
       image.owner,
       image.mimeType,
       image.provider,
@@ -22,18 +23,23 @@ async function insert(image) {
   return response.rows[0] !== undefined ? response.rows[0].id : undefined;
 }
 
-async function addImage(msg, channel) {
+async function addImage(msg) {
   try {
-    const image = JSON.parse(msg.content);
+    const image = JSON.parse(msg.data);
     const id = await insert(image);
-    await channel.ack(msg);
+    // await channel.ack(msg);
     if (id !== undefined) {
       logger.info(`Imported image for user ${image.owner} as ${id}`);
     }
   } catch (err) {
-    await channel.nack(msg);
+    // await channel.nack(msg);
     logger.error(`Failed to import image: ${err}, returning to the queue...`);
   }
 }
 
-communication.queue.consume("new-photo-store-metadata", addImage);
+const options = {
+  channel: "user-photo--normalized",
+  durableName: "user-photo--persister",
+  clientId: "user-photo--persister"
+};
+communication.subscribe(options, addImage);

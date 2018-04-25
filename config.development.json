@@ -1,7 +1,7 @@
 {
   "queue": {
     "host": "queue",
-    "port": 5672
+    "port": 4222
   },
   "databases": {
     "garden": {
@@ -33,7 +33,7 @@
   },
   "apis": {
     "photos": {
-      "port": 3000
+      "port": 3001
     }
   },
   "images": {

@@ -11,5 +11,5 @@ function wait_for {
 }
 
 wait_for db 5432
-wait_for queue 5672
+wait_for queue 4222
 yarn run start:dev

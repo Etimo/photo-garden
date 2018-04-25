@@ -8,37 +8,34 @@ const destPath = config.get("images.path");
 
 mkdir.mkdirSync(destPath);
 
-async function downloadImage(msg, channel) {
+async function downloadImage(msg) {
   try {
     // TODO: We might need to add support for images that have expired
-
-    const metadata = JSON.parse(msg.content);
+    const metadata = JSON.parse(msg.data);
+    const photo = metadata.photo;
+    const user = metadata.user;
     const options = {
-      url: metadata.thumbnailLink,
-      dest: `${destPath}/${metadata.id}.${metadata.fileExtension}`
+      url: photo.thumbnailLink,
+      dest: `${destPath}/${photo.id}.${photo.fileExtension}`
     };
 
     const { filename, image } = await imageDownloader.image(options);
-    // TODO: Check logged and remove logging
-    logger.info(image);
 
     const messageContentOut = {
-      id: metadata.id,
-      extension: metadata.fileExtension
+      id: photo.id,
+      extension: photo.fileExtension
     };
 
-    logger.info(messageContentOut);
-    logger.info(metadata);
-
-    communication.queue.publish(
-      "photo-downloaded-update-db",
-      messageContentOut
-    );
-    channel.ack(msg);
+    communication.publish("user-photo--downloaded", messageContentOut);
   } catch (err) {
-    await channel.nack(msg);
+    // await channel.nack(msg);
     logger.error(`Failed to download image: ${err}, returning to the queue...`);
   }
 }
 
-communication.queue.consume("new-photo-download-google-drive", downloadImage);
+const options = {
+  channel: "user-photo--google-drive--received",
+  durableName: "google-drive-downloader",
+  clientId: "google-drive-downloader"
+};
+communication.subscribe(options, downloadImage);

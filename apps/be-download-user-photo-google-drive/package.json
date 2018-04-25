@@ -1,5 +1,5 @@
 {
-  "name": "be-photo-import",
+  "name": "be-download-user-photo-google-drive",
   "version": "1.0.0",
   "description": "",
   "main": "app.js",

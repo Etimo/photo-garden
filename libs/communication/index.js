@@ -2,138 +2,149 @@ const amqp = require("amqplib");
 const retry = require("async-retry");
 const logger = require("logging");
 const config = require("config");
+const stan = require("node-nats-streaming");
+const uuid = require("uuid/v1");
 
 const host = config.get("queue.host");
 const port = config.get("queue.port");
 
-const connectionString = `amqp://${host}:${port}`;
+const connectionString = `nats://${host}:${port}`;
 let channel = null;
 const timeout = 2000;
+let connecting = false;
+let connected = false;
 let conn;
 
-async function connect() {
-  await retry(
-    async (bail, attempt) => {
-      logger.info(
-        `Connecting to rmq at ${connectionString} (attempt ${attempt})...`
-      );
-      conn = await amqp.connect(connectionString);
-      channel = await conn.createChannel();
-      logger.info("Connected to rmq!");
-      return conn;
-    },
-    {
-      minTimeout: 2000,
-      retries: 10,
-      onRetry: err => {
-        logger.warn("Unable to connect to rmq, retrying...");
-      }
-    }
-  );
+function generateRandomId() {
+  return `client-${uuid()}`;
 }
 
-/**
- * @param name {string} The name of the queue to consume.
- * @param callback {Function} A callback function to invoke for each received message.
- * @return {[type]}
- */
-async function onMessage(name, callback) {
-  if (!channel) {
-    // Defer publish
-    setTimeout(_ => {
-      onMessage(name, callback);
-    }, 1000);
+function connect(clusterName, clientId) {
+  connecting = true;
+  clusterName = clusterName || "test-cluster";
+  if (!clientId) {
+    throw new Error("Missing client id for nats connection");
   }
-  if (channel) {
-    logger.info(`Consume messages from ${name}`);
-    await channel.assertQueue(name, { durable: false });
-    return channel.consume(name, msg => {
-      if (msg !== null) {
-        logger.debug(`Message received on ${name}: ${msg.content}`);
-        callback(msg, channel);
-      }
+  logger.info(`Connecting to nats on ${connectionString}`);
+  conn = stan.connect(clusterName, clientId, {
+    maxReconnectAttempts: -1,
+    url: connectionString,
+    waitOnFirstConnect: true
+  });
+  conn.on("connect", () => {
+    logger.info("Connected to nats");
+    conn.on("close", function() {
+      process.exit();
     });
+    connected = true;
+  });
+  conn.on("error", err => {
+    logger.error("Nats connection error", err);
+  });
+  conn.on("disconnect", () => {
+    logger.error("Nats disconnected");
+  });
+}
+
+function connectionPromiseCallback(resolve, reject) {
+  if (!connected) {
+    setTimeout(_ => {
+      connectionPromiseCallback(resolve, reject);
+    }, 1000);
+  } else {
+    process.on("SIGINT", () => {
+      logger.info("SIGINT captured, disconnecting from nats");
+      conn.close();
+    });
+    resolve();
   }
 }
 
-async function publishMessage(name, message) {
-  if (!channel) {
-    // Defer publish
-    setTimeout(_ => {
-      publishMessage(name, message);
-    }, 1000);
-  }
-  if (channel) {
-    const msg = JSON.stringify(message);
-    logger.debug(`Publish message to ${name}: ${msg}`);
-    await channel.assertQueue(name, { durable: false });
-    return channel.sendToQueue(name, new Buffer(msg));
+const waitForConnection = new Promise(connectionPromiseCallback);
+
+const waitForReadyConnection = new Promise((resolve, reject) => {
+  logger.debug("Waiting for connection to nats");
+  waitForConnection.then(_ => {
+    resolve();
+  });
+});
+
+function setDeliveryType(natsOptions, sequence) {
+  if (typeof sequence === "number") {
+    // Explicit sequence
+    natsOptions.setStartAtSequence(sequence);
+  } else if (typeof sequence === "string") {
+    switch (sequence) {
+      case "earliest":
+        natsOptions.setDeliverAllAvailable();
+        break;
+      default:
+        natsOptions.setStartWithLastReceived();
+        break;
+    }
   }
 }
 
-async function publishNotification(name, message) {
-  if (!channel) {
-    // Defer publish
-    setTimeout(_ => {
-      publishNotification(name, message);
-    }, 1000);
-  }
-  if (channel) {
-    const exchangeName = "pubsub";
-    const msg = JSON.stringify(message);
-    await channel.assertExchange(exchangeName, "topic", { durable: false });
-    logger.debug(`Notify to ${name}: ${msg}`);
-    return channel.publish(exchangeName, name, new Buffer(msg));
+function connectIfNeeded(options) {
+  if (!conn && !connecting) {
+    connect(options.clusterName, options.clientId);
   }
 }
 
-async function onNotification(name, callback) {
-  if (!channel) {
-    // Defer publish
-    setTimeout(_ => {
-      onNotification(name, callback);
-    }, 1000);
-  }
-  if (channel) {
-    const exchangeName = "pubsub";
-    const queue = await channel.assertQueue("", { exclusive: true });
-    await channel.assertExchange(exchangeName, "topic", { durable: false });
-    await channel.bindQueue(queue.queue, exchangeName, name);
-    return channel.consume(
-      queue.queue,
-      msg => {
-        if (msg !== null) {
-          logger.debug(`Notification received on ${name}:`, msg);
-          callback(msg.content, msg.fields);
-        }
-      },
-      { noAck: true }
+function subscribe(options, callback) {
+  connectIfNeeded(options);
+  waitForReadyConnection.then(_ => {
+    logger.info(`Setup subscription to ${options.channel}`);
+    const opts = conn.subscriptionOptions();
+    setDeliveryType(opts, options.sequence);
+    if (options.hasOwnProperty("durableName")) {
+      opts.setDeliverAllAvailable();
+      opts.setDurableName(options.durableName);
+    }
+
+    const subscription = conn.subscribe(
+      options.channel,
+      options.queueGroup,
+      opts
     );
+    subscription.on("message", msg => {
+      logger.debug(
+        `Received message ${msg.getSequence()} on ${options.channel}`
+      );
+      callback({
+        sequence: msg.getSequence(),
+        data: msg.getData(),
+        timestamp: msg.getTimestamp()
+      });
+    });
+  });
+}
+
+function publish(optionsOrChannel, message) {
+  if (typeof optionsOrChannel !== "string") {
+    connectIfNeeded(optionsOrChannel);
   }
+  waitForReadyConnection.then(_ => {
+    const channel =
+      typeof optionsOrChannel === "string"
+        ? optionsOrChannel
+        : optionsOrChannel.channel;
+    logger.debug(`Publishing message to ${channel}`);
+    conn.publish(channel, JSON.stringify(message), function(err, guid) {
+      // if(err) {
+      //   console.log('publish failed: ' + err);
+      // } else {
+      //   console.log('published message with guid: ' + guid);
+      // }
+    });
+  });
 }
 
-/**
- * Close the open connection.
- * @return null
- */
-async function close() {
-  return await conn.close();
-}
-
-connect();
-
-const pubsub = {
-  publish: publishNotification,
-  subscribe: onNotification
-};
-
-const queue = {
-  publish: publishMessage,
-  consume: onMessage
-};
+function close() {}
 
 module.exports = {
-  pubsub,
-  queue,
+  connect: connectIfNeeded,
+  publish,
+  subscribe,
   close
 };

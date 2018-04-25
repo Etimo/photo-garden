@@ -1,6 +1,8 @@
 const logger = require("logging");
 const config = require("config");
 const users = require("provider-user");
+const providerTokens = require("provider-google-drive-tokens");
+const dbClient = require("db").create("garden");
 
 const util = require("../lib/util");
 const filesWorker = require("../workers/files");
@@ -17,21 +19,27 @@ function finishAuth(client, req, res) {
       res.redirect("/error");
     } else {
       // Verify id token
-      logger.info("CLIENTELE: ", client);
+      logger.info("CLIENTELE: " + client);
       const key = tokens.id_token; //req.body.idToken;
       client.verifyIdToken(key, client._clientId, (e, login) => {
         logger.info("Parametrize me baby: ", e, login);
         const payload = login.getPayload();
+        logger.info(payload);
         getUserIdentity(payload.email_verified, payload.email, req, res).then(
           success => {
             res.status = success ? 200 : 401;
             if (res.status === 401) {
-              res.send("Sod off");
+              logger.warn("Not authorized");
+              res.send("Sod off2");
             } else {
               // Create cookie
-              logger.info(tokens);
+              logger.info("Tokens", tokens);
               // Start async work
               client.credentials = tokens;
+              providerTokens.updateTokens(
+                req.gardenSession.userIdentity,
+                tokens
+              );
               filesWorker.getFilesInDrive(
                 client,
                 req.gardenSession.userIdentity

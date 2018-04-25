@@ -10,6 +10,10 @@
     "amqplib": "^0.5.2",
     "async-retry": "^1.2.1",
     "config": "1.0.0",
-    "logging": "^1.0.0"
+    "kafka-node": "^2.5.0",
+    "logging": "^1.0.0",
+    "no-kafka": "^3.2.9",
+    "node-nats-streaming": "^0.0.28",
+    "uuid": "^3.2.1"
   }
 }

@@ -48,13 +48,14 @@ Docker can now be used to run a full dev environment. Just run:
 docker-compose up --build
 ```
 
-This will setup all apps in their own container using a same base image defined in `common-service.yml`. This is to prevent differences between apps. This will also setup a database, initial schema and run all needed migrations (depending on the state of your db). Read more about db and migrations further down.
+All apps are run in the same container using [pm2](https://pm2.keymetrics.io). This will also setup a database, initial schema and run all needed migrations (depending on the state of your db). Read more about db and migrations further down.
 
 The following services will be exposed to your machine when docker compose is running:
 
 * http://localhost:3000 - The gateway app
 * http://localhost:3001 - The photo app frontend (web-frontend)
-* http://localhost:15672 - Rabbitmq console GUI
+* `localhost:4222` - Nats streaming server
+* `localhost:8222` - Nats streaming server monitoring
 * `localhost:5432` - Postgres db. Exposed on your machine to allow easy inspection.
 
 # Linting and formatting
@@ -69,6 +70,7 @@ This is done using the npm module `pre-commit`. The module runs the commands spe
 
 Libs are common dependencies that can be shared and used by all apps. They are implemented as npm modules to allow yarn to install them from other package.json files. No need to publish them to be able to install them in dev.
 
+* app-name - [README](libs/app-name/README.md)
 * config - [README](libs/config/README.md)
 * logging - [README](libs/logging/README.md)
 * communication - [README](libs/communication/README.md)
@@ -85,6 +87,14 @@ To include the app in the docker setup you must also add a section in the `docke
 ## api-photos
 
 The photos rest api like we had before but with queue handling broken out into another app.
+
+## be-download-user-photo-google-drive
+
+A backend app that downloads all images imported from Google Drive.
+
+## be-normalize-user-photo-google-drive
+
+A backend app that normalizes all images from Google Drive before importing them to the db.
 
 ## be-photo-import
 
@@ -109,6 +119,55 @@ Postgres docker container with initial sql schema.
 ## db-migrations
 
 Automatic migration handling for db using sql migration files. Just add a new migration file here using the specified format and recreate your docker container to have the migration applied.
+
+# Current queues
+
+These are the current queues available:
+
+## user-photo--google-drive--received
+
+All images imported from Google Drive are published to this queue with the following format:
+
+```
+{
+  "user": string,
+  "photo": GoogleDrivePhotoResource
+}
+```
+
+[GoogleDrivePhotoResource](https://developers.google.com/drive/v3/reference/files#resource)
+
+## user-photo--downloaded
+
+All photos that have been downloaded are published to this queue to indicate that further handling of the file is now possible.
+
+Message format:
+
+```
+{
+  "id": string,
+  "extension": string
+}
+```
+
+## user-photo--normalized
+
+All photos that have been normalized will be published to this queue.
+
+Message format:
+
+```
+{
+  "owner": string,  // user guid
+  "url": string,
+  "mimeType": string,
+  "provider": string,  // E.g. "Google" for google drive
+  "providerId": string,
+  "original": Object
+}
+```
+
+`original` is the same structure as the raw item from the provider, e.g. GoogleDrivePhotoResource if imported from Google Drive.
 
 # Todo
 

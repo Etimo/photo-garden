@@ -6,6 +6,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "app-name": "^1.0.0",
     "moment": "^2.21.0",
     "winston": "^2.4.1",
     "winston-logzio": "^1.0.6",

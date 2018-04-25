@@ -1,6 +1,7 @@
 const express = require("express");
 const logger = require("logging");
 const config = require("config");
+const communication = require("communication");
 
 const app = express();
 const port = config.get("providers.port") | 3000;
@@ -18,5 +19,9 @@ if (!module.parent) {
   app.listen(port);
   logger.info("Listening on port", port);
 }
+
+communication.connect({
+  clientId: "gateway"
+});
 
 module.exports = app;

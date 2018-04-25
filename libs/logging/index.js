@@ -1,10 +1,7 @@
 const winston = require("winston");
 const logzioWinstonTransport = require("winston-logzio");
 const moment = require("moment");
-const path = require("path");
-
-const argvs = process.argv[1].split(path.sep);
-const appName = argvs[argvs.length - 2];
+const appName = require("app-name");
 
 const config = winston.config;
 const loggerOptions = {

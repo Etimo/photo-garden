@@ -7,7 +7,7 @@
   "workspaces": ["apps/*", "libs/*"],
   "scripts": {
     "prettier": "prettier --write \"**/*.{js,json,css,md}\"",
-    "update-docker-compose": "node update-docker-compose.js"
+    "pm2": "docker exec -ti photogarden_services_1 pm2"
   },
   "pre-commit": ["prettier"],
   "dependencies": {},

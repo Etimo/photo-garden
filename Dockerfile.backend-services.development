@@ -1,19 +1,17 @@
-FROM node:9.3-alpine
+FROM keymetrics/pm2:latest-alpine
 
 WORKDIR /usr/src
 
-ARG APP_NAME
-
 # Add repo dependencies to container
-COPY libs libs
 COPY yarn.lock .
 COPY package.json .
 COPY scripts scripts
 COPY config.development.json .
 
-COPY apps/$APP_NAME/package.json apps/$APP_NAME/package.json
+COPY libs libs
+COPY apps apps
 
-WORKDIR /usr/src/apps/$APP_NAME
+WORKDIR /usr/src/apps
 RUN yarn install --no-progress
 
-COPY apps/$APP_NAME apps/$APP_NAME
+CMD ["pm2-runtime", "start", "ecosystem.config.js"]

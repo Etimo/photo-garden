@@ -5,6 +5,7 @@
   "main": "app.js",
   "scripts": {
     "start:dev": "nodemon --watch ../../libs --watch . app.js",
+    "start:dev2": "nodemon --watch ../../libs --watch . app.js",
     "start:debug": "node --inspect app.js",
     "start:prod": "node app.js",
     "test":
@@ -21,6 +22,7 @@
     "google-auth-library": "^0.12.0",
     "googleapis": "^23.0.0",
     "provider-user": "^1.0.0",
+    "provider-google-drive-tokens": "^1.0.0",
     "request": "^2.83.0",
     "rhea": "^0.2.9",
     "stomp-client": "^0.9.0",
