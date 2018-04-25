@@ -58,6 +58,14 @@ The following services will be exposed to your machine when docker compose is ru
 * `localhost:8222` - Nats streaming server monitoring
 * `localhost:5432` - Postgres db. Exposed on your machine to allow easy inspection.
 
+## Reset db and queue
+
+If you want to reset the db (to run new migrations) and queue (to clear saved state) you can run:
+
+```
+docker-compose down
+```
+
 # Linting and formatting
 
 Prettier is now applied automatically to all commits to make code styling more common. Also removes the need to care about formatting your code. Formatting is applied to \*.{js,json,md,css} files when doing a `git commit`.
