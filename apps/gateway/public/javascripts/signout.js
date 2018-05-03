@@ -4,4 +4,4 @@ function signOut() {
     console.log("Google user signed out.");
     window.location = "/";
   });
-}
+} 

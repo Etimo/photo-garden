@@ -12,6 +12,6 @@ COPY libs libs
 COPY apps apps
 
 WORKDIR /usr/src/apps
-RUN yarn install --no-progress
+RUN yarn install --no-progress --ignore-engines
 
 CMD ["pm2-runtime", "start", "ecosystem.config.js"]

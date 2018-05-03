@@ -31,7 +31,6 @@ class ConnectedMain extends React.Component {
     GardenService();
   }
   photoClosed() {
-    console.log('heej');
     this.props.photoClosed();
   }
   render() {

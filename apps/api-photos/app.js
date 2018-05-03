@@ -14,7 +14,6 @@ app.use(router);
 
 router.get("/photos", async (req, res) => {
   const viewerId = req.query.user_id;
-
   const images = await model.findAll({
     owner: viewerId
   });
