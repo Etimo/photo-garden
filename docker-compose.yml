@@ -40,6 +40,13 @@ services:
     ports:
       - "3000:3000"
 
+  photo-server:
+    build: services/photo-server
+    volumes:
+      - photo-storage:/usr/share/nginx/html/
+    ports:
+      - "3010:80"
+
   be-photo-import:
     extends:
       file: common-service.yml
@@ -61,6 +68,8 @@ services:
     build:
       args:
         APP_NAME: be-download-user-photo-google-drive
+    volumes:
+      - photo-storage:/usr/src/photos
     depends_on:
       - queue
     links:
@@ -101,3 +110,6 @@ services:
         APP_NAME: web-frontend
     ports:
       - "3001:1234"
+
+volumes:
+  photo-storage:

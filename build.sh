@@ -5,7 +5,11 @@ pip install --user awscli
 export PATH=${PATH}:${HOME}/.local/bin
 eval $(aws ecr get-login --no-include-email --region eu-west-1)
 
-docker pull ${GATEWAY_API_REMOTE_IMAGE_URL}
+for app in $(ls apps); do
+  echo "Found app: $app"
+  REMOTE_URL=${ECR_BASE}$app
+  docker pull $REMOTE_URL
 
-cd ${TRAVIS_BUILD_DIR}/apis/gateway
-docker build --cache-from ${GATEWAY_REMOTE_IMAGE_URL}:latest -t photo-garden-gateway-api . 
+  cd ${TRAVIS_BUILD_DIR}/apps/$app
+  docker build --cache-from $REMOTE_URL:latest -t photo-garden-$app .
+done

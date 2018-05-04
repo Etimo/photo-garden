@@ -37,6 +37,6 @@
     }
   },
   "images": {
-    "path": "./../../images/"
+    "path": "/usr/src/photos"
   }
 }

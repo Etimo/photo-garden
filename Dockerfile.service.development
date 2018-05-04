@@ -5,7 +5,13 @@ WORKDIR /usr/src
 ARG APP_NAME
 
 # Add repo dependencies to container
-COPY libs libs
+COPY libs/app-name/package.json libs/app-name/package.json
+COPY libs/communication/package.json libs/communication/package.json
+COPY libs/config/package.json libs/config/package.json
+COPY libs/db/package.json libs/db/package.json
+COPY libs/logging/package.json libs/logging/package.json
+COPY libs/provider-google-drive-tokens/package.json libs/provider-google-drive-tokens/package.json
+COPY libs/provider-user/package.json libs/provider-user/package.json
 COPY yarn.lock .
 COPY package.json .
 COPY scripts scripts

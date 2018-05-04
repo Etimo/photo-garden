@@ -26,6 +26,7 @@ async function downloadImage(msg) {
       extension: photo.fileExtension
     };
 
+    logger.info(`Downloaded image ${photo.id} to ${options.dest}`);
     communication.publish("user-photo--downloaded", messageContentOut);
   } catch (err) {
     // await channel.nack(msg);

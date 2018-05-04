@@ -3,8 +3,11 @@ set +uex
 
 if [ -z "${TRAVIS_PULL_REQUEST}" ] || [ "${TRAVIS_PULL_REQUEST}" == "false" ]; then
   if [ "${TRAVIS_BRANCH}" == "master" ]; then
-    docker tag photo-garden-gateway-api:latest ${GATEWAY_API_REMOTE_IMAGE_URL}
-    docker push ${GATEWAY_API_REMOTE_IMAGE_URL}
+    for app in $(ls apps); do
+      REMOTE_URL=${ECR_BASE}$app
+      docker tag photo-garden-$app:latest $REMOTE_URL
+      docker push $REMOTE_URL
+    done
   else
     echo "Not master, not deploying"
   fi
