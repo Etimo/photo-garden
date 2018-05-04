@@ -12,8 +12,8 @@ async function insert(image) {
   const response = await dbClient.query(
     "INSERT INTO photos(owner, url, mime_type, provider, provider_id, original) VALUES($1, $2, $3, $4, $5, $6) ON CONFLICT ON CONSTRAINT provider_id_unique DO NOTHING RETURNING id",
     [
-      image.url,
       image.owner,
+      image.url,
       image.mimeType,
       image.provider,
       image.providerId,
