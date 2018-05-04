@@ -9,10 +9,10 @@ services:
 
 install: no
 
-before_script: ./test.sh
+# before_script: ./test.sh
 
 script: ./build.sh
 
-after_success: 
+after_success:
   - ./push.sh
-  - ./deploy.sh 
+  - ./deploy.sh

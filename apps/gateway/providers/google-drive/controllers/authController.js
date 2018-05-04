@@ -11,7 +11,7 @@ function finishAuth(client, req, res) {
   const code = req.query.code;
   if (!code) {
     // Error, what to do?
-    
+
     res.redirect("/error");
   }
   client.getToken(code, (err, tokens) => {

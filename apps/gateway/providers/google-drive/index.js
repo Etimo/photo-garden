@@ -6,9 +6,9 @@ const subscriptionController = require("./controllers/subscriptionController");
 const config = require("config");
 const util = require("./lib/util");
 // Don't start unless config has been set
-const v = config.get('providers.googleDrive.clientId');
-const w = config.get('providers.googleDrive.clientSecret');
-const x = config.get('providers.googleDrive.clientRedirectUri');
+const v = config.get("providers.googleDrive.clientId");
+const w = config.get("providers.googleDrive.clientSecret");
+const x = config.get("providers.googleDrive.clientRedirectUri");
 console.log(v, w, x);
 
 // if (
