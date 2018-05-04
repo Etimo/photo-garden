@@ -32,7 +32,7 @@ app.use(express.static("public"));
 app.get("/", (req, res) => {
   const gardener = req.gardenSession.userIdentity;
   if (gardener && gardener.length > 0) {
-    res.redirect("http://localhost:3001")
+    res.redirect("http://localhost:3001");
   } else {
     res.redirect("/login");
   }
