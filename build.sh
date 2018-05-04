@@ -14,5 +14,5 @@ for app in $(ls apps); do
 
   # cd ${TRAVIS_BUILD_DIR}/apps/$app
   echo "Run cmd: docker build --cache-from $REMOTE_URL:latest -t photo-garden-$app -f Dockerfile.service.development --build-arg APP_NAME $app ."
-  docker build --cache-from $REMOTE_URL:latest -t photo-garden-$app -f Dockerfile.service.development --build-arg APP_NAME $app .
+  docker build --cache-from $REMOTE_URL:latest -t photo-garden-$app -f Dockerfile.service.development --build-arg APP_NAME=$app .
 done
