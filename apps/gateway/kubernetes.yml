@@ -1,0 +1,44 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: gateway
+spec:
+  selector:
+    app: gateway
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 3000
+---
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: gateway
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: gateway
+    spec:
+      containers:
+      - name: gateway
+        image: 255196862254.dkr.ecr.eu-west-1.amazonaws.com/etimo/photo-garden-gateway
+        env:
+          - name: PHOTO_GARDEN_PROVIDERS_GOOGLE_DRIVE_CLIENT_ID
+            valueFrom:
+              configMapKeyRef:
+                name: providers-env
+                key: PHOTO_GARDEN_PROVIDERS_GOOGLE_DRIVE_CLIENT_ID
+          - name: PHOTO_GARDEN_PROVIDERS_GOOGLE_DRIVE_CLIENT_REDIRECT_URI
+            valueFrom:
+              configMapKeyRef:
+                name: providers-env
+                key: PHOTO_GARDEN_PROVIDERS_GOOGLE_DRIVE_CLIENT_REDIRECT_URI
+          - name: PHOTO_GARDEN_PROVIDERS_GOOGLE_DRIVE_CLIENT_SECRET
+            valueFrom:
+              configMapKeyRef:
+                name: providers-env
+                key: PHOTO_GARDEN_PROVIDERS_GOOGLE_DRIVE_CLIENT_SECRET
+        ports:
+        - containerPort: 3000

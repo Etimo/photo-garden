@@ -24,3 +24,5 @@ WORKDIR /usr/src/apps/$APP_NAME
 RUN yarn install --no-progress
 
 COPY apps/$APP_NAME apps/$APP_NAME
+
+ENTRYPOINT ["sh", "/usr/src/scripts/wait_and_run.sh"]
