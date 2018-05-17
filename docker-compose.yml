@@ -31,6 +31,7 @@ services:
     environment:
       - PHOTO_GARDEN_PROVIDERS_GOOGLE_DRIVE_CLIENT_ID
       - PHOTO_GARDEN_PROVIDERS_GOOGLE_DRIVE_CLIENT_SECRET
+      - PHOTO_GARDEN_PROVIDERS_DROPBOX_CLIENT_ID
     depends_on:
       - queue
       - db

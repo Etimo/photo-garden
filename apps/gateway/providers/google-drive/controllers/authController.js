@@ -1,5 +1,4 @@
 const logger = require("logging");
-const config = require("config");
 const users = require("provider-user");
 const providerTokens = require("provider-google-drive-tokens");
 const dbClient = require("db").create("garden");
@@ -11,7 +10,7 @@ function finishAuth(client, req, res) {
   const code = req.query.code;
   if (!code) {
     // Error, what to do?
-    
+
     res.redirect("/error");
   }
   client.getToken(code, (err, tokens) => {

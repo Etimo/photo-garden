@@ -1,0 +1,18 @@
+<html>
+
+<head>
+    <script>
+        var raw = window.location.hash;
+        var string = raw.split('#')[1];
+        fetch('/dropbox/auth/finish2?' + string).catch(err => {
+            window.location.href = '/login'
+        }).then(response => {
+            return response.json();
+        });
+    </script>
+</head>
+
+<body>
+</body>
+
+</html>
