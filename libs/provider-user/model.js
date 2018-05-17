@@ -35,7 +35,7 @@ async function getByIdentity(provider, providerIdentity) {
     "SELECT user_id FROM user_identities WHERE provider=$1 AND provider_id=$2",
     [provider, providerIdentity]
   );
-  console.log(response);
+
   if (response.rows[0] !== undefined) {
     return response.rows[0].user_id;
   } else {

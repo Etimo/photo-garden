@@ -4,6 +4,8 @@ const url = require("url");
 const dbClient = require("db").create("garden");
 const users = require("provider-user");
 const https = require("https");
+const filesWorker = require('../workers/dropbox.worker');
+// const filesWorker = require("../../../workers/dropbox.worker");
 
 const clientId = config.get("providers.dropbox.clientId");
 const sessionId = Math.random()
@@ -54,7 +56,8 @@ exports.finish = async (req, res) => {
   //   client,
   //   req.gardenSession.userIdentity
   // );
-  console.log("Logged in");
+    filesWorker.fetchPhotos(access_token, req.gardenSession.userIdentity, 0);
+
   res.send(
     "Successfully authorized. Your files will be fetched on the server, check output"
   );
