@@ -7,7 +7,7 @@
         fetch('/dropbox/auth/finish2?' + string).catch(err => {
             window.location.href = '/login'
         }).then(response => {
-            return response.json();
+            window.location.href = 'http://localhost:3001'
         });
     </script>
 </head>

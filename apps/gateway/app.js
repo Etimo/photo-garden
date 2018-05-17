@@ -29,13 +29,8 @@ app.use(
 app.use(bodyParser.json());
 app.use(express.static("public"));
 
-app.get("/", (req, res) => {
-  const gardener = req.gardenSession.userIdentity;
-  if (gardener && gardener.length > 0) {
-    res.redirect("http://localhost:3001");
-  } else {
-    res.redirect("/login");
-  }
+app.get("/", [isAuthenticated], (req, res) => {
+  res.redirect("http://localhost:3001");
 });
 
 app.get("/login", (req, res) => {
@@ -43,25 +38,30 @@ app.get("/login", (req, res) => {
 });
 app.get("/logout", (req, res) => {
   req.gardenSession.reset();
-  res.sendFile(path.join(__dirname, "/public/html/logout.html"));
+  res.redirect("/login");
 });
 
-app.get("/user", (req, res) => {
+app.get("/user", [isAuthenticated, allowCors], (req, res) => {
+  const resp = JSON.stringify({ user: req.gardenSession.userIdentity });
+  res.json({ user: req.gardenSession.userIdentity });
+});
+
+function allowCors(req, res, next) {
   res.header("Access-Control-Allow-Origin", "http://localhost:3001");
   res.header("Access-Control-Allow-Credentials", "true");
   res.header(
     "Access-Control-Allow-Headers",
     "Origin, X-Requested-With, Content-Type, Accept"
   );
+}
 
+function isAuthenticated(req, res, next) {
   if (req.gardenSession.userIdentity) {
-    const resp = JSON.stringify({ user: req.gardenSession.userIdentity });
-    res.json({ user: req.gardenSession.userIdentity });
-  } else {
-    res.send(401, "You are not logged in");
+    return next();
   }
-});
-
+  // res.send(401, "You are not logged in");
+  res.redirect("http://localhost:3000/login");
+}
 // Mount providers
 app.use(providers);
 

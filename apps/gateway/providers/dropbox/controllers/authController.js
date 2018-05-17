@@ -24,44 +24,40 @@ exports.start = (req, res) => {
   );
 };
 exports.redirect = (req, res) => {
-  res.sendFile("./public/html/dropbox.html", { root: __dirname + "../../../" });
+  res.sendFile("./public/html/dropbox.html", {
+    root: __dirname + "../../../../"
+  });
 };
 
 exports.finish = async (req, res) => {
   if (!isVerified(req)) {
     return unauthorized();
   }
-
   const access_token = req.query.access_token;
   const account_id = req.query.account_id;
   const uid = req.query.uid;
 
-  const user = await getUserIdentity(
-    isVerified(req),
-    account_id,
-    req,
-    access_token
+  let userFetched = await getUserIdentity(account_id, req, access_token).catch(
+    () => (userFetched = false)
   );
-  success => {
-    res.status = success ? 200 : 401;
-    if (res.status === 401) {
-      logger.warn("Not authorized");
-      res.send("Sod off2");
-    } else {
-      // Create cookie
-      logger.info("Tokens", access_token);
 
-      // Start async work
-      providerTokens.updateTokens(req.gardenSession.userIdentity, access_token);
-      // filesWorker.getFilesInDrive(
-      //   client,
-      //   req.gardenSession.userIdentity
-      // );
-      res.send(
-        "Successfully authorized. Your files will be fetched on the server, check output"
-      );
-    }
-  };
+  if (!userFetched) {
+    return unauthorized();
+  }
+
+  // Create cookie
+  logger.info("Tokens", access_token);
+
+  // Start async work
+  //providerTokens.updateTokens(req.gardenSession.userIdentity, access_token);
+  // filesWorker.getFilesInDrive(
+  //   client,
+  //   req.gardenSession.userIdentity
+  // );
+  console.log("Logged in");
+  res.send(
+    "Successfully authorized. Your files will be fetched on the server, check output"
+  );
 };
 
 function isVerified(req) {
@@ -74,15 +70,12 @@ function unauthorized(res) {
   res.send("Logged off");
 }
 
-async function getUserIdentity(verified, userIdentifier, req, access_token) {
-  // const usermail = await getUserMail(access_token, userIdentifier);
-
-  if (!verified) {
-    return false;
-  }
+async function getUserIdentity(userIdentifier, req, access_token) {
+  logger.info("Get user id");
   let userId;
   try {
     userId = await users.getByIdentity("Dropbox", userIdentifier);
+    logger.info("Found user id", userId);
   } catch (err) {
     logger.error(`Failed to find user identity: ${err}`);
     return false;

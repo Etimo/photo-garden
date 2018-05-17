@@ -18,6 +18,6 @@ router.get("/auth/start", authController.start);
 
 router.get("/auth/finish", authController.redirect);
 
-router.get("/auth/finish2", (req, res) => {});
+router.get("/auth/finish2", authController.finish);
 
 module.exports = router;

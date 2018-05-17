@@ -30,10 +30,12 @@ async function attachIdentity(provider, providerIdentity) {
 
 async function getByIdentity(provider, providerIdentity) {
   logger.info(`Get identity for ${providerIdentity} for provider ${provider}`);
+  console.log(providerIdentity);
   const response = await dbClient.query(
     "SELECT user_id FROM user_identities WHERE provider=$1 AND provider_id=$2",
     [provider, providerIdentity]
   );
+  console.log(response);
   if (response.rows[0] !== undefined) {
     return response.rows[0].user_id;
   } else {
