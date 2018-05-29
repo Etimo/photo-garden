@@ -87,6 +87,19 @@ services:
       - queue
     links:
       - queue
+  be-download-user-photo-dropbox:
+    extends:
+      file: common-service.yml
+      service: base-service
+    build:
+      args:
+        APP_NAME: be-download-user-photo-dropbox
+    volumes:
+      - photo-storage:/usr/src/photos
+    depends_on:
+      - queue
+    links:
+      - queue
 
   api-photos:
     extends:

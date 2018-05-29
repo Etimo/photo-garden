@@ -22,7 +22,11 @@ app.use(
     cookieName: config.get("gateway.cookieName"),
     secret: config.get("gateway.secret"),
     duration: 15 * 60 * 1000, // Refresh
-    activeDuration: 10 * 60 * 1000
+    activeDuration: 10 * 60 * 1000,
+    cookie: {
+      secure: false
+    }, 
+    saveUninitialized: true,
   })
 );
 
@@ -34,6 +38,7 @@ app.get("/", [isAuthenticated], (req, res) => {
 });
 
 app.get("/login", (req, res) => {
+  req.gardenSession.reset();
   res.sendFile(path.join(__dirname, "/public/html/login.html"));
 });
 app.get("/logout", (req, res) => {
@@ -42,25 +47,27 @@ app.get("/logout", (req, res) => {
 });
 
 app.get("/user", [isAuthenticated, allowCors], (req, res) => {
-  const resp = JSON.stringify({ user: req.gardenSession.userIdentity });
-  res.json({ user: req.gardenSession.userIdentity });
+   res.json({ user: req.gardenSession.userIdentity });
 });
 
 function allowCors(req, res, next) {
   res.header("Access-Control-Allow-Origin", "http://localhost:3001");
-  res.header("Access-Control-Allow-Credentials", "true");
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept"
-  );
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  res.header('Access-Control-Allow-Credentials', 'true');
+  return next();
 }
 
 function isAuthenticated(req, res, next) {
+  req.gardenSession.userIdentity = '7509d0e0-702b-4758-bd65-203ea38cf756';
+  return next();
+  logger.info('SESSION IN GATEWAY', req.gardenSession)
   if (req.gardenSession.userIdentity) {
     return next();
+  } else {
+    res.status(401).send('You are not logged in');
   }
-  // res.send(401, "You are not logged in");
-  res.redirect("http://localhost:3000/login");
+  // 
+  //res.redirect("http://localhost:3000/login");
 }
 // Mount providers
 app.use(providers);

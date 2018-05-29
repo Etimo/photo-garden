@@ -12,6 +12,7 @@ COPY libs/db/package.json libs/db/package.json
 COPY libs/logging/package.json libs/logging/package.json
 COPY libs/provider-google-drive-tokens/package.json libs/provider-google-drive-tokens/package.json
 COPY libs/provider-user/package.json libs/provider-user/package.json
+COPY libs/dropbox-api/package.json libs/dropbox-api/package.json
 
 COPY yarn.lock .
 COPY package.json .

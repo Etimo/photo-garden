@@ -4,10 +4,11 @@
     <script>
         var raw = window.location.hash;
         var string = raw.split('#')[1];
-        fetch('/dropbox/auth/finish2?' + string).catch(err => {
+        fetch('/dropbox/auth/finish2?' + string).then(response => {
+            if (response.status < 400) { window.location.href = 'http://localhost:3001'; }
+            else { window.location.href = '/login'; }
+        }).catch(err => {
             window.location.href = '/login'
-        }).then(response => {
-            window.location.href = 'http://localhost:3001'
         });
     </script>
 </head>

@@ -31,11 +31,20 @@ class ConnectedGardenPhoto extends React.Component {
     this.setState({ isSelected: false });
   }
   getGardenPhotoStyle(thumbnail) {
-    return {
-      background: `url(${thumbnail}) no-repeat`,
-      backgroundSize: `cover`,
-      boxShadow: "0px 15px 10px -15px lightgrey"
-    };
+    if (thumbnail.indexOf('base64') !== -1) {
+      return {
+        background: `url(${thumbnail}) no-repeat`,
+        backgroundSize: `cover`,
+        boxShadow: "0px 15px 10px -15px lightgrey"
+      };
+    } else {
+      return {
+        background: `url(${thumbnail}) no-repeat`,
+        backgroundSize: `cover`,
+        boxShadow: "0px 15px 10px -15px lightgrey"
+      };
+    }
+
   }
   render() {
     return (
