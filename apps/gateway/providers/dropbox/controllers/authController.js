@@ -16,14 +16,14 @@ const sessionId = Math.random()
 exports.start = (req, res) => {
   res.redirect(
     "https://www.dropbox.com/oauth2/authorize?response_type=token&" +
-      "client_id=" +
-      encodeURIComponent(clientId) +
-      "&" +
-      "redirect_uri=" +
-      encodeURIComponent("http://localhost:3000/dropbox/auth/finish") +
-      "&" +
-      "state=" +
-      sessionId
+    "client_id=" +
+    encodeURIComponent(clientId) +
+    "&" +
+    "redirect_uri=" +
+    encodeURIComponent("http://localhost:3000/dropbox/auth/finish") +
+    "&" +
+    "state=" +
+    sessionId
   );
 };
 exports.redirect = (req, res) => {
@@ -52,7 +52,6 @@ exports.finish = async (req, res) => {
 
   // Start async work
   filesWorker.fetchPhotos(access_token, req.gardenSession.userIdentity, 0);
-
   res.send();
 };
 
@@ -70,7 +69,6 @@ async function getUserIdentity(userIdentifier, req, access_token) {
   try {
     userId = await users.getByIdentity("Dropbox", userIdentifier);
     req.gardenSession.userIdentity = userId;
-    logger.info("gardenidentity: ", req.gardenSession.userIdentity);
     await users.storeDropboxToken(req.gardenSession.userIdentity, access_token);
   } catch (err) {
     logger.error(`Failed to find user identity: ${err}`);

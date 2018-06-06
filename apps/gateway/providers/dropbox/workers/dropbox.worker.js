@@ -23,10 +23,8 @@ const fetchPhotos = async (token, user) => {
     await repo.setDropboxNextPageToken(user);
     fetchPhotos(token, user);
   } else {
-
     return;
   }
-
 };
 
 module.exports = {

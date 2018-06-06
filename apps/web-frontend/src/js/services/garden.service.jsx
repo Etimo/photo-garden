@@ -5,18 +5,24 @@ import store from "../store/index";
 
 
 const GardenService = () => {
-  fetch('http://localhost:3000/user').catch(err => {
+  fetch('http://localhost:3000/user',
+    {
+      method: 'GET',
+      credentials: 'include'
+    }
+  ).catch(err => {
     // if 401 redirect to login
-    console.log(err);
+    console.log('err', err);
   }).then(response => {
-    console.log(response);
-    return response.json();
+    console.log('Response', response);
+    if (response.status < 400) { return response.json(); } else {
+      location.href = 'http://localhost:3000/login';
+    }
   }).then(user => {
-    console.log(user);
+    console.log('user', user);
     fetch(`http://localhost:3002/photos?user_id=${user.user}`).then(response => {
       return response.json();
     }).then(jsonResponse => {
-      console.log(jsonResponse.length);
       jsonResponse.forEach(photo => {
         store.dispatch(addGardenPhoto({
           photo: {

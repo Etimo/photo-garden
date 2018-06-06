@@ -23,10 +23,12 @@ app.use(
     secret: config.get("gateway.secret"),
     duration: 15 * 60 * 1000, // Refresh
     activeDuration: 10 * 60 * 1000,
+    saveUninitialized: true,
     cookie: {
-      secure: false
+      httpOnly: false,
+      secure: false,
     },
-    saveUninitialized: true
+    resave: true
   })
 );
 
@@ -38,15 +40,15 @@ app.get("/", [isAuthenticated], (req, res) => {
 });
 
 app.get("/login", (req, res) => {
-  req.gardenSession.reset();
   res.sendFile(path.join(__dirname, "/public/html/login.html"));
 });
 app.get("/logout", (req, res) => {
   req.gardenSession.reset();
+  res.header('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0');
   res.redirect("/login");
 });
 
-app.get("/user", [isAuthenticated, allowCors], (req, res) => {
+app.get("/user", [allowCors, isAuthenticated], (req, res) => {
   res.json({ user: req.gardenSession.userIdentity });
 });
 
@@ -61,16 +63,12 @@ function allowCors(req, res, next) {
 }
 
 function isAuthenticated(req, res, next) {
-  req.gardenSession.userIdentity = "7509d0e0-702b-4758-bd65-203ea38cf756";
-  return next();
-  logger.info("SESSION IN GATEWAY", req.gardenSession);
+  logger.info('logged in as: ', req.userIdentity);
   if (req.gardenSession.userIdentity) {
     return next();
   } else {
     res.status(401).send("You are not logged in");
   }
-  //
-  //res.redirect("http://localhost:3000/login");
 }
 // Mount providers
 app.use(providers);
