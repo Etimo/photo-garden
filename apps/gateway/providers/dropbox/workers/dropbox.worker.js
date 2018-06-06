@@ -1,8 +1,8 @@
 const logger = require("logging");
 const communication = require("communication");
 const https = require("https");
-const dropbox = require("../lib/dropbox");
-const repo = require("provider-user");
+const dropboxApi = require("dropbox-api");
+const dropboxDb = require("dropbox-db");
 
 const publishToQueue = (item, user) => {
   communication.publish("user-photo--dropbox--received", {
@@ -12,15 +12,15 @@ const publishToQueue = (item, user) => {
 };
 
 const fetchPhotos = async (token, user) => {
-  const nextPageToken = await repo.getDropboxNextPageTokenByUserId(user);
-  let photoList = await dropbox.getPhotos(token, nextPageToken);
+  const nextPageToken = await dropboxDb.getDropboxNextPageTokenByUserId(user);
+  let photoList = await dropboxApi.getPhotos(token, nextPageToken);
   if (!photoList.success) {
     return;
   }
 
   photoList.data.matches.forEach(match => publishToQueue(match.metadata, user));
-  if (photoList.data.matches.count === 25) {
-    await repo.setDropboxNextPageToken(user);
+  if (photoList.data.matches.length === 25) {
+    await dropboxDb.setDropboxNextPageToken(user, nextPageToken + 1);
     fetchPhotos(token, user);
   } else {
     return;

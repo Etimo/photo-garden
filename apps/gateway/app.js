@@ -26,7 +26,7 @@ app.use(
     saveUninitialized: true,
     cookie: {
       httpOnly: false,
-      secure: false,
+      secure: false
     },
     resave: true
   })
@@ -44,7 +44,10 @@ app.get("/login", (req, res) => {
 });
 app.get("/logout", (req, res) => {
   req.gardenSession.reset();
-  res.header('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0');
+  res.header(
+    "Cache-Control",
+    "no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0"
+  );
   res.redirect("/login");
 });
 
@@ -63,7 +66,7 @@ function allowCors(req, res, next) {
 }
 
 function isAuthenticated(req, res, next) {
-  logger.info('logged in as: ', req.userIdentity);
+  logger.info("logged in as: ", req.userIdentity);
   if (req.gardenSession.userIdentity) {
     return next();
   } else {

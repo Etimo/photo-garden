@@ -6,13 +6,13 @@ const fs = require("fs");
 const mkdir = require("mkdir-recursive");
 const destPath = config.get("images.path");
 const dropbox = require("dropbox-api");
-const user = require("provider-user");
+const dropboxDb = require("dropbox-db");
 
 mkdir.mkdirSync(destPath);
 
 async function dropboxHandler(msg) {
   const metadata = JSON.parse(msg.data);
-  const token = await user.getDropboxTokenByUserId(metadata.user);
+  const token = await dropboxDb.getDropboxTokenByUserId(metadata.user);
   if (!token) {
     logger.error("Failed to get token for: ", metadata.photo);
     return;
