@@ -83,6 +83,7 @@ Libs are common dependencies that can be shared and used by all apps. They are i
 - logging - [README](libs/logging/README.md)
 - communication - [README](libs/communication/README.md)
 - db - [README](libs/db/README.md)
+- dropbox-api - [README](libs/dropbox-api/README.md)
 
 # Apps
 
@@ -95,6 +96,11 @@ To include the app in the docker setup you must also add a section in the `docke
 ## api-photos
 
 The photos rest api like we had before but with queue handling broken out into another app.
+
+## be-download-user-photo-dropbox
+
+A backend app that downloads all images imported from Dropbox.
+For now it also normalize the photos.
 
 ## be-download-user-photo-google-drive
 
@@ -167,7 +173,7 @@ Message format:
 ```
 {
   "owner": string,  // user guid
-  "url": string,
+  "url": string,  // Url to thumbnail/base64 thumbnail
   "mimeType": string,
   "provider": string,  // E.g. "Google" for google drive
   "providerId": string,

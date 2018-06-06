@@ -1,9 +1,3 @@
-# app-name
+# dropbox-api
 
-Get the name of the app currently running.
-
-```javascript
-const appName = require("app-name");
-// appName is just a plain string
-logger.info(appName);
-```
+Package that wraps the dropbox api to make it useable in all projects  

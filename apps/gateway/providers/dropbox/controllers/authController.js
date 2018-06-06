@@ -70,7 +70,10 @@ async function getUserIdentity(userIdentifier, req, access_token) {
   try {
     userId = await users.getByIdentity("Dropbox", userIdentifier);
     req.gardenSession.userIdentity = userId;
-    await dropboxDb.storeDropboxToken(req.gardenSession.userIdentity, access_token);
+    await dropboxDb.storeDropboxToken(
+      req.gardenSession.userIdentity,
+      access_token
+    );
   } catch (err) {
     logger.error(`Failed to find user identity: ${err}`);
     return false;
