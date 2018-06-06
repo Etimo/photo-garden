@@ -13,35 +13,46 @@ mkdir.mkdirSync(destPath);
 async function dropboxHandler(msg) {
   const metadata = JSON.parse(msg.data);
   const token = await user.getDropboxTokenByUserId(metadata.user);
-  if (!token) { logger.error('Failed to get token for: ', metadata.photo); return; }
+  if (!token) {
+    logger.error("Failed to get token for: ", metadata.photo);
+    return;
+  }
 
   // downloadImage(metadata, token);
   normalize(metadata, token);
 }
 async function normalize(metadata, token) {
-  const thumbnails = await dropbox.getThumbnail(token, metadata.photo.path_lower)
-  if (!thumbnails.success) { logger.info('Failed to fetch thumbnail: ', thumbnails.error); return; }
+  const thumbnails = await dropbox.getThumbnail(
+    token,
+    metadata.photo.path_lower
+  );
+  if (!thumbnails.success) {
+    logger.info("Failed to fetch thumbnail: ", thumbnails.error);
+    return;
+  }
 
   const thumbnail = thumbnails.data.entries[0];
   if (thumbnail) {
     const normalized = normalizePhotoInfo(thumbnail, metadata.user);
     communication.publish("user-photo--normalized", normalized);
   }
-
 }
 function normalizePhotoInfo(fileInfo, user) {
   return {
     owner: user,
     url: `data:image/jpeg;base64,${fileInfo.thumbnail}`,
-    mimeType: 'image/jpeg',
-    provider: 'Dropbox',
+    mimeType: "image/jpeg",
+    provider: "Dropbox",
     providerId: fileInfo.id,
     original: fileInfo
   };
 }
 async function downloadImage(metadata, token) {
-  const photos = await dropbox.getFile(token, metadata.photo.path_lower)
-  if (!photos.success) { logger.info('Failed to fetch photo: ', photos.error); return; }
+  const photos = await dropbox.getFile(token, metadata.photo.path_lower);
+  if (!photos.success) {
+    logger.info("Failed to fetch photo: ", photos.error);
+    return;
+  }
 
   const photo = photos.data.entries[0];
 
@@ -49,7 +60,7 @@ async function downloadImage(metadata, token) {
   if (saved) {
     const messageContentOut = {
       id: photo.id,
-      extension: 'jpg'
+      extension: "jpg"
     };
     communication.publish("user-photo--downloaded", messageContentOut);
   }

@@ -25,8 +25,8 @@ app.use(
     activeDuration: 10 * 60 * 1000,
     cookie: {
       secure: false
-    }, 
-    saveUninitialized: true,
+    },
+    saveUninitialized: true
   })
 );
 
@@ -47,26 +47,29 @@ app.get("/logout", (req, res) => {
 });
 
 app.get("/user", [isAuthenticated, allowCors], (req, res) => {
-   res.json({ user: req.gardenSession.userIdentity });
+  res.json({ user: req.gardenSession.userIdentity });
 });
 
 function allowCors(req, res, next) {
   res.header("Access-Control-Allow-Origin", "http://localhost:3001");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  res.header('Access-Control-Allow-Credentials', 'true');
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
+  );
+  res.header("Access-Control-Allow-Credentials", "true");
   return next();
 }
 
 function isAuthenticated(req, res, next) {
-  req.gardenSession.userIdentity = '7509d0e0-702b-4758-bd65-203ea38cf756';
+  req.gardenSession.userIdentity = "7509d0e0-702b-4758-bd65-203ea38cf756";
   return next();
-  logger.info('SESSION IN GATEWAY', req.gardenSession)
+  logger.info("SESSION IN GATEWAY", req.gardenSession);
   if (req.gardenSession.userIdentity) {
     return next();
   } else {
-    res.status(401).send('You are not logged in');
+    res.status(401).send("You are not logged in");
   }
-  // 
+  //
   //res.redirect("http://localhost:3000/login");
 }
 // Mount providers

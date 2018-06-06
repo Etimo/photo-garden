@@ -5,15 +5,13 @@ const dropbox = require("../lib/dropbox");
 const repo = require("provider-user");
 
 const publishToQueue = (item, user) => {
-
   communication.publish("user-photo--dropbox--received", {
     user: user,
     photo: item
   });
-}
+};
 
 const fetchPhotos = async (token, user) => {
-  logger.info('user in worker', user);
   const nextPageToken = await repo.getDropboxNextPageTokenByUserId(user);
   let photoList = await dropbox.getPhotos(token, nextPageToken);
   if (!photoList.success) {
@@ -21,9 +19,15 @@ const fetchPhotos = async (token, user) => {
   }
 
   photoList.data.matches.forEach(match => publishToQueue(match.metadata, user));
-  await repo.setDropboxNextPageToken(user);
-  fetchPhotos(token, user);
-}
+  if (photoList.data.matches.count === 25) {
+    await repo.setDropboxNextPageToken(user);
+    fetchPhotos(token, user);
+  } else {
+
+    return;
+  }
+
+};
 
 module.exports = {
   fetchPhotos

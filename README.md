@@ -52,11 +52,11 @@ All apps are run in the same container using [pm2](https://pm2.keymetrics.io). T
 
 The following services will be exposed to your machine when docker compose is running:
 
-* http://localhost:3000 - The gateway app
-* http://localhost:3001 - The photo app frontend (web-frontend)
-* `localhost:4222` - Nats streaming server
-* `localhost:8222` - Nats streaming server monitoring
-* `localhost:5432` - Postgres db. Exposed on your machine to allow easy inspection.
+- http://localhost:3000 - The gateway app
+- http://localhost:3001 - The photo app frontend (web-frontend)
+- `localhost:4222` - Nats streaming server
+- `localhost:8222` - Nats streaming server monitoring
+- `localhost:5432` - Postgres db. Exposed on your machine to allow easy inspection.
 
 ## Reset db and queue
 
@@ -78,11 +78,11 @@ This is done using the npm module `pre-commit`. The module runs the commands spe
 
 Libs are common dependencies that can be shared and used by all apps. They are implemented as npm modules to allow yarn to install them from other package.json files. No need to publish them to be able to install them in dev.
 
-* app-name - [README](libs/app-name/README.md)
-* config - [README](libs/config/README.md)
-* logging - [README](libs/logging/README.md)
-* communication - [README](libs/communication/README.md)
-* db - [README](libs/db/README.md)
+- app-name - [README](libs/app-name/README.md)
+- config - [README](libs/config/README.md)
+- logging - [README](libs/logging/README.md)
+- communication - [README](libs/communication/README.md)
+- db - [README](libs/db/README.md)
 
 # Apps
 
@@ -179,5 +179,5 @@ Message format:
 
 # Todo
 
-* Deployment not fixed yet
-* Refactor unleash to an app
+- Deployment not fixed yet
+- Refactor unleash to an app

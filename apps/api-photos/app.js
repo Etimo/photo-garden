@@ -13,14 +13,16 @@ app.use(express.static("public"));
 app.use(router);
 
 router.get("/photos", async (req, res) => {
-  logger.info(req.query.user_id);
   const viewerId = req.query.user_id;
   const images = await model.findAll({
     owner: viewerId
   });
   res.header("Access-Control-Allow-Origin", "http://localhost:3001");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  res.header('Access-Control-Allow-Credentials', 'true');
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
+  );
+  res.header("Access-Control-Allow-Credentials", "true");
   res.send(images);
 });
 router.post("/photos", async (req, res) => {

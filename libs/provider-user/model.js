@@ -59,7 +59,6 @@ async function getDropboxTokenByUserId(user_id) {
   return response.rows[0].token || undefined;
 }
 async function storeDropboxToken(user_id, token) {
-
   const response = await dbClient.query(
     "SELECT token FROM dropbox_tokens WHERE user_id = $1 ",
     [user_id]
@@ -73,7 +72,7 @@ async function storeDropboxToken(user_id, token) {
         [token, user_id]
       );
     } else {
-      logger.info('Inserting token');
+      logger.info("Inserting token");
       const userResponse = await dbClient.query(
         "INSERT INTO dropbox_tokens(user_id, token, next_page_token) VALUES($1, $2, 0)",
         [user_id, token]
@@ -106,13 +105,12 @@ async function getDropboxNextPageTokenByUserId(user_id) {
     [user_id]
   );
   if (response.rows[0]) {
-    return response.rows[0].next_page_token
+    return response.rows[0].next_page_token;
   } else {
-    logger.info('could not get next page token', user_id);
-    logger.info('could not get next page token', response.rows[0]);
+    logger.info("could not get next page token", user_id);
+    logger.info("could not get next page token", response.rows[0]);
     return null;
   }
-
 }
 async function setDropboxNextPageToken(user_id) {
   const token = await getDropboxNextPageTokenByUserId(user_id);

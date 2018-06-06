@@ -50,13 +50,13 @@ What do we start with?
 
 ### v0.1
 
-* Access photos from one vendor/source (Google Drive)
-* Show photos
-* Host with docker/VPS
+- Access photos from one vendor/source (Google Drive)
+- Show photos
+- Host with docker/VPS
 
 ### 0.2
 
-* Search meta-data on date and place
+- Search meta-data on date and place
 
 # Tech stack
 
@@ -64,9 +64,9 @@ What do we start with?
 
 ### Storage
 
-* Separate writes from search
-* Search with Elastic Search
-* Master database, SQL or mongoDB?
+- Separate writes from search
+- Search with Elastic Search
+- Master database, SQL or mongoDB?
 
 ### Micro services
 

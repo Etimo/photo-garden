@@ -26,11 +26,15 @@ function connect(clusterName, clientId) {
     throw new Error("Missing client id for nats connection");
   }
   logger.info(`Connecting to nats on ${connectionString}`);
-  conn = stan.connect(clusterName, clientId, {
-    maxReconnectAttempts: -1,
-    url: connectionString,
-    waitOnFirstConnect: true
-  });
+  conn = stan.connect(
+    clusterName,
+    clientId,
+    {
+      maxReconnectAttempts: -1,
+      url: connectionString,
+      waitOnFirstConnect: true
+    }
+  );
   conn.on("connect", () => {
     logger.info("Connected to nats");
     conn.on("close", function() {
@@ -87,7 +91,10 @@ function setDeliveryType(natsOptions, sequence) {
 
 function connectIfNeeded(options) {
   if (!conn && !connecting) {
-    connect(options.clusterName, options.clientId);
+    connect(
+      options.clusterName,
+      options.clientId
+    );
   }
 }
 

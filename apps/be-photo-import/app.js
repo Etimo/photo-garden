@@ -25,7 +25,6 @@ async function insert(image) {
 
 async function addImage(msg) {
   try {
-
     const image = JSON.parse(msg.data);
     const id = await insert(image);
     // await channel.ack(msg);

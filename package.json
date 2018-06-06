@@ -4,12 +4,17 @@
     "url": "https://github.com/Etimo/photo-garden/issues"
   },
   "homepage": "https://github.com/Etimo/photo-garden#readme",
-  "workspaces": ["apps/*", "libs/*"],
+  "workspaces": [
+    "apps/*",
+    "libs/*"
+  ],
   "scripts": {
     "prettier": "prettier --write \"**/*.{js,json,css,md}\"",
     "pm2": "docker exec -ti photogarden_services_1 pm2"
   },
-  "pre-commit": ["prettier"],
+  "pre-commit": [
+    "prettier"
+  ],
   "dependencies": {},
   "devDependencies": {
     "eslint": "^4.19.1",
