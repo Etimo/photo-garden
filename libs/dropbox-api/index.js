@@ -1,10 +1,10 @@
 const https = require("https");
 const querystring = require("querystring");
 
-function getFrom(token, path, request, content) {
+function getFrom(token, host, path, request, content) {
   return new Promise((resolve, reject) => {
     const req = https.request(
-      getPostOptions(path, token, request, content),
+      getPostOptions(host, path, token, content),
       res => {
         res.setEncoding("utf8");
         let data = "";
@@ -36,21 +36,23 @@ function getFrom(token, path, request, content) {
   });
 }
 
-const getPostOptions = (path, token, request, content) => {
+const getPostOptions = (host, path, token, content) => {
   if (content) {
     return {
-      host: "content.dropboxapi.com",
+      host: host,
       path: path,
       port: 443,
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: "Bearer " + token
+        Authorization: "Bearer " + token,
+        "Dropbox-API-Arg": JSON.stringify(content)
       }
     };
   }
+  // [{"key":"Dropbox-API-Arg","value":"{\"path\": \"/Homework/math/Prime_Numbers.txt\"}","enabled":true}]
   return {
-    host: "api.dropboxapi.com",
+    host: host,
     path: path,
     port: 443,
     method: "POST",
@@ -76,7 +78,7 @@ const success = promise =>
 module.exports = {
   getPhotos: (token, nextPageToken) => {
     return success(
-      getFrom(token, "/2/files/search", {
+      getFrom(token, 'api.dropboxapi.com', "/2/files/search", {
         path: "",
         query: ".jpg",
         start: nextPageToken,
@@ -88,7 +90,7 @@ module.exports = {
 
   getUserInfo: (token, accountId) => {
     return success(
-      getFrom(token, "/2/users/get_account", {
+      getFrom(token, 'api.dropboxapi.com', '/2/users/get_account', {
         account_id: accountId
       })
     );
@@ -97,18 +99,18 @@ module.exports = {
     return success(
       getFrom(
         token,
-        "/2/files/get_thumbnail_batch",
+        'content.dropboxapi.com',
+        '/2/files/get_thumbnail_batch',
         {
           entries: [
             {
               path: path,
-              format: "jpeg",
-              size: "w480h320",
+              format: 'jpeg',
+              size: 'w480h320',
               mode: "bestfit"
             }
           ]
-        },
-        true
+        }
       )
     );
   },
@@ -116,18 +118,12 @@ module.exports = {
     return success(
       getFrom(
         token,
+        'content.dropboxapi.com',
         "/2/files/get_thumbnail_batch",
+        null,
         {
-          entries: [
-            {
-              path: path,
-              format: "jpeg",
-              size: "w2048h1536",
-              mode: "bestfit"
-            }
-          ]
-        },
-        true
+          "path": path,
+        }
       )
     );
   }

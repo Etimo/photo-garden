@@ -43,33 +43,31 @@ function normalizePhotoInfo(fileInfo, user) {
     url: `data:image/jpeg;base64,${fileInfo.thumbnail}`,
     mimeType: "image/jpeg",
     provider: "Dropbox",
-    providerId: fileInfo.id,
+    providerId: fileInfo.metadata.id,
     original: fileInfo
   };
 }
 async function downloadImage(metadata, token) {
-  const photos = await dropbox.getFile(token, metadata.photo.path_lower);
+  const photos = await dropbox.getFile(token, metadata.photo.id);
   if (!photos.success) {
     logger.info("Failed to fetch photo: ", photos.error);
     return;
   }
-
-  const photo = photos.data.entries[0];
-
-  const saved = await savePhotoToDisk(photo);
+  logger.info('photo', photos.data);
+  const saved = await savePhotoToDisk(metadata.photo.id, photos.data);
   if (saved) {
     const messageContentOut = {
-      id: photo.id,
+      id: metadata.photo.id,
       extension: "jpg"
     };
     communication.publish("user-photo--downloaded", messageContentOut);
   }
 }
-async function savePhotoToDisk(photo) {
-  // fs.writeFile(`${destPath}/${photo.id}.jpg`, photo.thumbnail, 'base64', err => {
-  //   logger.error('Could not save dropbox photo: ', photo.id);
-  //   return false;
-  // });
+async function savePhotoToDisk(id, photo) {
+  fs.writeFile(`${destPath}/${id}.jpg`, photo, 'base64', err => {
+    logger.error('Could not save dropbox photo: ', photo.id);
+    return false;
+  });
   return true;
 }
 

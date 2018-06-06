@@ -52,7 +52,6 @@ async function getDropboxNextPageTokenByUserId(user_id) {
   }
 }
 async function setDropboxNextPageToken(user_id, token) {
-  logger.info("update next page token to:", token);
   const response = await dbClient.query(
     "UPDATE dropbox_tokens SET next_page_token = $1 WHERE user_id = $2",
     [token, user_id]

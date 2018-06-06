@@ -21,7 +21,7 @@ const fetchPhotos = async (token, user) => {
   photoList.data.matches.forEach(match => publishToQueue(match.metadata, user));
   if (photoList.data.matches.length === 25) {
     await dropboxDb.setDropboxNextPageToken(user, nextPageToken + 1);
-    fetchPhotos(token, user);
+    // fetchPhotos(token, user);
   } else {
     return;
   }
