@@ -4,16 +4,15 @@ const config = require("config");
 const dbClient = require("db").create("garden");
 const downloader = require("image-downloader");
 const mkdir = require("mkdir-recursive");
-const destPath = config.get("images.path");
-
-mkdir.mkdirSync(destPath);
+const imagePath = require("image-path")
 
 async function insert(image) {
+  const url = imagePath.getUrl(image.owner, image.provider, image.providerId, image.extension)
   const response = await dbClient.query(
     "INSERT INTO photos(owner, url, mime_type, provider, provider_id, original) VALUES($1, $2, $3, $4, $5, $6) ON CONFLICT ON CONSTRAINT provider_id_unique DO NOTHING RETURNING id",
     [
       image.owner,
-      image.url,
+      url,
       image.mimeType,
       image.provider,
       image.providerId,

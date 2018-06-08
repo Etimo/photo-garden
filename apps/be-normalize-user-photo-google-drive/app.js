@@ -9,7 +9,8 @@ function normalizePhotoInfo(fileInfo, user) {
     mimeType: fileInfo.mimeType,
     provider: "Google",
     providerId: fileInfo.id,
-    original: fileInfo
+    original: fileInfo,
+    extension: fileInfo.fileExtension
   };
 }
 

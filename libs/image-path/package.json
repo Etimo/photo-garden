@@ -1,0 +1,12 @@
+{
+  "name": "image-path",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "mkdir-recursive": "^0.4.0",
+    "config": "^1.0.0"
+  }
+}
