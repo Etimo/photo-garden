@@ -4,11 +4,9 @@ const config = require("config");
 const imageDownloader = require("image-downloader");
 const fs = require("fs");
 const mkdir = require("mkdir-recursive");
-const destPath = config.get("images.path");
 const dropbox = require("dropbox-api");
 const dropboxDb = require("dropbox-db");
-
-mkdir.mkdirSync(destPath);
+const imagePath = require("image-path")
 
 async function dropboxHandler(msg) {
   const metadata = JSON.parse(msg.data);
@@ -44,7 +42,8 @@ function normalizePhotoInfo(fileInfo, user) {
     mimeType: "image/jpeg",
     provider: "Dropbox",
     providerId: fileInfo.metadata.id,
-    original: fileInfo
+    original: fileInfo,
+    extension: fileInfo.name
   };
 }
 async function downloadImage(metadata, token) {

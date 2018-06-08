@@ -13,7 +13,7 @@
     "config": "^1.0.0",
     "db": "^1.0.0",
     "image-downloader": "^3.3.0",
-    "mkdir-recursive": "^0.4.0"
+    "image-path": "^1.0.0"
   },
   "devDependencies": {
     "nodemon": "^1.17.3"
