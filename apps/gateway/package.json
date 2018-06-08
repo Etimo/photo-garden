@@ -17,6 +17,7 @@
     "client-sessions": "^0.8.0",
     "communication": "^1.0.0",
     "config": "^1.0.0",
+    "dotenv": "^6.0.0",
     "dropbox-api": "^1.0.0",
     "express": "^4.16.2",
     "google-auth-library": "^0.12.0",
