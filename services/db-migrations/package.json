@@ -14,5 +14,11 @@
   "homepage": "https://github.com/Etimo/photo-garden#readme",
   "devDependencies": {
     "postgrator-cli": "^0.2.2"
+  },
+  "dependencies": {
+    "pg": "^7.4.3",
+    "sequelize": "^4.37.10",
+    "sequelize-cli": "^4.0.0",
+    "uuid": "^3.2.1"
   }
 }

@@ -1,0 +1,10 @@
+{
+  "development": {
+    "username": "the_gardener",
+    "password": "",
+    "database": "photo_garden",
+    "host": "db",
+    "port": 5432,
+    "dialect": "postgres"
+  }
+}
