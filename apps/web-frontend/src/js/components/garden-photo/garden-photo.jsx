@@ -15,7 +15,6 @@ class ConnectedGardenPhoto extends React.Component {
     this.onLongTouch = this.onLongTouch.bind(this);
     this.touchStart = this.touchStart.bind(this);
     this.touchEnd = this.touchEnd.bind(this);
-    // console.log(this.state);
     this.state = { isSelected: false };
   }
   onLongTouch() {
@@ -50,9 +49,9 @@ class ConnectedGardenPhoto extends React.Component {
     return (
       <figure
         className="garden-photo"
-        style={this.getGardenPhotoStyle(this.props.thumbnail)}
+        style={this.getGardenPhotoStyle(this.props.photo.thumbnail)}
         onClick={() => {
-          this.props.selectGardenPhoto(this.props.source);
+          this.props.selectGardenPhoto(this.props.photo);
         }}
         onTouchStart={this.touchStart}
         onTouchEnd={this.touchEnd}
@@ -66,7 +65,7 @@ class ConnectedGardenPhoto extends React.Component {
     if (this.state.isSelected) {
       return (
         <section className="garden-photo-preview-backdrop">
-          <SinglePhoto source={this.props.source} />
+          <SinglePhoto source={this.props.photo} />
         </section>
       );
     }

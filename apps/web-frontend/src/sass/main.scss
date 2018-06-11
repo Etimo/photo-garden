@@ -5,7 +5,7 @@ $font-color: $etimo-blue;
 $photo-border: silver solid;
 
 $header-height: 2em;
-$footer-height: 3em;
+$footer-height: 8em;
 body {
   font-family: Arial, Helvetica Neue, Helvetica, sans-serif;
 }
@@ -30,7 +30,7 @@ body {
   right: 1em;
 }
 main {
-  min-height: 10em;
+
 }
 .text-center {
   text-align: center;
@@ -58,9 +58,13 @@ header {
 }
 
 main {
+  min-height: 100vh;
+  padding-top: $header-height;
+  padding-bottom: $footer-height;
   text-align: left;
   background: white;
-  padding-top: $footer-height;
+  padding-top: 3em;
+  overflow-x: hidden;
 }
 
 footer {
@@ -73,4 +77,21 @@ footer {
   border-top: 1px solid $etimo-cyan;
   // border-top: 1px solid lightgrey;
   background: #fff;
+}
+.item {
+  flex: 0 0 auto; 
+  padding:0 15px;
+  margin: 0;
+}
+button {
+  @extend .item;
+  background-color: white;
+  border: 1px solid $etimo-cyan; 
+  color: $etimo-blue; 
+  padding: 10px 24px; 
+  cursor: pointer; 
+  &:hover {
+      background-color:  $etimo-blue; 
+      color: white;
+  }
 }

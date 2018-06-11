@@ -1,0 +1,38 @@
+$etimo-blue: #253444;
+$etimo-cyan: #1abc9c;
+.edit-box {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overflow-y: hidden; 
+    -webkit-overflow-scrolling: touch;
+    -ms-overflow-style: -ms-autohiding-scrollbar; 
+    height: 80px;
+    margin: 0 -15px;
+}
+.filter-preview {
+    max-width: 80px;
+    figcaption {
+        font-size: .8em;
+        font-weight: bold;
+    }
+    img {
+        max-width: 100%;
+        max-height: 80%;
+    }
+}
+
+.btn-wrapped {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: center;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    -ms-overflow-style: -ms-autohiding-scrollbar; 
+    button {
+    &:not(:last-child) {
+        border-right: none; 
+    }
+}
+}

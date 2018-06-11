@@ -34,25 +34,23 @@ class ConnectedMain extends React.Component {
     this.props.photoClosed();
   }
   render() {
+    console.log('re render');
     return (
       <div className="wrapper">
         <Header />
-        <main className="main">{this.getMain()}</main>
+        {this.getMain()}
         <Footer />
       </div>
     );
   }
 
   getMain() {
-    if (this.props.selectedPhoto !== '') {
-      return (
-        <section onClick={this.props.photoClosed}>
-          <SinglePhoto source={this.props.selectedPhoto} />
-        </section>
-      )
-    };
+    if (this.props.selectedPhoto) {
+      return ( <SinglePhoto />)
+    }
     return (
-      <Garden/>
+      <main className="main">  <Garden/></main>
+    
     );
   }
 
@@ -72,7 +70,7 @@ const Main = connect(
 )(ConnectedMain);
 
 ConnectedMain.propTypes = {
-  selectedPhoto: PropTypes.string.isRequired,
+  selectedPhoto: PropTypes.object,
   photoClosed: PropTypes.func.isRequired
 };
 const element =   (<Provider store={store}><Main /></Provider>);

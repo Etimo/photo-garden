@@ -53,7 +53,7 @@ async function downloadImage(metadata, token) {
     logger.info("Failed to fetch photo: ", photos.error);
     return;
   }
-  logger.info('photo', photos.data);
+  logger.info("photo", photos.data);
   const saved = await savePhotoToDisk(metadata.photo.id, photos.data);
   if (saved) {
     const messageContentOut = {
@@ -64,8 +64,8 @@ async function downloadImage(metadata, token) {
   }
 }
 async function savePhotoToDisk(id, photo) {
-  fs.writeFile(`${destPath}/${id}.jpg`, photo, 'base64', err => {
-    logger.error('Could not save dropbox photo: ', photo.id);
+  fs.writeFile(`${destPath}/${id}.jpg`, photo, "base64", err => {
+    logger.error("Could not save dropbox photo: ", photo.id);
     return false;
   });
   return true;

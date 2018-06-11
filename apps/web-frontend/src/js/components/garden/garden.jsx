@@ -12,9 +12,8 @@ const ConnectedGarden = ({ gardenPhotos }) => (
     {gardenPhotos.map(el => {
       return (
         <GardenPhoto
-          source={el.photo.source}
-          thumbnail={el.photo.thumbnail}
-          key={el.id}
+          photo={el.photo}
+          key= {el.id}
         />
       );
     })}

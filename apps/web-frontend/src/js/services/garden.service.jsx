@@ -19,15 +19,25 @@ const GardenService = () => {
       location.href = 'http://localhost:3000/login';
     }
   }).then(user => {
-    console.log('user', user);
     fetch(`http://localhost:3002/photos?user_id=${user.user}`).then(response => {
       return response.json();
     }).then(jsonResponse => {
       jsonResponse.forEach(photo => {
         store.dispatch(addGardenPhoto({
           photo: {
+            'id': photo.id,
             'source': photo.url,
-            'thumbnail': photo.url
+            'thumbnail': photo.url,
+            'edit': {
+              'contrast': 100,
+              'brightness': 100,
+              'saturate': 100,
+              'sepia': 0,
+              'grayscale': 0,
+              'invert': 0,
+              'hueRotate': 0,
+              'blur': 0
+            }
           }, id: photo.id
         }));
       });
