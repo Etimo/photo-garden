@@ -8,4 +8,4 @@
   },
   yarn2nix ? import yarn2nixSrc { inherit pkgs; },
 }:
-(import ./workspace.nix { inherit yarn2nix; }).gateway
+(import ./workspace.nix { inherit yarn2nix; }).communication
