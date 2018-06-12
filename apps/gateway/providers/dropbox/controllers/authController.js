@@ -21,7 +21,7 @@ exports.start = (req, res) => {
       encodeURIComponent(clientId) +
       "&" +
       "redirect_uri=" +
-      encodeURIComponent("http://localhost:3000/dropbox/auth/finish") +
+      encodeURIComponent(config.get("providers.dropbox.clientRedirectUri")) +
       "&" +
       "state=" +
       sessionId
