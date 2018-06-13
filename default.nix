@@ -8,4 +8,19 @@
   },
   yarn2nix ? import yarn2nixSrc { inherit pkgs; },
 }:
-(import ./workspace.nix { inherit yarn2nix; }).gateway
+let
+  workspace = import ./workspace.nix { inherit yarn2nix; };
+  packages = [
+    "gateway"
+    "be-photo-import"
+    "be-download-user-photo-google-drive"
+    "be-normalize-user-photo-google-drive"
+    "be-download-user-photo-dropbox"
+    "api-photos"
+    "web-frontend"
+  ];
+in
+  pkgs.linkFarm "photo-garden" (map (name: {
+    inherit name;
+    path = workspace."${name}";
+  }) packages)

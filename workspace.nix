@@ -27,6 +27,7 @@ in rec {
 
   image-path = pkg {
     src = ./libs/image-path;
+    workspaceDependencies = { inherit config; };
   };
 
   provider-google-drive-tokens = pkg {
@@ -51,5 +52,34 @@ in rec {
   gateway = pkg {
     src = ./apps/gateway;
     workspaceDependencies = { inherit config communication dropbox-api dropbox-db provider-google-drive-tokens provider-user; };
+  };
+
+  be-photo-import = pkg {
+    src = ./apps/be-photo-import;
+    workspaceDependencies = { inherit communication db image-path; };
+  };
+
+  be-download-user-photo-google-drive = pkg {
+    src = ./apps/be-download-user-photo-google-drive;
+    workspaceDependencies = { inherit communication db image-path; };
+  };
+
+  be-normalize-user-photo-google-drive = pkg {
+    src = ./apps/be-normalize-user-photo-google-drive;
+    workspaceDependencies = { inherit communication db image-path; };
+  };
+
+  be-download-user-photo-dropbox = pkg {
+    src = ./apps/be-download-user-photo-dropbox;
+    workspaceDependencies = { inherit communication db dropbox-api dropbox-db image-path provider-user; };
+  };
+
+  api-photos = pkg {
+    src = ./apps/api-photos;
+    workspaceDependencies = { inherit config db logging; };
+  };
+
+  web-frontend = pkg {
+    src = ./apps/web-frontend;
   };
 }
