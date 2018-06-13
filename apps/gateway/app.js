@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 const providers = require("./providers");
 const logger = require("logging");
 const express = require("express");
