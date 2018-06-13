@@ -9,7 +9,7 @@ in rec {
 
   communication = pkg {
     src = ./libs/communication;
-    workspaceDependencies = { inherit app-name config logging; };
+    workspaceDependencies = { inherit config logging; };
   };
 
   config = pkg {
@@ -31,10 +31,12 @@ in rec {
 
   provider-google-drive-tokens = pkg {
     src = ./libs/provider-google-drive-tokens;
+    workspaceDependencies = { inherit db; };
   };
 
   provider-user = pkg {
     src = ./libs/provider-user;
+    workspaceDependencies = { inherit db; };
   };
 
   dropbox-api = pkg {
@@ -43,10 +45,11 @@ in rec {
 
   dropbox-db = pkg {
     src = ./libs/dropbox-db;
+    workspaceDependencies = { inherit db; };
   };
 
   gateway = pkg {
     src = ./apps/gateway;
-    workspaceDependencies = { inherit config communication dropbox-api; };
+    workspaceDependencies = { inherit config communication dropbox-api dropbox-db provider-google-drive-tokens provider-user; };
   };
 }
