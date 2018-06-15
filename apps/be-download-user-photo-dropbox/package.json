@@ -4,6 +4,7 @@
   "description": "",
   "license": "",
   "main": "app.js",
+  "bin": "app.js",
   "scripts": {
     "start:dev": "nodemon --watch ../../libs --watch . app.js",
     "start:debug": "node --inspect app.js",

@@ -1,13 +1,19 @@
+#!/usr/bin/env node
 const communication = require("communication");
 const logger = require("logging");
 const config = require("config");
 const dbClient = require("db").create("garden");
 const downloader = require("image-downloader");
 const mkdir = require("mkdir-recursive");
-const imagePath = require("image-path")
+const imagePath = require("image-path");
 
 async function insert(image) {
-  const url = imagePath.getUrl(image.owner, image.provider, image.providerId, image.extension)
+  const url = imagePath.getUrl(
+    image.owner,
+    image.provider,
+    image.providerId,
+    image.extension
+  );
   const response = await dbClient.query(
     "INSERT INTO photos(owner, url, mime_type, provider, provider_id, original) VALUES($1, $2, $3, $4, $5, $6) ON CONFLICT ON CONSTRAINT provider_id_unique DO NOTHING RETURNING id",
     [
