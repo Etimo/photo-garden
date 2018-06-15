@@ -3,8 +3,8 @@
   yarn2nixSrc ? pkgs.fetchFromGitHub {
     owner = "teozkr";
     repo = "yarn2nix";
-    rev = "de4ddd1d117af93e8874d4dd4d27d97f70d83328";
-    sha256 = "13hwa4lc99lh46adskb913nfvhvq9cdmym3qi2dls6ch7fal16gq";
+    rev = "5deef049a1d26aae8900a899b614d0f1a687e908";
+    sha256 = "18kzzk1lmq9w4b5wm5w4f3gkd0ziv347l37195f0qllmx8khixzj";
   },
   yarn2nix ? import yarn2nixSrc { inherit pkgs; },
 }:
