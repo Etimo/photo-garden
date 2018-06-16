@@ -3,7 +3,9 @@ const changeCase = require("change-case");
 const logger = require("logging");
 
 const currentEnv = process.env.NODE_ENV || "development";
-const filename = `${__dirname}/../../` + `config.${currentEnv}.json`;
+const filename =
+  process.env.PHOTO_GARDEN_CONFIG ||
+  `${__dirname}/../../` + `config.${currentEnv}.json`;
 const buffer = fs.existsSync(filename) ? fs.readFileSync(filename) : "{}";
 const config = JSON.parse(buffer);
 

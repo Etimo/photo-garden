@@ -22,12 +22,7 @@ services:
       - "5432:5432"
 
   gateway:
-    extends:
-      file: common-service.yml
-      service: base-service
-    build:
-      args:
-        APP_NAME: gateway
+    image: photo-garden-gateway:latest
     environment:
       - PHOTO_GARDEN_PROVIDERS_GOOGLE_DRIVE_CLIENT_ID
       - PHOTO_GARDEN_PROVIDERS_GOOGLE_DRIVE_CLIENT_SECRET
@@ -49,12 +44,7 @@ services:
       - "3010:80"
 
   be-photo-import:
-    extends:
-      file: common-service.yml
-      service: base-service
-    build:
-      args:
-        APP_NAME: be-photo-import
+    image: photo-garden-be-photo-import:latest
     depends_on:
       - queue
       - db
@@ -63,12 +53,7 @@ services:
       - db
 
   be-download-user-photo-google-drive:
-    extends:
-      file: common-service.yml
-      service: base-service
-    build:
-      args:
-        APP_NAME: be-download-user-photo-google-drive
+    image: photo-garden-be-download-user-photo-google-drive:latest
     volumes:
       - photo-storage:/usr/src/photos
     depends_on:
@@ -77,23 +62,13 @@ services:
       - queue
 
   be-normalize-user-photo-google-drive:
-    extends:
-      file: common-service.yml
-      service: base-service
-    build:
-      args:
-        APP_NAME: be-normalize-user-photo-google-drive
+    image: photo-garden-be-normalize-user-photo-google-drive:latest
     depends_on:
       - queue
     links:
       - queue
   be-download-user-photo-dropbox:
-    extends:
-      file: common-service.yml
-      service: base-service
-    build:
-      args:
-        APP_NAME: be-download-user-photo-dropbox
+    image: photo-garden-be-download-user-photo-dropbox:latest
     volumes:
       - photo-storage:/usr/src/photos
     depends_on:
@@ -102,12 +77,7 @@ services:
       - queue
 
   api-photos:
-    extends:
-      file: common-service.yml
-      service: base-service
-    build:
-      args:
-        APP_NAME: api-photos
+    image: photo-garden-api-photos:latest
     ports:
       - "3002:3000"
     depends_on:
@@ -116,12 +86,7 @@ services:
       - db
 
   web-frontend:
-    extends:
-      file: common-service.yml
-      service: base-service
-    build:
-      args:
-        APP_NAME: web-frontend
+    image: photo-garden-web-frontend:latest
     ports:
       - "3001:1234"
 

@@ -1,4 +1,4 @@
-{yarn2nix}:
+{yarn2nix, makeWrapper, coreutils, lib}:
 let
   pkgDefaultArgs = { inherit yarn2nix; };
   pkg = args: import ./yarn-workspace-package.nix (pkgDefaultArgs // args);
@@ -81,5 +81,11 @@ in rec {
 
   web-frontend = pkg {
     src = ./apps/web-frontend;
+    extraBuildInputs = [ makeWrapper ];
+    postInstallHook =
+      ''
+        wrapProgram $out/bin/web-frontend \
+          --prefix PATH : "${lib.makeBinPath [ coreutils ]}"
+      '';
   };
 }

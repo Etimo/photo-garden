@@ -1,8 +1,9 @@
 {
-  "name": "photo-garden-browse",
+  "name": "web-frontend",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "bin": "./run.sh",
   "scripts": {
     "start:dev": "parcel src/index.html"
   },

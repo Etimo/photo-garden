@@ -9,7 +9,7 @@
   yarn2nix ? import yarn2nixSrc { inherit pkgs; },
 }:
 let
-  workspace = import ./workspace.nix { inherit yarn2nix; };
+  workspace = pkgs.callPackage ./workspace.nix { inherit yarn2nix; };
   packages = [
     "gateway"
     "be-photo-import"
@@ -19,8 +19,35 @@ let
     "api-photos"
     "web-frontend"
   ];
-in
-  pkgs.linkFarm "photo-garden" (map (name: {
-    inherit name;
+  dockerImageConfig = pkgs.linkFarm "config" [ {
+    name = "photo-garden.json";
+    path = ./config.development.json;
+  } ];
+  baseImage = pkgs.dockerTools.buildImage {
+    name = "photo-garden-base";
+    contents = [
+      # Debugging
+      pkgs.bash
+      pkgs.coreutils
+      # Shared packages to reduce duplication
+      pkgs.nodejs
+    ];
+  };
+  dockerImages = map (name: {
+    name = "${name}.docker.tar.gz";
+    path = pkgs.dockerTools.buildImage {
+      name = "photo-garden-${name}";
+      fromImage = baseImage;
+      contents = [ dockerImageConfig workspace."${name}" ];
+      config = {
+        Cmd = [ "/bin/${name}" ];
+        Env = [ "PHOTO_GARDEN_CONFIG=/photo-garden.json"];
+      };
+    };
+  }) packages;
+  rawBuilds = map (name: {
+    name = "${name}";
     path = workspace."${name}";
-  }) packages)
+  }) packages;
+in
+  pkgs.linkFarm "photo-garden" (dockerImages ++ rawBuilds)

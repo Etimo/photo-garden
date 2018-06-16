@@ -1,9 +1,7 @@
 version: "2.1"
 services:
   base-service:
-    build:
-      context: .
-      dockerfile: Dockerfile.service.development
+    image: photo-garden-${APP_NAME}
     volumes:
       - ./apps:/usr/src/apps
       - ./libs:/usr/src/libs
