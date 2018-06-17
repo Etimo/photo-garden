@@ -1,7 +1,7 @@
 import React from "react";
 import Editor from "./components/editor/editor"
 const Footer = () => (
-  <footer className="footer ">
+  <footer>
     <Editor/>
   </footer>
 );

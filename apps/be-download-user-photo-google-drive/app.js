@@ -2,7 +2,7 @@ const communication = require("communication");
 const logger = require("logging");
 const config = require("config");
 const imageDownloader = require("image-downloader");
-const imagePath = require("image-path")
+const imagePath = require("image-path");
 
 async function downloadImage(msg) {
   try {
@@ -12,11 +12,16 @@ async function downloadImage(msg) {
     const user = metadata.user;
     const options = {
       url: photo.thumbnailLink,
-      dest: imagePath.getFullPathAndFile(user, 'Google', photo.id, photo.fileExtension)
+      dest: imagePath.getFullPathAndFile(
+        user,
+        "Google",
+        photo.id,
+        photo.fileExtension
+      )
     };
 
     // Create path to download to, if not already existing
-    imagePath.assertPath(user, 'Google', photo.id, photo.fileExtension)
+    imagePath.assertPath(user, "Google", photo.id, photo.fileExtension);
 
     const { filename, image } = await imageDownloader.image(options);
 

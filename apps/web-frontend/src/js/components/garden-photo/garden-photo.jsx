@@ -3,10 +3,9 @@ import gardenphoto from "./garden-photo.scss";
 import SinglePhoto from "../single-photo/single-photo";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import uuidv1 from "uuid";
 import { addGardenPhoto } from "../../actions/index";
 import { selectGardenPhoto } from "../../actions/index";
-
+import createStyle from "../editor/editor-css";
 class ConnectedGardenPhoto extends React.Component {
   touchTimer;
 
@@ -29,34 +28,25 @@ class ConnectedGardenPhoto extends React.Component {
     }
     this.setState({ isSelected: false });
   }
-  getGardenPhotoStyle(thumbnail) {
-    if (thumbnail.indexOf('base64') !== -1) {
-      return {
-        background: `url(${thumbnail}) no-repeat`,
-        backgroundSize: `cover`,
-        boxShadow: "0px 15px 10px -15px lightgrey"
-      };
-    } else {
-      return {
-        background: `url(${thumbnail}) no-repeat`,
-        backgroundSize: `cover`,
-        boxShadow: "0px 15px 10px -15px lightgrey"
-      };
-    }
-
-  }
   render() {
     return (
       <figure
         className="garden-photo"
-        style={this.getGardenPhotoStyle(this.props.photo.thumbnail)}
         onClick={() => {
           this.props.selectGardenPhoto(this.props.photo);
         }}
         onTouchStart={this.touchStart}
         onTouchEnd={this.touchEnd}
+        style={createStyle(this.props.photo.edit)}
       >
+        <img src={this.props.photo.thumbnail} className="garden-photo-image" />
         {this.renderSelected()}
+        <figcaption className="garden-photo-info">
+          <ul>
+            <li className="garden-photo-icon">#etimo</li>
+            <li className="garden-photo-icon">#stockholm</li>
+          </ul>
+        </figcaption>
       </figure>
     );
   }

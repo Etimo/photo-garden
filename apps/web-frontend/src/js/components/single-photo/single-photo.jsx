@@ -3,7 +3,7 @@ import singlephoto from "./single-photo.scss";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { photoClosed } from "../../actions/index";
-import Editor from "../editor/editor";
+import createStyle from "../editor/editor-css";
 class ConnectedSinglePhoto extends React.Component {
   constructor(props) {
     super(props);
@@ -12,27 +12,22 @@ class ConnectedSinglePhoto extends React.Component {
   photoClosed() {
     this.props.photoClosed();
   }
-  createStyle(edit) {
-    return {
-      filter: `contrast(${edit.contrast}%) brightness(${edit.brightness}%) saturate(${edit.saturate}%) grayscale(${edit.grayscale}%) sepia(${edit.sepia}%) invert(${edit.invert}%) hue-rotate(${edit.hueRotate}deg) blur(${edit.blur}px)`,
-      WebKitfilter: `contrast(${edit.contrast}%) brightness(${edit.brightness}%) saturate(${edit.saturate}%) grayscale(${edit.grayscale}%) sepia(${edit.sepia}%) invert(${edit.invert}%) hue-rotate(${edit.hueRotate}deg) blur(${edit.blur}px)`,
-    }
-  }
 
-  getClose() {
-    if (this.props.selectedPhoto) {
-      return (
-        <button onClick={this.props.photoClosed}>X</button>
-      )
-    }
-  }
   render() {
     return (
-
-      <figure className="garden-photo-preview" style={this.createStyle(this.props.selectedPhoto.edit)}>
+      <div>
         <button className="back-button" onClick={this.props.photoClosed}>X</button>
-        <img src={this.props.selectedPhoto.source} />
-      </figure>
+        <figure className="single-photo" style={createStyle(this.props.selectedPhoto.edit)}>
+          <img src={this.props.selectedPhoto.source} className="single-photo-image" />
+          <figcaption className="single-photo-info">
+            <ul>
+              <li className="single-photo-tags"><i className="fas fa-heart"></i> Tag1</li>
+              <li className="single-photo-tags"><i className="fas fa-comment"></i> Tag2</li>
+              <li className="single-photo-tags"><i className="fas fa-comment"></i> Tag3</li>
+            </ul>
+          </figcaption>
+        </figure>
+      </div>
     );
   };
 }

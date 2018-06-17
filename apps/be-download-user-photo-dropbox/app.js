@@ -6,7 +6,7 @@ const fs = require("fs");
 const mkdir = require("mkdir-recursive");
 const dropbox = require("dropbox-api");
 const dropboxDb = require("dropbox-db");
-const imagePath = require("image-path")
+const imagePath = require("image-path");
 
 async function dropboxHandler(msg) {
   const metadata = JSON.parse(msg.data);
@@ -15,9 +15,7 @@ async function dropboxHandler(msg) {
     logger.error("Failed to get token for: ", metadata.photo);
     return;
   }
-
-  // downloadImage(metadata, token);
-  normalize(metadata, token);
+  downloadImage(metadata, token);
 }
 async function normalize(metadata, token) {
   const thumbnails = await dropbox.getThumbnail(
@@ -38,36 +36,59 @@ async function normalize(metadata, token) {
 function normalizePhotoInfo(fileInfo, user) {
   return {
     owner: user,
-    url: `data:image/jpeg;base64,${fileInfo.thumbnail}`,
     mimeType: "image/jpeg",
     provider: "Dropbox",
     providerId: fileInfo.metadata.id,
     original: fileInfo,
-    extension: fileInfo.name
+    extension: "jpg"
   };
 }
 async function downloadImage(metadata, token) {
-  const photos = await dropbox.getFile(token, metadata.photo.id);
+  logger.info("Metadata", metadata);
+  const photos = await dropbox.getFile(token, metadata.photo.path_lower);
   if (!photos.success) {
-    logger.info("Failed to fetch photo: ", photos.error);
+    logger.warn("Failed to fetch photo: ", photos.error);
     return;
   }
-  logger.info("photo", photos.data);
-  const saved = await savePhotoToDisk(metadata.photo.id, photos.data);
-  if (saved) {
+
+  imagePath.assertPath(metadata.user, "Dropbox", metadata.photo.id, "jpg");
+
+  const saved = await savePhotoToDisk(
+    metadata.user,
+    metadata.photo.id,
+    photos.data.entries[0].thumbnail
+  );
+  if (saved.success) {
     const messageContentOut = {
       id: metadata.photo.id,
-      extension: "jpg"
+      extension: ".jpg"
     };
     communication.publish("user-photo--downloaded", messageContentOut);
+    normalize(metadata, token);
   }
 }
-async function savePhotoToDisk(id, photo) {
-  fs.writeFile(`${destPath}/${id}.jpg`, photo, "base64", err => {
-    logger.error("Could not save dropbox photo: ", photo.id);
-    return false;
+async function savePhotoToDisk(user, id, photo) {
+  return new Promise((resolve, reject) => {
+    fs.writeFile(
+      imagePath.getFullPathAndFile(user, "Dropbox", id, "jpg"),
+      photo,
+      "base64",
+      err => {
+        logger.error("Could not save dropbox photo: ", id, err);
+        if (err) {
+          resolve({
+            success: false,
+            error: err
+          });
+        } else {
+          resolve({
+            success: true,
+            data: null
+          });
+        }
+      }
+    );
   });
-  return true;
 }
 
 const options = {

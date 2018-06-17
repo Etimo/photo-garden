@@ -36,7 +36,7 @@ class ConnectedMain extends React.Component {
   render() {
     console.log('re render');
     return (
-      <div className="wrapper">
+      <div>
         <Header />
         {this.getMain()}
         <Footer />
@@ -46,10 +46,10 @@ class ConnectedMain extends React.Component {
 
   getMain() {
     if (this.props.selectedPhoto) {
-      return ( <SinglePhoto />)
+      return ( <main className="container-single"><SinglePhoto /></main>)
     }
     return (
-      <main className="main">  <Garden/></main>
+      <main className="container"><Garden/></main>
     
     );
   }
