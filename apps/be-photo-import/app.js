@@ -7,7 +7,6 @@ const mkdir = require("mkdir-recursive");
 const imagePath = require("image-path");
 
 async function insert(image) {
-  logger.info(image.extension);
   const url = imagePath.getUrl(
     image.owner,
     image.provider,
@@ -27,6 +26,21 @@ async function insert(image) {
   );
   return response.rows[0] !== undefined ? response.rows[0].id : undefined;
 }
+async function storeColors(photoId, image) {
+logger.info(image.color, 'color', photoId);
+  if (image.color)
+    var response = await dbClient.query(
+      "insert into photo_color(photo_id, r, g, b, a) values($1, $2, $3, $4, $5)",
+      [
+        photoId,
+        image.color.r,
+        image.color.g,
+        image.color.b,
+        image.color.a,
+      ]
+    );
+  return response.rows[0] !== undefined ? response.rows[0].id : undefined;
+}
 
 async function addImage(msg) {
   try {
@@ -34,7 +48,9 @@ async function addImage(msg) {
     const id = await insert(image);
     // await channel.ack(msg);
     if (id !== undefined) {
-      logger.info(`Imported image for user ${image.owner} as ${id}`);
+      const colorId = await storeColors(id, image);
+      // logger.info(`Imported image for user ${image.owner} as ${id}`);
+
     }
   } catch (err) {
     // await channel.nack(msg);

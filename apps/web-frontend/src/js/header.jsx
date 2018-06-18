@@ -1,10 +1,12 @@
 
 import React from 'react';
-const Header = () =>(
+import Sort from "./components/sort/sort.component"
+
+const Header = () => (
     <header>
         <h5>Photo garden</h5>
-        <div className="icon-menu right"> </div>
+        <Sort />
     </header>
-) 
+)
 
 export default Header;

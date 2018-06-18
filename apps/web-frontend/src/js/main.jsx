@@ -46,7 +46,7 @@ class ConnectedMain extends React.Component {
 
   getMain() {
     if (this.props.selectedPhoto) {
-      return ( <main className="container-single"><SinglePhoto /></main>)
+      return ( <main className="container"><SinglePhoto /></main>)
     }
     return (
       <main className="container"><Garden/></main>

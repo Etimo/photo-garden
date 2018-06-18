@@ -6,7 +6,6 @@ const EditorReducer = (state = {
 }, action) => {
   switch (action.type) {
     case "EDITOR_SHOW":
-    console.log('show');
       return Object.assign({}, state, { show: action.show });
     case "EDITOR_MODE":
       return Object.assign({}, state, { mode: action.mode });

@@ -7,6 +7,9 @@ const mkdir = require("mkdir-recursive");
 const dropbox = require("dropbox-api");
 const dropboxDb = require("dropbox-db");
 const imagePath = require("image-path");
+const photoColor = require("photo-color");
+
+
 
 async function dropboxHandler(msg) {
   const metadata = JSON.parse(msg.data);
@@ -29,22 +32,23 @@ async function normalize(metadata, token) {
 
   const thumbnail = thumbnails.data.entries[0];
   if (thumbnail) {
-    const normalized = normalizePhotoInfo(thumbnail, metadata.user);
+     const color = photoColor.getAverageFromBase64(thumbnail.thumbnail);
+    const normalized = normalizePhotoInfo(thumbnail, color, metadata.user);
     communication.publish("user-photo--normalized", normalized);
   }
 }
-function normalizePhotoInfo(fileInfo, user) {
+function normalizePhotoInfo(fileInfo, color, user) {
   return {
     owner: user,
     mimeType: "image/jpeg",
     provider: "Dropbox",
     providerId: fileInfo.metadata.id,
     original: fileInfo,
-    extension: "jpg"
+    extension: "jpg",
+    color: color
   };
 }
 async function downloadImage(metadata, token) {
-  logger.info("Metadata", metadata);
   const photos = await dropbox.getFile(token, metadata.photo.path_lower);
   if (!photos.success) {
     logger.warn("Failed to fetch photo: ", photos.error);
@@ -74,7 +78,6 @@ async function savePhotoToDisk(user, id, photo) {
       photo,
       "base64",
       err => {
-        logger.error("Could not save dropbox photo: ", id, err);
         if (err) {
           resolve({
             success: false,

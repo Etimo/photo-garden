@@ -13,7 +13,6 @@ export const updateGardenPhoto = (photo) => ({
 export const photoClosed = () => ({
   type: "PHOTO_CLOSED"
 });
-
 export const showEditor = show => ({
   type: "EDITOR_SHOW",
   show: show
@@ -21,4 +20,10 @@ export const showEditor = show => ({
 export const editorMode = mode => ({
   type: "EDITOR_MODE",
   mode: mode
+});
+export const reverseGarden = () => ({
+  type: "GARDEN_REVERSE"
+});
+export const sortByColor = () => ({
+  type: "GARDEN_COLORSORT"
 });

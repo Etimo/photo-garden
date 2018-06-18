@@ -23,7 +23,7 @@ const GardenService = () => {
       return response.json();
     }).then(jsonResponse => {
       jsonResponse.forEach(photo => {
-        store.dispatch(addGardenPhoto({
+        let gardenPhoto = {
           photo: {
             'id': photo.id,
             'source': photo.url,
@@ -39,7 +39,17 @@ const GardenService = () => {
               'blur': 0
             }
           }, id: photo.id
-        }));
+        };
+        if (photo.r) {
+          gardenPhoto = Object.assign({}, gardenPhoto, {
+            color: {
+              r: photo.r,
+              g: photo.g,
+              b: photo.b
+            }
+          })
+        }
+        store.dispatch(addGardenPhoto(gardenPhoto));
       });
     });
   });
