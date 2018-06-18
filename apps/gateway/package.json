@@ -13,6 +13,7 @@
   "author": "Etimo",
   "license": "MIT",
   "dependencies": {
+    "axios": "^0.18.0",
     "change-case": "^3.0.2",
     "client-sessions": "^0.8.0",
     "communication": "^1.0.0",
@@ -24,7 +25,6 @@
     "googleapis": "^23.0.0",
     "provider-google-drive-tokens": "^1.0.0",
     "provider-user": "^1.0.0",
-    "request": "^2.83.0",
     "rhea": "^0.2.9",
     "stomp-client": "^0.9.0",
     "stompit": "^0.25.0"

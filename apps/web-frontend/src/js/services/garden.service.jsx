@@ -27,7 +27,8 @@ const GardenService = () => {
         store.dispatch(addGardenPhoto({
           photo: {
             'source': photo.url,
-            'thumbnail': photo.url
+            'thumbnail': photo.url_thumbnail,
+            'full': photo.url
           }, id: photo.id
         }));
       });

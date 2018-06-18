@@ -2,6 +2,7 @@ import React from "react";
 import singlephoto from "./single-photo.scss";
 
 const SinglePhoto = ({source}) => {
+  console.log(source)
   return (
       <figure className="garden-photo-preview">
         <img src={source} />

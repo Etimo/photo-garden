@@ -10,22 +10,31 @@ async function downloadImage(msg) {
     const metadata = JSON.parse(msg.data);
     const photo = metadata.photo;
     const user = metadata.user;
-    const options = {
-      url: photo.thumbnailLink,
-      dest: imagePath.getFullPathAndFile(user, 'Google', photo.id, photo.fileExtension)
-    };
 
     // Create path to download to, if not already existing
     imagePath.assertPath(user, 'Google', photo.id, photo.fileExtension)
 
-    const { filename, image } = await imageDownloader.image(options);
+    // Download thumbnail
+    let options = {
+      url: photo.thumbnailLink,
+      dest: imagePath.getFullPathAndFile(user, 'Google', photo.id + "-thumbnail", photo.fileExtension)
+    };
+    await imageDownloader.image(options);
+    logger.info(`Downloaded thumbnail image ${photo.id} to ${options.dest}`);
+
+    // Download full image
+    options = {
+      url: photo.webContentLink,
+      dest: imagePath.getFullPathAndFile(user, 'Google', photo.id, photo.fileExtension)
+    };
+    await imageDownloader.image(options);
 
     const messageContentOut = {
       id: photo.id,
       extension: photo.fileExtension
     };
+    logger.info(`Downloaded full image ${photo.id} to ${options.dest}`);
 
-    logger.info(`Downloaded image ${photo.id} to ${options.dest}`);
     communication.publish("user-photo--downloaded", messageContentOut);
   } catch (err) {
     // await channel.nack(msg);

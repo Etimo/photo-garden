@@ -6,7 +6,7 @@ async function findAll(filters) {
     filters = {};
   }
   const response = await dbClient.query(
-    "SELECT id, url, mime_type FROM photos WHERE (owner=$1 OR $1 IS NULL)",
+    "SELECT id, url, url_thumbnail, mime_type FROM photos WHERE (owner=$1 OR $1 IS NULL)",
     [filters.owner]
   );
   return response.rows;
