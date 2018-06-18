@@ -9,8 +9,6 @@ const dropboxDb = require("dropbox-db");
 const imagePath = require("image-path");
 const photoColor = require("photo-color");
 
-
-
 async function dropboxHandler(msg) {
   const metadata = JSON.parse(msg.data);
   const token = await dropboxDb.getDropboxTokenByUserId(metadata.user);
@@ -32,7 +30,7 @@ async function normalize(metadata, token) {
 
   const thumbnail = thumbnails.data.entries[0];
   if (thumbnail) {
-     const color = photoColor.getAverageFromBase64(thumbnail.thumbnail);
+    const color = photoColor.getAverageFromBase64(thumbnail.thumbnail);
     const normalized = normalizePhotoInfo(thumbnail, color, metadata.user);
     communication.publish("user-photo--normalized", normalized);
   }

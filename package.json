@@ -9,20 +9,21 @@
     "libs/*"
   ],
   "scripts": {
-    "prettier": "prettier --write \"**/*.{js,json,css,md}\"",
-    "pm2": "docker exec -ti photogarden_services_1 pm2"
+    "precommit": "lint-staged"
   },
-  "pre-commit": [
-    "prettier"
-  ],
+  "lint-staged": {
+    "*.{js,json,css,md}": [
+      "prettier --write",
+      "git add"
+    ]
+  },
   "dependencies": {},
   "devDependencies": {
     "eslint": "^4.19.1",
     "eslint-plugin-jasmine": "^2.9.3",
     "handlebars": "^4.0.11",
     "husky": "^0.14.3",
-    "lint-staged": "^7.0.0",
-    "pre-commit": "^1.2.2",
+    "lint-staged": "^7.2.0",
     "prettier": "^1.11.1",
     "pretty-quick": "^1.4.1"
   }

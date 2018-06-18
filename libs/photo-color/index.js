@@ -1,10 +1,10 @@
-const jpeg = require('jpeg-js');
+const jpeg = require("jpeg-js");
 
-const getAverageFromBase64 = (base64String) => {
-  return getAverageFromBuffer(Buffer.from(base64String, 'base64'));
-}
+const getAverageFromBase64 = base64String => {
+  return getAverageFromBuffer(Buffer.from(base64String, "base64"));
+};
 
-const getAverageFromBuffer = (imagebuffer) => {
+const getAverageFromBuffer = imagebuffer => {
   const buffer = jpeg.decode(imagebuffer);
   let i = 0;
   let count = 0;
@@ -14,7 +14,7 @@ const getAverageFromBuffer = (imagebuffer) => {
     g: 0,
     b: 0,
     a: 0
-  }
+  };
 
   while (i < buffer.data.length) {
     count++;
@@ -30,7 +30,7 @@ const getAverageFromBuffer = (imagebuffer) => {
   rgb.a = ~~(rgb.a / count);
 
   return rgb;
-}
+};
 
 module.exports = {
   getAverageFromBase64,
