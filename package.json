@@ -9,12 +9,11 @@
     "libs/*"
   ],
   "scripts": {
-    "prettier": "prettier --write \"**/*.{js,json,css,md}\"",
-    "pm2": "docker exec -ti photogarden_services_1 pm2"
+    "precommit": "lint-staged"
   },
-  "pre-commit": [
-    "prettier"
-  ],
+  "lint-staged": {
+    "*.{js,json,css,md}": ["prettier --write", "git add"]
+  },
   "dependencies": {},
   "devDependencies": {
     "eslint": "^4.19.1",
