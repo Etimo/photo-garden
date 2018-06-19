@@ -13,7 +13,6 @@
   "author": "Etimo",
   "license": "MIT",
   "dependencies": {
-    "axios": "^0.18.0",
     "change-case": "^3.0.2",
     "client-sessions": "^0.8.0",
     "communication": "^1.0.0",
@@ -21,8 +20,10 @@
     "dropbox-api": "^1.0.0",
     "dropbox-db": "^1.0.0",
     "express": "^4.16.2",
+    "form-data": "^2.3.2",
     "google-auth-library": "^0.12.0",
     "googleapis": "^23.0.0",
+    "instagram-node": "^0.5.8",
     "provider-google-drive-tokens": "^1.0.0",
     "provider-user": "^1.0.0",
     "rhea": "^0.2.9",

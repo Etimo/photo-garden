@@ -284,6 +284,10 @@ async-retry@^1.2.1:
   dependencies:
     retry "0.10.1"
 
+async@0.2.x, async@~0.2.7:
+  version "0.2.10"
+  resolved "https://registry.yarnpkg.com/async/-/async-0.2.10.tgz#b6bbe0b0674b9d719708ca38de8c237cb526c3d1"
+
 async@2.6.0:
   version "2.6.0"
   resolved "https://registry.yarnpkg.com/async/-/async-2.6.0.tgz#61a29abb6fcc026fea77e56d1c6ec53a795951f4"
@@ -299,10 +303,6 @@ async@^2.5.0:
   resolved "https://registry.yarnpkg.com/async/-/async-2.6.1.tgz#b245a23ca71930044ec53fa46aa00a3e87c6a610"
   dependencies:
     lodash "^4.17.10"
-
-async@~0.2.7:
-  version "0.2.10"
-  resolved "https://registry.yarnpkg.com/async/-/async-0.2.10.tgz#b6bbe0b0674b9d719708ca38de8c237cb526c3d1"
 
 async@~1.0.0:
   version "1.0.0"
@@ -1607,6 +1607,10 @@ colormin@^1.0.5:
     css-color-names "0.0.4"
     has "^1.0.1"
 
+colors@0.6.0-1:
+  version "0.6.0-1"
+  resolved "https://registry.yarnpkg.com/colors/-/colors-0.6.0-1.tgz#6dbb68ceb8bc60f2b313dcc5ce1599f06d19e67a"
+
 colors@1.0.x:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/colors/-/colors-1.0.3.tgz#0433f44d809680fdeb60ed260f1b0c262e82a40b"
@@ -2718,20 +2722,20 @@ forever-agent@~0.6.1:
   version "0.6.1"
   resolved "https://registry.yarnpkg.com/forever-agent/-/forever-agent-0.6.1.tgz#fbc71f0c41adeb37f96c577ad1ed42d8fdacca91"
 
+form-data@^2.3.2, form-data@~2.3.1:
+  version "2.3.2"
+  resolved "https://registry.yarnpkg.com/form-data/-/form-data-2.3.2.tgz#4970498be604c20c005d4f5c23aecd21d6b49099"
+  dependencies:
+    asynckit "^0.4.0"
+    combined-stream "1.0.6"
+    mime-types "^2.1.12"
+
 form-data@~2.1.1:
   version "2.1.4"
   resolved "https://registry.yarnpkg.com/form-data/-/form-data-2.1.4.tgz#33c183acf193276ecaa98143a69e94bfee1750d1"
   dependencies:
     asynckit "^0.4.0"
     combined-stream "^1.0.5"
-    mime-types "^2.1.12"
-
-form-data@~2.3.1:
-  version "2.3.2"
-  resolved "https://registry.yarnpkg.com/form-data/-/form-data-2.3.2.tgz#4970498be604c20c005d4f5c23aecd21d6b49099"
-  dependencies:
-    asynckit "^0.4.0"
-    combined-stream "1.0.6"
     mime-types "^2.1.12"
 
 forwarded@~0.1.2:
@@ -2785,6 +2789,13 @@ function-bind@^1.0.2, function-bind@^1.1.0, function-bind@^1.1.1:
 functional-red-black-tree@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/functional-red-black-tree/-/functional-red-black-tree-1.0.1.tgz#1b0ab3bd553b2a0d6399d29c0e3ea0b252078327"
+
+fwk@1.0.x:
+  version "1.0.11"
+  resolved "https://registry.yarnpkg.com/fwk/-/fwk-1.0.11.tgz#098c8f7172ec25134ec86a1473affa364d404347"
+  dependencies:
+    async "0.2.x"
+    should "0.6.x"
 
 gauge@~2.7.3:
   version "2.7.4"
@@ -3307,6 +3318,13 @@ inquirer@^3.0.6:
     string-width "^2.1.0"
     strip-ansi "^4.0.0"
     through "^2.3.6"
+
+instagram-node@^0.5.8:
+  version "0.5.8"
+  resolved "https://registry.yarnpkg.com/instagram-node/-/instagram-node-0.5.8.tgz#7317aa23f816654c0b003ace51d81a509af5ecbf"
+  dependencies:
+    colors "0.6.0-1"
+    fwk "1.0.x"
 
 invariant@^2.0.0, invariant@^2.2.2:
   version "2.2.4"
@@ -6231,6 +6249,10 @@ shebang-command@^1.2.0:
 shebang-regex@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/shebang-regex/-/shebang-regex-1.0.0.tgz#da42f49740c0b42db2ca9728571cb190c98efea3"
+
+should@0.6.x:
+  version "0.6.3"
+  resolved "https://registry.yarnpkg.com/should/-/should-0.6.3.tgz#d4b55335c8908f3a6c47970b687f750372acdc73"
 
 sigmund@^1.0.1:
   version "1.0.1"
