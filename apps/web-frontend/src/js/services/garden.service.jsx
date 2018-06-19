@@ -11,10 +11,7 @@ const GardenService = () => {
       credentials: 'include'
     }
   ).catch(err => {
-    // if 401 redirect to login
-    console.log('err', err);
   }).then(response => {
-    console.log('Response', response);
     if (response.status < 400) { return response.json(); } else {
       location.href = 'http://localhost:3000/login';
     }

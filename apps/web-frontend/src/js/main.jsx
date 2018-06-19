@@ -34,7 +34,6 @@ class ConnectedMain extends React.Component {
     this.props.photoClosed();
   }
   render() {
-    console.log('re render');
     return (
       <div>
         <Header />

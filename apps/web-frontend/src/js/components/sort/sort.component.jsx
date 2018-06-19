@@ -23,7 +23,7 @@ ConnectedSort.propTypes = {
     sortByColor: PropTypes.func.isRequired
 };
 const Sort = connect(
-    state => { },
+    state => { return {}; },
     dispatch => {
         return {
             reverseGarden: () => dispatch(reverseGarden()),
