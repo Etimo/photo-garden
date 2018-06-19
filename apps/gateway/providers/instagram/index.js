@@ -5,7 +5,7 @@ const authController = require("./controllers/authController");
 const subscriptionController = require("./controllers/subscriptionController");
 const config = require("config");
 
-console.log(config.get("providers.instagram.clientSecret"))
+console.log(config.get("providers.instagram.clientSecret"));
 // Don't start unless config has been set
 if (
   !config.hasAll([

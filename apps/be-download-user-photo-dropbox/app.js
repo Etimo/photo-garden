@@ -6,7 +6,7 @@ const fs = require("fs");
 const mkdir = require("mkdir-recursive");
 const dropbox = require("dropbox-api");
 const dropboxDb = require("dropbox-db");
-const imagePath = require("image-path")
+const imagePath = require("image-path");
 
 async function dropboxHandler(msg) {
   const metadata = JSON.parse(msg.data);
@@ -52,7 +52,7 @@ async function downloadImage(metadata, token) {
     logger.info("Failed to fetch photo: ", photos.error);
     return;
   }
-  logger.info('photo', photos.data);
+  logger.info("photo", photos.data);
   const saved = await savePhotoToDisk(metadata.photo.id, photos.data);
   if (saved) {
     const messageContentOut = {
@@ -63,8 +63,8 @@ async function downloadImage(metadata, token) {
   }
 }
 async function savePhotoToDisk(id, photo) {
-  fs.writeFile(`${destPath}/${id}.jpg`, photo, 'base64', err => {
-    logger.error('Could not save dropbox photo: ', photo.id);
+  fs.writeFile(`${destPath}/${id}.jpg`, photo, "base64", err => {
+    logger.error("Could not save dropbox photo: ", photo.id);
     return false;
   });
   return true;

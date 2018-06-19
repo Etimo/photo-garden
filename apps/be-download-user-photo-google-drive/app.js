@@ -2,7 +2,7 @@ const communication = require("communication");
 const logger = require("logging");
 const config = require("config");
 const imageDownloader = require("image-downloader");
-const imagePath = require("image-path")
+const imagePath = require("image-path");
 
 async function downloadImage(msg) {
   try {
@@ -12,12 +12,17 @@ async function downloadImage(msg) {
     const user = metadata.user;
 
     // Create path to download to, if not already existing
-    imagePath.assertPath(user, 'Google', photo.id, photo.fileExtension)
+    imagePath.assertPath(user, "Google", photo.id, photo.fileExtension);
 
     // Download thumbnail
     let options = {
       url: photo.thumbnailLink,
-      dest: imagePath.getFullPathAndFile(user, 'Google', photo.id + "-thumbnail", photo.fileExtension)
+      dest: imagePath.getFullPathAndFile(
+        user,
+        "Google",
+        photo.id + "-thumbnail",
+        photo.fileExtension
+      )
     };
     await imageDownloader.image(options);
     logger.info(`Downloaded thumbnail image ${photo.id} to ${options.dest}`);
@@ -25,7 +30,12 @@ async function downloadImage(msg) {
     // Download full image
     options = {
       url: photo.webContentLink,
-      dest: imagePath.getFullPathAndFile(user, 'Google', photo.id, photo.fileExtension)
+      dest: imagePath.getFullPathAndFile(
+        user,
+        "Google",
+        photo.id,
+        photo.fileExtension
+      )
     };
     await imageDownloader.image(options);
 

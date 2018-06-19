@@ -78,7 +78,7 @@ const success = promise =>
 module.exports = {
   getPhotos: (token, nextPageToken) => {
     return success(
-      getFrom(token, 'api.dropboxapi.com', "/2/files/search", {
+      getFrom(token, "api.dropboxapi.com", "/2/files/search", {
         path: "",
         query: ".jpg",
         start: nextPageToken,
@@ -90,39 +90,34 @@ module.exports = {
 
   getUserInfo: (token, accountId) => {
     return success(
-      getFrom(token, 'api.dropboxapi.com', '/2/users/get_account', {
+      getFrom(token, "api.dropboxapi.com", "/2/users/get_account", {
         account_id: accountId
       })
     );
   },
   getThumbnail: (token, path) => {
     return success(
-      getFrom(
-        token,
-        'content.dropboxapi.com',
-        '/2/files/get_thumbnail_batch',
-        {
-          entries: [
-            {
-              path: path,
-              format: 'jpeg',
-              size: 'w480h320',
-              mode: "bestfit"
-            }
-          ]
-        }
-      )
+      getFrom(token, "content.dropboxapi.com", "/2/files/get_thumbnail_batch", {
+        entries: [
+          {
+            path: path,
+            format: "jpeg",
+            size: "w480h320",
+            mode: "bestfit"
+          }
+        ]
+      })
     );
   },
   getFile: (token, path) => {
     return success(
       getFrom(
         token,
-        'content.dropboxapi.com',
+        "content.dropboxapi.com",
         "/2/files/get_thumbnail_batch",
         null,
         {
-          "path": path,
+          path: path
         }
       )
     );
