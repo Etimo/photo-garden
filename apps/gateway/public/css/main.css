@@ -24,15 +24,33 @@ main {
   height: 80vh;
 }
 
+.provider {
+  padding: 4px;
+  color: black;
+  border-radius: 4px;
+}
+
+.provider.dropbox {
+  color: #007ee5;
+}
+
+.provider.instagram {
+  color: #c13584;
+}
+
+.provider.google-drive {
+  color: #fbbc05;
+}
+
 .abcRioButtonLightBlue {
   width: 100% !important;
-  height: 140px;
   display: inline-block;
-  padding-bottom: 0 !important;
+  padding: 12px 0;
   color: #fff;
   background: #253444;
   text-decoration: none;
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  margin: 10px 0;
 }
 .abcRioButtonLightBlue span {
   font-size: 16px !important;
