@@ -10,7 +10,7 @@ async function downloadImage(msg) {
     const metadata = JSON.parse(msg.data);
     const photo = metadata.photo;
     const user = metadata.user;
-    const extension = "jpg"
+    const extension = "jpg";
 
     // Create path to download to, if not already existing
     imagePath.assertPath(user, "Instagram", photo.id, extension);
@@ -31,12 +31,7 @@ async function downloadImage(msg) {
     // Download full image
     options = {
       url: photo.images.standard_resolution.url,
-      dest: imagePath.getFullPathAndFile(
-        user,
-        "Instagram",
-        photo.id,
-        extension
-      )
+      dest: imagePath.getFullPathAndFile(user, "Instagram", photo.id, extension)
     };
     await imageDownloader.image(options);
 
@@ -64,4 +59,4 @@ function setup() {
 
 module.exports = {
   setup
-}
+};

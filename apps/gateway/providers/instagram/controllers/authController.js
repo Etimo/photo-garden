@@ -32,11 +32,13 @@ module.exports.authFinish = async (req, res) => {
         remaining,
         limit
       ) {
-        console.log(medias[0])
-        medias.forEach(media => communication.publish("user-photo--instagram--received", {
-          user: userId,
-          photo: media
-        }));
+        console.log(medias[0]);
+        medias.forEach(media =>
+          communication.publish("user-photo--instagram--received", {
+            user: userId,
+            photo: media
+          })
+        );
       });
       res.send("OK");
     }
