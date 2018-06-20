@@ -1,0 +1,21 @@
+{
+  "name": "be-instagram",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "start:dev": "nodemon --watch ../../libs --watch . app.js",
+    "start:debug": "node --inspect app.js",
+    "start:prod": "node app.js"
+  },
+  "dependencies": {
+    "communication": "^1.0.0",
+    "config": "^1.0.0",
+    "image-downloader": "^3.3.0",
+    "image-path": "^1.0.0",
+    "logging": "^1.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^1.17.3"
+  }
+}

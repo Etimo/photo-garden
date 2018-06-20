@@ -2,6 +2,7 @@ const config = require("config");
 const api = require("../client").api;
 const logger = require("logging");
 const providerUser = require("provider-user");
+const communication = require("communication");
 
 const redirectUri = config.get("providers.instagram.clientRedirectUri");
 
@@ -31,11 +32,11 @@ module.exports.authFinish = async (req, res) => {
         remaining,
         limit
       ) {
-        console.log(err);
-        console.log(medias);
-        console.log(pagination);
-        console.log(remaining);
-        console.log(limit);
+        console.log(medias[0])
+        medias.forEach(media => communication.publish("user-photo--instagram--received", {
+          user: userId,
+          photo: media
+        }));
       });
       res.send("OK");
     }

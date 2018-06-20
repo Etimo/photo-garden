@@ -78,6 +78,20 @@ services:
     links:
       - queue
 
+  be-instagram:
+    extends:
+      file: common-service.yml
+      service: base-service
+    build:
+      args:
+        APP_NAME: be-instagram
+    volumes:
+      - photo-storage:/usr/src/photos
+    depends_on:
+      - queue
+    links:
+      - queue
+
   be-normalize-user-photo-google-drive:
     extends:
       file: common-service.yml
