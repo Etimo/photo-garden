@@ -10,18 +10,19 @@ async function downloadImage(msg) {
     const metadata = JSON.parse(msg.data);
     const photo = metadata.photo;
     const user = metadata.user;
+    const extension = "jpg";
 
     // Create path to download to, if not already existing
-    imagePath.assertPath(user, "Google", photo.id, photo.fileExtension);
+    imagePath.assertPath(user, "Instagram", photo.id, extension);
 
     // Download thumbnail
     let options = {
-      url: photo.thumbnailLink,
+      url: photo.images.thumbnail.url,
       dest: imagePath.getFullPathAndFile(
         user,
-        "Google",
+        "Instagram",
         photo.id + "-thumbnail",
-        photo.fileExtension
+        extension
       )
     };
     await imageDownloader.image(options);
@@ -29,19 +30,14 @@ async function downloadImage(msg) {
 
     // Download full image
     options = {
-      url: photo.webContentLink,
-      dest: imagePath.getFullPathAndFile(
-        user,
-        "Google",
-        photo.id,
-        photo.fileExtension
-      )
+      url: photo.images.standard_resolution.url,
+      dest: imagePath.getFullPathAndFile(user, "Instagram", photo.id, extension)
     };
     await imageDownloader.image(options);
 
     const messageContentOut = {
       id: photo.id,
-      extension: photo.fileExtension
+      extension
     };
     logger.info(`Downloaded full image ${photo.id} to ${options.dest}`);
 
@@ -52,9 +48,15 @@ async function downloadImage(msg) {
   }
 }
 
-const options = {
-  channel: "user-photo--google-drive--received",
-  durableName: "google-drive-downloader",
-  clientId: "google-drive-downloader"
+function setup() {
+  const options = {
+    channel: "user-photo--instagram--received",
+    durableName: "instagram-downloader",
+    clientId: "instagram-downloader"
+  };
+  communication.subscribe(options, downloadImage);
+}
+
+module.exports = {
+  setup
 };
-communication.subscribe(options, downloadImage);

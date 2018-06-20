@@ -32,6 +32,9 @@
     },
     "dropbox": {
       "clientRedirectUri": "http://localhost:3000/dropbox/auth/finish"
+    },
+    "instagram": {
+      "clientRedirectUri": "http://localhost:3000/instagram/auth/finish"
     }
   },
   "apis": {

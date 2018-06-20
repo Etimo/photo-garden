@@ -7,17 +7,24 @@ const mkdir = require("mkdir-recursive");
 const imagePath = require("image-path");
 
 async function insert(image) {
-  const url = imagePath.getUrl(
+  const urlThumbnail = imagePath.getUrl(
+    image.owner,
+    image.provider,
+    image.providerId + "-thumbnail",
+    image.extension
+  );
+  const urlFull = imagePath.getUrl(
     image.owner,
     image.provider,
     image.providerId,
     image.extension
   );
   const response = await dbClient.query(
-    "INSERT INTO photos(owner, url, mime_type, provider, provider_id, original) VALUES($1, $2, $3, $4, $5, $6) ON CONFLICT ON CONSTRAINT provider_id_unique DO NOTHING RETURNING id",
+    "INSERT INTO photos(owner, url_thumbnail, url, mime_type, provider, provider_id, original) VALUES($1, $2, $3, $4, $5, $6, $7) ON CONFLICT ON CONSTRAINT provider_id_unique DO NOTHING RETURNING id",
     [
       image.owner,
-      url,
+      urlThumbnail,
+      urlFull,
       image.mimeType,
       image.provider,
       image.providerId,

@@ -52,7 +52,6 @@ async function downloadImage(metadata, token) {
     logger.warn("Failed to fetch photo: ", photos.error);
     return;
   }
-
   imagePath.assertPath(metadata.user, "Dropbox", metadata.photo.id, "jpg");
 
   const saved = await savePhotoToDisk(
@@ -69,6 +68,7 @@ async function downloadImage(metadata, token) {
     normalize(metadata, token);
   }
 }
+
 async function savePhotoToDisk(user, id, photo) {
   return new Promise((resolve, reject) => {
     fs.writeFile(
