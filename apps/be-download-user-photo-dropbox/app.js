@@ -62,7 +62,7 @@ async function downloadImage(metadata, token) {
   if (saved.success) {
     const messageContentOut = {
       id: metadata.photo.id,
-      extension: ".jpg"
+      extension: "jpg"
     };
     communication.publish("user-photo--downloaded", messageContentOut);
     normalize(metadata, token);
