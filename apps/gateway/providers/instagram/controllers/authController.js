@@ -1,9 +1,9 @@
 const config = require("config");
-const api = require("../client").api;
 const logger = require("logging");
 const providerUser = require("provider-user");
 const communication = require("communication");
 const instagram = require("instagram-node");
+
 const redirectUri = config.get("providers.instagram.clientRedirectUri");
 
 function getClient() {
