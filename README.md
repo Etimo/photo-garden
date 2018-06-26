@@ -98,6 +98,18 @@ be listed in the `workspaceDependencies` field, if there are any.
 
 Additionally, you need to add any new apps (not libraries) to be built to the `packages` list in `default.nix`.
 
+## Garbage collection
+
+By default Nix will store *everything* you have ever built, as well as all dependencies. As you can imagine, this will
+grow pretty quickly. To get rid of everything that isn't currently required, you can run `nix-collect-garbage -d`, which
+runs a mark-and-sweep garbage collection on the Nix store.
+
+You can also run `nix optimise-store`, which will replace identical files with hardlinks. This is a bit slower than
+`nix-collect-garbage` and usually not quite as effective, but it leaves you with a still-populated cache, keeping the next
+build fast.
+
+Keep in mind that on Mac you'll want to GC both your host Nix and your build slave regularly!
+
 # Docker
 
 Docker can now be used to run a full dev environment. Just run:
