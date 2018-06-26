@@ -2,6 +2,7 @@ import React from "react";
 import GardenPhoto from "../garden-photo/garden-photo.jsx";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
+import garden from "./garden.scss";
 
 const mapStateToProps = state => {
   return { gardenPhotos: state.gardenPhotos };
@@ -10,13 +11,7 @@ const mapStateToProps = state => {
 const ConnectedGarden = ({ gardenPhotos }) => (
   <article className="garden">
     {gardenPhotos.map(el => {
-      return (
-        <GardenPhoto
-          source={el.photo.source}
-          thumbnail={el.photo.thumbnail}
-          key={el.id}
-        />
-      );
+      return <GardenPhoto photo={el.photo} key={el.id} />;
     })}
   </article>
 );

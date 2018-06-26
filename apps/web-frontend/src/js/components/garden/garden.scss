@@ -1,4 +1,32 @@
 .garden {
-  display: block;
-  text-align: center;
+  width: auto;
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr));
+  grid-gap: 0.2rem;
+  @media (min-width: 384px) {
+    grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+    grid-gap: 0.5rem;
+  }
+  @media (min-width: 470px) {
+    grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+    grid-gap: 0.5rem;
+  }
+  @media (min-width: 500px) {
+    grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+    grid-gap: 0.5rem;
+  }
+  @media (min-width: 540px) {
+    grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+    grid-gap: 0.5rem;
+  }
+  @media (min-width: 660px) {
+    grid-template-columns: repeat(auto-fit, minmax(19rem, 1fr));
+    grid-gap: 1.5rem;
+  }
+
+  @media (min-width: 768px) {
+    grid-template-columns: repeat(auto-fit, minmax(22rem, 1fr));
+    grid-gap: 2rem;
+  }
 }

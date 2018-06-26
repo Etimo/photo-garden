@@ -15,11 +15,15 @@ COPY libs/provider-google-drive-tokens/package.json libs/provider-google-drive-t
 COPY libs/provider-user/package.json libs/provider-user/package.json
 COPY libs/dropbox-api/package.json libs/dropbox-api/package.json
 COPY libs/dropbox-db/package.json libs/dropbox-db/package.json
+COPY libs/color-sort/package.json libs/color-sort/package.json
+COPY libs/photo-color/package.json libs/photo-color/package.json
 
 COPY yarn.lock .
 COPY package.json .
 COPY scripts scripts
 COPY config.development.json .
+
+RUN yarn install --no-progress
 
 COPY apps/$APP_NAME/package.json apps/$APP_NAME/package.json
 

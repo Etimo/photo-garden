@@ -68,7 +68,11 @@ function unAuthorized(res) {
 async function getUserIdentity(userIdentifier, req, access_token) {
   let userId;
   try {
-    userId = await users.getByIdentity("Dropbox", userIdentifier);
+    userId = await users.getByIdentity(
+      "Dropbox",
+      userIdentifier,
+      req.gardenSession.userIdentity
+    );
     req.gardenSession.userIdentity = userId;
     await dropboxDb.storeDropboxToken(
       req.gardenSession.userIdentity,

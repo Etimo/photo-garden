@@ -1,10 +1,13 @@
 const logger = require("logging");
+const config = require("config");
 const users = require("provider-user");
 const providerTokens = require("provider-google-drive-tokens");
 const dbClient = require("db").create("garden");
 
 const util = require("../lib/util");
 const filesWorker = require("../workers/files");
+
+const appUrl = config.get("urls.app");
 
 function finishAuth(client, req, res) {
   const code = req.query.code;
@@ -44,7 +47,7 @@ function finishAuth(client, req, res) {
                 client,
                 req.gardenSession.userIdentity
               );
-              res.redirect("http://localhost:3001");
+              res.redirect(appUrl);
               // res.send(
               //   "Successfully authorized. Your files will be fetched on the server, check output"
               // );
@@ -62,7 +65,11 @@ async function getUserIdentity(verified, userIdentifier, req) {
   }
   let userId;
   try {
-    userId = await users.getByIdentity("Google", userIdentifier);
+    userId = await users.getByIdentity(
+      "Google",
+      userIdentifier,
+      req.gardenSession.userIdentity
+    );
   } catch (err) {
     logger.error(`Failed to find user identity: ${err}`);
     return false;

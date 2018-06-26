@@ -1,0 +1,13 @@
+@mixin base-container {
+  background-color: $background-color;
+  margin: 0 auto;
+  padding: 0 0rem;
+  @media (min-width: 660px) {
+    padding: 0 2rem;
+  }
+}
+@mixin fixed-overlay {
+  position: fixed;
+  width: 100vw;
+  z-index: 999;
+}

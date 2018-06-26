@@ -27,6 +27,8 @@ services:
       - PHOTO_GARDEN_PROVIDERS_GOOGLE_DRIVE_CLIENT_ID
       - PHOTO_GARDEN_PROVIDERS_GOOGLE_DRIVE_CLIENT_SECRET
       - PHOTO_GARDEN_PROVIDERS_DROPBOX_CLIENT_ID
+      - PHOTO_GARDEN_PROVIDERS_INSTAGRAM_CLIENT_ID
+      - PHOTO_GARDEN_PROVIDERS_INSTAGRAM_CLIENT_SECRET
     depends_on:
       - queue
       - db
@@ -54,6 +56,20 @@ services:
 
   be-download-user-photo-google-drive:
     image: photo-garden-be-download-user-photo-google-drive:latest
+    volumes:
+      - photo-storage:/usr/src/photos
+    depends_on:
+      - queue
+    links:
+      - queue
+
+  be-instagram:
+    extends:
+      file: common-service.yml
+      service: base-service
+    build:
+      args:
+        APP_NAME: be-instagram
     volumes:
       - photo-storage:/usr/src/photos
     depends_on:

@@ -111,15 +111,16 @@ module.exports = {
   },
   getFile: (token, path) => {
     return success(
-      getFrom(
-        token,
-        "content.dropboxapi.com",
-        "/2/files/get_thumbnail_batch",
-        null,
-        {
-          path: path
-        }
-      )
+      getFrom(token, "content.dropboxapi.com", "/2/files/get_thumbnail_batch", {
+        entries: [
+          {
+            path: path,
+            format: "jpeg",
+            size: "w2048h1536",
+            mode: "bestfit"
+          }
+        ]
+      })
     );
   }
 };

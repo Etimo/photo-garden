@@ -1,7 +1,8 @@
 import React from "react";
+import Editor from "./components/editor/editor";
 const Footer = () => (
-  <footer className="footer">
-    <div className="icon-filter right" />
+  <footer>
+    <Editor />
   </footer>
 );
 

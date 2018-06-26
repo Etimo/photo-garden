@@ -22,7 +22,6 @@ function filesListCallback(client, err, response, user) {
   }
   response.files
     .filter(util.isValidFile)
-    .splice(0, 1)
     .forEach(file => publishToQueue(file, user));
 }
 

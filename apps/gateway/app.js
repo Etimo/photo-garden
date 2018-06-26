@@ -13,6 +13,7 @@ const bodyParser = require("body-parser");
 const auth = new GoogleAuth();
 const app = express();
 const port = config.get("gateway.port");
+const appUrl = config.get("urls.app");
 
 //Login-block
 const asyncWrapper = wrapFunction => (req, res, next) => {
@@ -38,7 +39,7 @@ app.use(bodyParser.json());
 app.use(express.static("public"));
 
 app.get("/", [isAuthenticated], (req, res) => {
-  res.redirect("http://localhost:3001");
+  res.redirect(appUrl);
 });
 
 app.get("/login", (req, res) => {
@@ -58,7 +59,7 @@ app.get("/user", [allowCors, isAuthenticated], (req, res) => {
 });
 
 function allowCors(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "http://localhost:3001");
+  res.header("Access-Control-Allow-Origin", appUrl);
   res.header(
     "Access-Control-Allow-Headers",
     "Origin, X-Requested-With, Content-Type, Accept"

@@ -1,29 +1,48 @@
-
 .garden-photo {
-  padding: 5px;
-  width: 60px;
-  height: 60px;
-  margin-top: 10px;
-  color: white;
-  font-weight: bold;
-  font-size: 3em;
-  text-align: center;
+  width: auto;
+  margin: 0;
+  position: relative;
+  flex: 1 0 22rem;
+  margin: 1rem;
+  color: #fff;
+  cursor: pointer;
+}
+
+.garden-photo:hover .garden-photo-info {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+.garden-photo-info {
+  display: none;
+}
+
+.garden-photo-info li {
   display: inline-block;
-  margin: 0.2em;
-  // box-shadow: 0px 15px 10px -15px lightgrey;
-}
-@media all and (min-width: 800px) {
-  .garden-photo {
-    width: 300px;
-    height: 300px;
-  }
+  text-align: center;
+  font-size: 1.2rem;
+  font-weight: 600;
 }
 
-@media all and (min-width: 1200px) {
-  .garden-photo {
-    width: 400px;
-    height: 400px;
-  }
+.garden-photo-icon {
+  margin-right: 2.2rem;
 }
 
-
+.garden-photo-type {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  font-size: 2.5rem;
+  text-shadow: 0.2rem 0.2rem 0.2rem rgba(0, 0, 0, 0.1);
+}
+.garden-photo-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}

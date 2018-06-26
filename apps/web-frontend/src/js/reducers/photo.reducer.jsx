@@ -1,14 +1,18 @@
-import { SELECT_GARDENPHOTO } from '../constants/action-types';
-import { PHOTO_CLOSED } from '../constants/action-types';
+import { SELECT_GARDENPHOTO } from "../constants/action-types";
+import { PHOTO_CLOSED } from "../constants/action-types";
+import { UPDATE_GARDENPHOTO } from "../constants/action-types";
 
-const PhotoReducer = (state = '', action) => {
+const PhotoReducer = (state = null, action) => {
   switch (action.type) {
     case SELECT_GARDENPHOTO:
-    state = action.photo;
-    return state;
+      if (state) {
+        return Object.assign({}, state, action.photo);
+      }
+      return action.photo;
     case PHOTO_CLOSED:
-    state = '';
-    return state;
+      return null;
+    case UPDATE_GARDENPHOTO:
+      return action.photo;
     default:
       return state;
   }

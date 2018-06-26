@@ -16,6 +16,7 @@ UNIQUE (provider, provider_id)
 CREATE TABLE photos(
 id SERIAL PRIMARY KEY NOT NULL,
 owner UUID NOT NULL REFERENCES users,
+url_thumbnail TEXT NOT NULL,
 url TEXT NOT NULL,
 mime_type TEXT NOT NULL
 );
