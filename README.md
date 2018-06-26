@@ -40,6 +40,64 @@ This will install the dependency in the root node_modules and add the dependency
 
 `<name>` can be an npm module or a module found in the libs or apps folder.
 
+# Nix!
+
+The Docker images are now built using Nix.
+
+## Install
+
+The exact procedure depends on what OS you use, since the Docker images need to be built for a Linux target.
+
+### Linux
+
+You're in luck! Just install Nix following the instructions at https://nixos.org/nix/. The short version:
+run
+
+```bash
+curl https://nixos.org/nix/install | sh
+```
+
+You also need to install Docker, but the exact procedure for that depends on your distro.
+
+### macOS
+
+After installing Nix (just like on Linux) you'll need to set up a [https://nixos.wiki/wiki/Distributed_build](remote builder),
+which is easiest done using [https://github.com/LnL7/nix-docker#running-as-a-remote-builder](nix-docker).
+
+### Windows
+
+Nix doesn't run natively on Windows, but runs fine (aside from Microsoft/WSL#2395) under the WSL. Note that
+Docker for Windows only runs on Windows 10 Pro and Enterprise.
+
+1. Install WSL
+2. Install your favorite WSL distro (I've only tested this using Ubuntu)
+3. Install Docker for Windows
+4. Install Nix:
+```bash
+sudo mkdir -p /etc/nix
+sudo echo "use-sqlite-wal = false" >> /etc/nix/nix.conf
+curl https://nixos.org/nix/install | sh
+```
+5. Install Docker inside WSL too, see: https://medium.com/@sebagomez/installing-the-docker-client-on-ubuntus-windows-subsystem-for-linux-612b392a44c4
+
+## Building
+
+Run `./docker-build.sh` to build and load the images, and then run `docker-compose up` to start everything.
+
+## Adding new dependencies
+
+Remote dependencies (from NPM) are automatically picked up from `yarn.lock`, and just require a rebuild.
+However, intra-workspace dependencies need to be specified in `workspace.nix`, in the
+`workspaceDependencies` field.
+
+## Adding new projects
+
+All projects to be built need to be listed in `workspace.nix`. The name should match your `package.json` name,
+`src` should point to the folder containing the `package.json` file, and any intra-workspace dependencies need to
+be listed in the `workspaceDependencies` field, if there are any.
+
+Additionally, you need to add any new apps (not libraries) to be built to the `packages` list in `default.nix`.
+
 # Docker
 
 Docker can now be used to run a full dev environment. Just run:
