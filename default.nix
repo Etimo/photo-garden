@@ -15,15 +15,7 @@
 }:
 let
   workspace = pkgs.callPackage ./workspace.nix { inherit yarn2nix; };
-  packages = [
-    "gateway"
-    "be-photo-import"
-    "be-download-user-photo-google-drive"
-    "be-normalize-user-photo-google-drive"
-    "be-download-user-photo-dropbox"
-    "api-photos"
-    "web-frontend"
-  ];
+  packages = pkgs.lib.mapAttrsToList (name: tpe: name) (builtins.readDir ./apps);
   dockerImageConfig = pkgs.linkFarm "config" [ {
     name = "photo-garden.json";
     path = ./config.development.json;

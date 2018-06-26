@@ -96,7 +96,7 @@ All projects to be built need to be listed in `workspace.nix`. The name should m
 `src` should point to the folder containing the `package.json` file, and any intra-workspace dependencies need to
 be listed in the `workspaceDependencies` field, if there are any.
 
-Additionally, you need to add any new apps (not libraries) to be built to the `packages` list in `default.nix`.
+A Docker image is built for each subfolder in the `apps` folder.
 
 ## Garbage collection
 
