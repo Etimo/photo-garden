@@ -69,20 +69,22 @@ which is easiest done using [https://github.com/LnL7/nix-docker#running-as-a-rem
 Nix doesn't run natively on Windows, but runs fine (aside from Microsoft/WSL#2395) under the WSL. Note that
 Docker for Windows only runs on Windows 10 Pro and Enterprise.
 
-1. Install WSL
-2. Install your favorite WSL distro (I've only tested this using Ubuntu)
-3. Install Docker for Windows
-4. Install Nix:
+1.  Install WSL
+2.  Install your favorite WSL distro (I've only tested this using Ubuntu)
+3.  Install Docker for Windows
+4.  Install Nix:
+
 ```bash
 sudo mkdir -p /etc/nix
 sudo echo "use-sqlite-wal = false" >> /etc/nix/nix.conf
 curl https://nixos.org/nix/install | sh
 ```
-5. Install Docker inside WSL too, see: https://medium.com/@sebagomez/installing-the-docker-client-on-ubuntus-windows-subsystem-for-linux-612b392a44c4
+
+5.  Install Docker inside WSL too, see: https://medium.com/@sebagomez/installing-the-docker-client-on-ubuntus-windows-subsystem-for-linux-612b392a44c4
 
 ## Building
 
-Run `./docker-build.sh` to build and load the images, and then run `docker-compose up` to start everything.
+Run `./docker-build.sh` to build and `docker load` the images, and then run `docker-compose up` to start everything.
 
 ## Adding new dependencies
 
@@ -92,15 +94,12 @@ However, intra-workspace dependencies need to be specified in `workspace.nix`, i
 
 ## Adding new projects
 
-All projects to be built need to be listed in `workspace.nix`. The name should match your `package.json` name,
-`src` should point to the folder containing the `package.json` file, and any intra-workspace dependencies need to
-be listed in the `workspaceDependencies` field, if there are any.
-
-A Docker image is built for each subfolder in the `apps` folder.
+Projects in the Yarn workspace (`libs/*` and `apps/*`) are automatically picked up by the Nix build system. A Docker
+image is built for each subfolder in the `apps` folder.
 
 ## Garbage collection
 
-By default Nix will store *everything* you have ever built, as well as all dependencies. As you can imagine, this will
+By default Nix will store _everything_ you have ever built, as well as all dependencies. As you can imagine, this will
 grow pretty quickly. To get rid of everything that isn't currently required, you can run `nix-collect-garbage -d`, which
 runs a mark-and-sweep garbage collection on the Nix store.
 

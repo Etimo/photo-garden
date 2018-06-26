@@ -8,13 +8,25 @@
   yarn2nixSrc ? pkgs.fetchFromGitHub {
     owner = "teozkr";
     repo = "yarn2nix";
-    rev = "5deef049a1d26aae8900a899b614d0f1a687e908";
-    sha256 = "18kzzk1lmq9w4b5wm5w4f3gkd0ziv347l37195f0qllmx8khixzj";
+    rev = "d85025ea19975d0595a7bd35216b61447d43e53d";
+    sha256 = "1yb64gkv4dy43d38mmn6fd8nwbcbx3sp8dcz827bcvdwccc70qim";
   },
   yarn2nix ? import yarn2nixSrc { inherit pkgs; },
 }:
 let
-  workspace = pkgs.callPackage ./workspace.nix { inherit yarn2nix; };
+  workspace = yarn2nix.mkYarnWorkspace {
+    src = ./.;
+    packageOverrides = {
+      web-frontend = {
+        extraBuildInputs = [ pkgs.makeWrapper ];
+        postInstall =
+          ''
+            wrapProgram $out/bin/web-frontend \
+            --prefix PATH : "${pkgs.lib.makeBinPath [ pkgs.coreutils ]}"
+          '';
+      };
+    };
+  };
   packages = pkgs.lib.mapAttrsToList (name: tpe: name) (builtins.readDir ./apps);
   dockerImageConfig = pkgs.linkFarm "config" [ {
     name = "photo-garden.json";
