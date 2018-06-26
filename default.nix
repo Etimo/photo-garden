@@ -1,6 +1,10 @@
 {
   useDocker ? false,
-  pkgs ? import <nixpkgs> {},
+  pkgsOpts ?
+    if useDocker
+      then { system = "x86_64-linux"; }
+      else {},
+  pkgs ? import <nixpkgs> pkgsOpts,
   yarn2nixSrc ? pkgs.fetchFromGitHub {
     owner = "teozkr";
     repo = "yarn2nix";
@@ -50,9 +54,5 @@ let
     name = "${name}";
     path = workspace."${name}";
   }) packages;
-  buildForTargetPlatform =
-    if useDocker
-      then pkgs.vmTools.runInLinuxVM
-      else pkgs.lib.id;
 in
-  buildForTargetPlatform (pkgs.linkFarm "photo-garden" (pkgs.lib.optionals useDocker dockerImages ++ rawBuilds))
+  pkgs.linkFarm "photo-garden" (pkgs.lib.optionals useDocker dockerImages ++ rawBuilds)
