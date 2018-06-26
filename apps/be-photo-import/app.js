@@ -35,12 +35,14 @@ async function insert(image) {
 }
 async function storeColors(photoId, image) {
   logger.info(image.color, "color", photoId);
-  if (image.color)
+  if (image.color) {
     var response = await dbClient.query(
       "insert into photo_color(photo_id, r, g, b, a) values($1, $2, $3, $4, $5)",
       [photoId, image.color.r, image.color.g, image.color.b, image.color.a]
     );
-  return response.rows[0] !== undefined ? response.rows[0].id : undefined;
+    return response.rows[0] !== undefined ? response.rows[0].id : undefined;
+  }
+  return null;
 }
 
 async function addImage(msg) {

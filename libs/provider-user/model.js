@@ -13,6 +13,10 @@ async function attachIdentity(provider, providerIdentity, existingUserId) {
   try {
     db.query("BEGIN");
     if (existingUserId) {
+      const userResponse = await dbClient.query(
+        "INSERT INTO users(id, username) VALUES($1, $2) RETURNING id",
+        [existingUserId, providerIdentity]
+      );
       userId = existingUserId;
     } else {
       const userResponse = await dbClient.query(

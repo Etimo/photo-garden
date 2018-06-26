@@ -5,6 +5,7 @@ const communication = require("communication");
 const instagram = require("instagram-node");
 
 const redirectUri = config.get("providers.instagram.clientRedirectUri");
+const appUrl = config.get("urls.app");
 
 function getClient() {
   const api = instagram.instagram();
@@ -56,7 +57,7 @@ module.exports.authFinish = async (req, res) => {
       }
       api.use({ access_token: result.access_token });
       api.user_media_recent(result.user.id, onResult);
-      res.redirect("http://localhost:3001");
+      res.redirect(appUrl);
     }
   });
 };

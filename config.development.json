@@ -1,4 +1,7 @@
 {
+  "urls": {
+    "app": "http://localhost:3001"
+  },
   "queue": {
     "host": "queue",
     "port": 4222
