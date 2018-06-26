@@ -27,7 +27,7 @@ const GardenService = () => {
               photo: {
                 id: photo.id,
                 source: photo.url,
-                thumbnail: photo.url,
+                thumbnail: photo.url_thumbnail,
                 edit: {
                   contrast: 100,
                   brightness: 100,
