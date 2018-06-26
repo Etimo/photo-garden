@@ -1,8 +1,8 @@
 import { ADD_GARDENPHOTO } from "../constants/action-types";
 import { GET_GARDENPHOTO } from "../constants/action-types";
 import { GARDEN_REVERSE } from "../constants/action-types";
-import { GARDEN_COLORSORT } from "../constants/action-types"
-import * as ColorSort from "color-sort"
+import { GARDEN_COLORSORT } from "../constants/action-types";
+import * as ColorSort from "color-sort";
 const GardenReducer = (state = [], action) => {
   switch (action.type) {
     case ADD_GARDENPHOTO:

@@ -1,9 +1,12 @@
 import { EDITOR_SHOW } from "../constants/action-types";
 import { EDITOR_MODE } from "../constants/action-types";
-const EditorReducer = (state = {
-  show: false,
-  mode: 'FILTER'
-}, action) => {
+const EditorReducer = (
+  state = {
+    show: false,
+    mode: "FILTER"
+  },
+  action
+) => {
   switch (action.type) {
     case "EDITOR_SHOW":
       return Object.assign({}, state, { show: action.show });

@@ -73,8 +73,6 @@ const GardenPhoto = connect(
   }
 )(ConnectedGardenPhoto);
 
-
-
 ConnectedGardenPhoto.propTypes = {
   selectGardenPhoto: PropTypes.func.isRequired
 };

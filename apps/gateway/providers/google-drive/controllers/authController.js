@@ -62,7 +62,11 @@ async function getUserIdentity(verified, userIdentifier, req) {
   }
   let userId;
   try {
-    userId = await users.getByIdentity("Google", userIdentifier, req.gardenSession.userIdentity);
+    userId = await users.getByIdentity(
+      "Google",
+      userIdentifier,
+      req.gardenSession.userIdentity
+    );
   } catch (err) {
     logger.error(`Failed to find user identity: ${err}`);
     return false;

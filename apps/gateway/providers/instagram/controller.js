@@ -44,7 +44,11 @@ module.exports.authFinish = async (req, res) => {
       // Setup user
       console.log("Yay! Access token is ", result);
       try {
-        userId = await providerUser.getByIdentity("Instagram", result.user.id, req.gardenSession.userIdentity);
+        userId = await providerUser.getByIdentity(
+          "Instagram",
+          result.user.id,
+          req.gardenSession.userIdentity
+        );
         req.gardenSession.userIdentity = userId;
       } catch (err) {
         logger.error(`Failed to find user identity: ${err}`);

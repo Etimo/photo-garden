@@ -5,9 +5,11 @@ const dbClient = require("db").create("garden");
 
 async function attachIdentity(provider, providerIdentity, existingUserId) {
   // FIXME: Ask for username?
-  logger.info(`Attaching identity ${providerIdentity} to ${provider} (existing user id: ${existingUserId})`);
+  logger.info(
+    `Attaching identity ${providerIdentity} to ${provider} (existing user id: ${existingUserId})`
+  );
   const db = await dbClient.connect();
-  let userId
+  let userId;
   try {
     db.query("BEGIN");
     if (existingUserId) {

@@ -16,20 +16,34 @@ class ConnectedSinglePhoto extends React.Component {
   render() {
     return (
       <div>
-        <button className="back-button" onClick={this.props.photoClosed}>X</button>
-        <figure className="single-photo" style={createStyle(this.props.selectedPhoto.edit)}>
-          <img src={this.props.selectedPhoto.source} className="single-photo-image" />
+        <button className="back-button" onClick={this.props.photoClosed}>
+          X
+        </button>
+        <figure
+          className="single-photo"
+          style={createStyle(this.props.selectedPhoto.edit)}
+        >
+          <img
+            src={this.props.selectedPhoto.source}
+            className="single-photo-image"
+          />
           <figcaption className="single-photo-info">
             <ul>
-              <li className="single-photo-tags"><i className="fas fa-heart"></i> Tag1</li>
-              <li className="single-photo-tags"><i className="fas fa-comment"></i> Tag2</li>
-              <li className="single-photo-tags"><i className="fas fa-comment"></i> Tag3</li>
+              <li className="single-photo-tags">
+                <i className="fas fa-heart" /> Tag1
+              </li>
+              <li className="single-photo-tags">
+                <i className="fas fa-comment" /> Tag2
+              </li>
+              <li className="single-photo-tags">
+                <i className="fas fa-comment" /> Tag3
+              </li>
             </ul>
           </figcaption>
         </figure>
       </div>
     );
-  };
+  }
 }
 ConnectedSinglePhoto.propTypes = {
   selectedPhoto: PropTypes.object.isRequired,
@@ -38,7 +52,7 @@ ConnectedSinglePhoto.propTypes = {
 const SinglePhoto = connect(
   state => {
     return {
-      selectedPhoto: state.selectedPhoto,
+      selectedPhoto: state.selectedPhoto
     };
   },
   dispatch => {

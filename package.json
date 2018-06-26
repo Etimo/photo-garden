@@ -9,10 +9,11 @@
     "libs/*"
   ],
   "scripts": {
-    "precommit": "lint-staged"
+    "precommit": "lint-staged",
+    "prettier": "prettier --write \"**/*.{js,md,scss,jsx,css,json}\""
   },
   "lint-staged": {
-    "*.{js,json,css,md}": [
+    "*.{js,md,scss,jsx,css,json}": [
       "prettier --write",
       "git add"
     ]

@@ -6,7 +6,7 @@ export const selectGardenPhoto = photo => ({
   type: "SELECT_GARDENPHOTO",
   photo: photo
 });
-export const updateGardenPhoto = (photo) => ({
+export const updateGardenPhoto = photo => ({
   type: "UPDATE_GARDENPHOTO",
   photo: photo
 });

@@ -1,4 +1,3 @@
-
 @import "colors";
 @import "mixins";
 $font-color: $etimo-cyan;
@@ -10,18 +9,18 @@ $footer-height: 3em;
   font-size: $font-size;
 }
 body {
-	font-family: "Open Sans", Arial, sans-serif;
+  font-family: "Open Sans", Arial, sans-serif;
   max-height: 100vh;
   overflow: hidden;
   font-size: $font-size;
-	background-color: $background-color;
-	color: $etimo-blue;
-} 
+  background-color: $background-color;
+  color: $etimo-blue;
+}
 
 .container {
   @include base-container();
   overflow: scroll;
-  height:  100vh;;
+  height: 100vh;
   max-width: 93.5rem;
   padding-bottom: $footer-height;
   padding-top: $header-height;
@@ -56,14 +55,14 @@ body {
   text-align: center;
 }
 footer {
-@include fixed-overlay();
-@include base-container();
-bottom: 0;
-left: 0;
-min-height: $footer-height;
-border-top-width: 1px;
-border-top-color: $etimo-cyan;
-border-top-style: solid;
+  @include fixed-overlay();
+  @include base-container();
+  bottom: 0;
+  left: 0;
+  min-height: $footer-height;
+  border-top-width: 1px;
+  border-top-color: $etimo-cyan;
+  border-top-style: solid;
 }
 header {
   @include fixed-overlay();
@@ -74,15 +73,12 @@ header {
 }
 button {
   background-color: white;
-  border: 1px solid $etimo-cyan; 
-  color: $etimo-blue; 
-  padding: 10px 24px; 
-  cursor: pointer; 
+  border: 1px solid $etimo-cyan;
+  color: $etimo-blue;
+  padding: 10px 24px;
+  cursor: pointer;
   &:hover {
-      background-color:  $etimo-blue; 
-      color: white;
+    background-color: $etimo-blue;
+    color: white;
   }
 }
-
-
-	

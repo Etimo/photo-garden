@@ -11,12 +11,7 @@ const mapStateToProps = state => {
 const ConnectedGarden = ({ gardenPhotos }) => (
   <article className="garden">
     {gardenPhotos.map(el => {
-      return (
-        <GardenPhoto
-          photo={el.photo}
-          key= {el.id}
-        />
-      );
+      return <GardenPhoto photo={el.photo} key={el.id} />;
     })}
   </article>
 );
