@@ -20,7 +20,7 @@ async function insert(image) {
     image.extension
   );
   const response = await dbClient.query(
-    "INSERT INTO photos(owner, url_thumbnail, url, mime_type, provider, provider_id, original) VALUES($1, $2, $3, $4, $5, $6, $7) ON CONFLICT ON CONSTRAINT provider_id_unique DO NOTHING RETURNING id",
+    "INSERT INTO photos(owner, url_thumbnail, url, mime_type, provider, provider_id, original) VALUES($1, $2, $3, $4, $5, $6, $7) ON CONFLICT ON CONSTRAINT provider_id_unique DO UPDATE SET provider_id=$6 RETURNING id",
     [
       image.owner,
       urlThumbnail,
@@ -31,10 +31,10 @@ async function insert(image) {
       image.original
     ]
   );
-  return response.rows[0] !== undefined ? response.rows[0].id : undefined;
+  return response.rows[0].id;
 }
 async function storeColors(photoId, image) {
-  logger.info(image.color, "color", photoId);
+  // logger.info(image.color, "color", photoId);
   if (image.color) {
     var response = await dbClient.query(
       "insert into photo_color(photo_id, r, g, b, a) values($1, $2, $3, $4, $5)",
