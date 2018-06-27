@@ -54,6 +54,7 @@ async function addImage(msg) {
       const colorId = await storeColors(id, image);
       // logger.info(`Imported image for user ${image.owner} as ${id}`);
     }
+    communication.publish("user-photo--imported", {id, providerId: image.providerId, owner: image.owner})
   } catch (err) {
     // await channel.nack(msg);
     logger.error(`Failed to import image: ${err}, returning to the queue...`);
