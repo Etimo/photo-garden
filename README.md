@@ -64,17 +64,20 @@ You also need to install Docker, but the exact procedure for that depends on you
 After installing Nix (just like on Linux) you'll need to set up a [https://nixos.wiki/wiki/Distributed_build](remote builder),
 which is easiest done using [https://github.com/LnL7/nix-docker#running-as-a-remote-builder](nix-docker).
 
-### Windows
+### Windows 10
 
 Nix doesn't run natively on Windows, but runs fine (aside from Microsoft/WSL#2395) under the WSL. Note that
 Docker for Windows only runs on Windows 10 Pro and Enterprise.
 
 ![stack diagram](docs/Photo%20Garden%20stack%20on%20Windows.svg)
 
-1.  Install WSL
-2.  Install your favorite WSL distro (I've only tested this using Ubuntu)
-3.  Install Docker for Windows
-4.  Install Nix:
+1. Install WSL
+   1. Go to Control Panel\Programs\Programs and Features
+   2. Click "Turn Windows features on or off"
+   3. Enable "Windows Subsystem for Linux"
+2.  Install your favorite WSL distro (I've only tested this using Ubuntu). For instance, install Ubuntu from Microsoft Store: https://www.microsoft.com/store/productId/9NBLGGH4MSV6
+3.  Install Docker Toolbox (if using Windows 10 Home) or Docker for Windows (if using Windows 10 Pro or Enterprise)
+4.  Install Nix by running this in WSL:
 
 ```bash
 sudo mkdir -p /etc/nix
