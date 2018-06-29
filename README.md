@@ -69,6 +69,8 @@ which is easiest done using [https://github.com/LnL7/nix-docker#running-as-a-rem
 Nix doesn't run natively on Windows, but runs fine (aside from Microsoft/WSL#2395) under the WSL. Note that
 Docker for Windows only runs on Windows 10 Pro and Enterprise.
 
+![stack diagram](docs/Photo Garden stack on Windows.svg)
+
 1.  Install WSL
 2.  Install your favorite WSL distro (I've only tested this using Ubuntu)
 3.  Install Docker for Windows
