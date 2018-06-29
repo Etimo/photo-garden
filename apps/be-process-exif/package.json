@@ -1,5 +1,5 @@
 {
-  "name": "be-photo-import",
+  "name": "be-process-exif",
   "version": "1.0.0",
   "description": "",
   "main": "app.js",
@@ -11,9 +11,13 @@
   "dependencies": {
     "communication": "^1.0.0",
     "config": "^1.0.0",
-    "db": "^1.0.0",
+    "exif": "^0.6.0",
+    "exif-db": "^1.0.0",
     "image-downloader": "^3.3.0",
-    "image-path": "^1.0.0"
+    "image-path": "^1.0.0",
+    "logging": "^1.0.0",
+    "node-fetch": "^2.1.2",
+    "photo-db": "^1.0.0"
   },
   "devDependencies": {
     "nodemon": "^1.17.3"

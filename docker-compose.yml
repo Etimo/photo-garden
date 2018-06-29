@@ -50,13 +50,29 @@ services:
     ports:
       - "3010:80"
 
-  be-photo-import:
+  be-dropbox:
     extends:
       file: common-service.yml
       service: base-service
     build:
       args:
-        APP_NAME: be-photo-import
+        APP_NAME: be-dropbox
+    depends_on:
+      - queue
+      - db
+    links:
+      - queue
+      - db
+
+  be-process-exif:
+    extends:
+      file: common-service.yml
+      service: base-service
+    build:
+      args:
+        APP_NAME: be-process-exif
+    volumes:
+      - photo-storage:/usr/src/photos
     depends_on:
       - queue
       - db
@@ -78,6 +94,20 @@ services:
     links:
       - queue
 
+  be-download-user-photo:
+    extends:
+      file: common-service.yml
+      service: base-service
+    build:
+      args:
+        APP_NAME: be-download-user-photo
+    volumes:
+      - photo-storage:/usr/src/photos
+    depends_on:
+      - queue
+    links:
+      - queue
+
   be-instagram:
     extends:
       file: common-service.yml
@@ -89,8 +119,10 @@ services:
       - photo-storage:/usr/src/photos
     depends_on:
       - queue
+      - db
     links:
       - queue
+      - db
 
   be-normalize-user-photo-google-drive:
     extends:
@@ -99,19 +131,6 @@ services:
     build:
       args:
         APP_NAME: be-normalize-user-photo-google-drive
-    depends_on:
-      - queue
-    links:
-      - queue
-  be-download-user-photo-dropbox:
-    extends:
-      file: common-service.yml
-      service: base-service
-    build:
-      args:
-        APP_NAME: be-download-user-photo-dropbox
-    volumes:
-      - photo-storage:/usr/src/photos
     depends_on:
       - queue
     links:
