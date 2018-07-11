@@ -14,8 +14,12 @@
   yarn2nix ? import yarn2nixSrc { inherit pkgs; },
 }:
 let
-  workspace = yarn2nix.mkYarnWorkspace {
+  workspace = yarn2nix.mkYarnWorkspace rec {
     src = ./.;
+    yarnFlags = [
+      "--offline"
+      "--frozen-lockfile"
+    ];
     packageOverrides = {
       web-frontend = {
         extraBuildInputs = [ pkgs.makeWrapper ];
@@ -28,7 +32,7 @@ let
             ln -s $out/node_modules/web-frontend{,/fake-symlinked-src-to-force-parcel-to-recompile}
 
             wrapProgram $out/bin/web-frontend \
-            --prefix PATH : "${pkgs.lib.makeBinPath [ pkgs.coreutils pkgs.utillinux pkgs.gnugrep ]}"
+            --prefix PATH : "${pkgs.lib.makeBinPath [ pkgs.coreutils pkgs.utillinux pkgs.gnugrep pkgs.nodejs ]}"
           '';
       };
     };
