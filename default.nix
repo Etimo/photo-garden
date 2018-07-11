@@ -63,7 +63,10 @@ let
         Env = [ "PHOTO_GARDEN_CONFIG=/photo-garden.json"];
       };
     };
-  }) packages;
+  }) packages ++ [{
+    name = "docker-base.tar.gz";
+    path = baseImage;
+  }];
   rawBuilds = map (name: {
     name = "${name}";
     path = workspace."${name}";
