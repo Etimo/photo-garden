@@ -25,14 +25,8 @@ let
         extraBuildInputs = [ pkgs.makeWrapper ];
         postInstall =
           ''
-            # Parcel will not recompile stuff in node_modules... unless it:
-            # 1) has a source field in package.json
-            # 2) is a symlink
-            # Please don't ask me to explain what they were thinking
-            ln -s $out/node_modules/web-frontend{,/fake-symlinked-src-to-force-parcel-to-recompile}
-
             wrapProgram $out/bin/web-frontend \
-            --prefix PATH : "${pkgs.lib.makeBinPath [ pkgs.coreutils pkgs.utillinux pkgs.gnugrep pkgs.nodejs ]}"
+            --prefix PATH : "${pkgs.lib.makeBinPath [ pkgs.coreutils pkgs.utillinuxMinimal pkgs.gnugrep pkgs.nodejs ]}"
           '';
       };
     };
@@ -46,7 +40,7 @@ let
     name = "photo-garden-base";
     contents = [
       # Debugging
-      pkgs.bash
+      pkgs.bashInteractive
       pkgs.coreutils
       # Shared packages to reduce duplication
       pkgs.nodejs
