@@ -17,6 +17,8 @@ COPY libs/dropbox-api/package.json libs/dropbox-api/package.json
 COPY libs/dropbox-db/package.json libs/dropbox-db/package.json
 COPY libs/color-sort/package.json libs/color-sort/package.json
 COPY libs/photo-color/package.json libs/photo-color/package.json
+COPY libs/photo-db/package.json libs/photo-db/package.json
+COPY libs/exif-db/package.json libs/exif-db/package.json
 
 COPY yarn.lock .
 COPY package.json .

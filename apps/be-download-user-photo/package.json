@@ -1,8 +1,7 @@
 {
-  "name": "be-download-user-photo-dropbox",
+  "name": "be-download-user-photo",
   "version": "1.0.0",
   "description": "",
-  "license": "",
   "main": "app.js",
   "bin": "app.js",
   "scripts": {
@@ -13,13 +12,11 @@
   "dependencies": {
     "communication": "^1.0.0",
     "config": "^1.0.0",
-    "db": "^1.0.0",
-    "dropbox-api": "^1.0.0",
-    "dropbox-db": "^1.0.0",
     "image-downloader": "^3.3.0",
-    "mkdir-recursive": "^0.4.0",
-    "photo-color": "1.0.0",
-    "provider-user": "^1.0.0"
+    "image-path": "^1.0.0",
+    "logging": "^1.0.0",
+    "node-fetch": "^2.1.2",
+    "photo-db": "^1.0.0"
   },
   "devDependencies": {
     "nodemon": "^1.17.3"

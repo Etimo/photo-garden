@@ -45,8 +45,19 @@ services:
     ports:
       - "3010:80"
 
-  be-photo-import:
-    image: photo-garden-be-photo-import:latest
+  be-dropbox:
+    image: photo-garden-be-dropbox:latest
+    depends_on:
+      - queue
+      - db
+    links:
+      - queue
+      - db
+
+  be-process-exif:
+    image: photo-garden-be-process-exif:latest
+    volumes:
+      - photo-storage:/usr/src/photos
     depends_on:
       - queue
       - db
@@ -63,13 +74,8 @@ services:
     links:
       - queue
 
-  be-instagram:
-    extends:
-      file: common-service.yml
-      service: base-service
-    build:
-      args:
-        APP_NAME: be-instagram
+  be-download-user-photo:
+    image: photo-garden-be-download-user-photo:latest
     volumes:
       - photo-storage:/usr/src/photos
     depends_on:
@@ -77,16 +83,19 @@ services:
     links:
       - queue
 
-  be-normalize-user-photo-google-drive:
-    image: photo-garden-be-normalize-user-photo-google-drive:latest
-    depends_on:
-      - queue
-    links:
-      - queue
-  be-download-user-photo-dropbox:
-    image: photo-garden-be-download-user-photo-dropbox:latest
+  be-instagram:
+    image: photo-garden-be-instagram:latest
     volumes:
       - photo-storage:/usr/src/photos
+    depends_on:
+      - queue
+      - db
+    links:
+      - queue
+      - db
+
+  be-normalize-user-photo-google-drive:
+    image: photo-garden-be-normalize-user-photo-google-drive:latest
     depends_on:
       - queue
     links:

@@ -1,8 +1,7 @@
 const express = require("express");
 const logger = require("logging");
 const router = express.Router();
-const authController = require("./controllers/authController");
-const subscriptionController = require("./controllers/subscriptionController");
+const authController = require("./controller");
 const config = require("config");
 
 console.log(config.get("providers.instagram.clientSecret"));
