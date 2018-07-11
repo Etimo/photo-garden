@@ -22,7 +22,7 @@ let
         postInstall =
           ''
             wrapProgram $out/bin/web-frontend \
-            --prefix PATH : "${pkgs.lib.makeBinPath [ pkgs.coreutils ]}"
+            --prefix PATH : "${pkgs.lib.makeBinPath [ pkgs.coreutils pkgs.utillinux pkgs.gnugrep ]}"
           '';
       };
     };
