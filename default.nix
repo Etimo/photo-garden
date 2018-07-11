@@ -6,9 +6,9 @@
       else {},
   pkgs ? import <nixpkgs> pkgsOpts,
   yarn2nixSrc ? pkgs.fetchFromGitHub {
-    owner = "teozkr";
+    owner = "moretea";
     repo = "yarn2nix";
-    rev = "d85025ea19975d0595a7bd35216b61447d43e53d";
+    rev = "d3b5e201f894a2d2224e71f59569959aef029c67";
     sha256 = "1yb64gkv4dy43d38mmn6fd8nwbcbx3sp8dcz827bcvdwccc70qim";
   },
   yarn2nix ? import yarn2nixSrc { inherit pkgs; },
