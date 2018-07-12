@@ -1,5 +1,5 @@
 #!/usr/bin/env nix-shell
-#! nix-shell -i bash -p nix bash docker
+#! nix-shell -i bash -p nix bash docker parallel-rust
 
 set -euo pipefail
 
@@ -9,8 +9,4 @@ NIX_OPTS="--arg useDocker true"
 nix build --max-jobs 32 --no-link $NIX_OPTS "$@"
 NIX_OUT=$(nix-build --no-out-link --readonly-mode $NIX_OPTS)
 docker load -i $NIX_OUT/docker-base.tar.gz
-for img in $NIX_OUT/*.docker.tar.gz; do
-  docker load -i $img &
-done
-
-wait
+parallel docker load -i ::: $NIX_OUT/*.docker.tar.gz
