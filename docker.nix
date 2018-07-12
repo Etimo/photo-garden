@@ -6,7 +6,7 @@
   lib,
   dockerTools,
   linkFarm, runCommand, writeText,
-  bashInteractive, coreutils, nodejs, remarshal,
+  bashInteractive, coreutils, less, nodejs, remarshal,
 }:
 let
   relativizePath = base: path: lib.removePrefix (toString base + "/") (toString path);
@@ -24,6 +24,18 @@ in rec {
       # Debugging
       bashInteractive
       coreutils
+      less
+      # /usr/bin/env
+      (linkFarm "photo-garden-base-overlay" [{
+        name = "usr";
+        path = linkFarm "photo-garden-base-usr" [{
+          name = "bin";
+          path = linkFarm "photo-garden-base-usr-bin" [{
+            name = "env";
+            path = "${coreutils}/bin/env";
+          }];
+        }];
+      }])
       # Shared packages to reduce duplication
       nodejs
     ];

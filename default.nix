@@ -6,10 +6,10 @@
       else {},
   pkgs ? import <nixpkgs> pkgsOpts,
   yarn2nixSrc ? pkgs.fetchFromGitHub {
-    owner = "moretea";
+    owner = "teozkr";
     repo = "yarn2nix";
-    rev = "d3b5e201f894a2d2224e71f59569959aef029c67";
-    sha256 = "1yb64gkv4dy43d38mmn6fd8nwbcbx3sp8dcz827bcvdwccc70qim";
+    rev = "74356856bd584196c458a5e3f6e08fc99e70e34c";
+    sha256 = "1jb2w57z6jrbzvshkg801vjc5pxnzq3yb7kr0544ysx7lqvqz2f7";
   },
   yarn2nix ? import yarn2nixSrc { inherit pkgs; },
 }:
