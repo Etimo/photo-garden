@@ -40,4 +40,4 @@ let
     inherit packages workspace;
   };
 in
-  pkgs.linkFarm "photo-garden" (pkgs.lib.optionals useDocker dockerBuild.images ++ rawBuilds)
+  pkgs.linkFarm "photo-garden" (pkgs.lib.optionals useDocker (dockerBuild.images ++ dockerBuild.extraFiles) ++ rawBuilds)
