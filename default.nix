@@ -50,6 +50,7 @@ let
     name = "${name}.docker.tar.gz";
     path = pkgs.dockerTools.buildImage {
       name = "photo-garden-${name}";
+      tag = "latest";
       fromImage = baseImage;
       contents = [ dockerImageConfig workspace."${name}" ];
       config = {
