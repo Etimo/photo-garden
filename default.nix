@@ -32,39 +32,12 @@ let
     };
   };
   packages = pkgs.lib.mapAttrsToList (name: tpe: name) (builtins.readDir ./apps);
-  dockerImageConfig = pkgs.linkFarm "config" [ {
-    name = "photo-garden.json";
-    path = ./config.development.json;
-  } ];
-  baseImage = pkgs.dockerTools.buildImage {
-    name = "photo-garden-base";
-    contents = [
-      # Debugging
-      pkgs.bashInteractive
-      pkgs.coreutils
-      # Shared packages to reduce duplication
-      pkgs.nodejs
-    ];
-  };
-  dockerImages = map (name: {
-    name = "${name}.docker.tar.gz";
-    path = pkgs.dockerTools.buildImage {
-      name = "photo-garden-${name}";
-      tag = "latest";
-      fromImage = baseImage;
-      contents = [ dockerImageConfig workspace."${name}" ];
-      config = {
-        Cmd = [ "/bin/${name}" ];
-        Env = [ "PHOTO_GARDEN_CONFIG=/photo-garden.json"];
-      };
-    };
-  }) packages ++ [{
-    name = "docker-base.tar.gz";
-    path = baseImage;
-  }];
   rawBuilds = map (name: {
     name = "${name}";
     path = workspace."${name}";
   }) packages;
+  dockerBuild = pkgs.callPackage ./docker.nix {
+    inherit packages workspace;
+  };
 in
-  pkgs.linkFarm "photo-garden" (pkgs.lib.optionals useDocker dockerImages ++ rawBuilds)
+  pkgs.linkFarm "photo-garden" (pkgs.lib.optionals useDocker dockerBuild.images ++ rawBuilds)
