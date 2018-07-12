@@ -1,4 +1,6 @@
-#!/usr/bin/env bash
+#!/usr/bin/env nix-shell
+#! nix-shell -i bash -p nix bash docker
+
 set -euo pipefail
 
 NIX_OPTS="--arg useDocker true"

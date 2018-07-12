@@ -61,8 +61,10 @@ You also need to install Docker, but the exact procedure for that depends on you
 
 ### macOS
 
-After installing Nix (just like on Linux) you'll need to set up a [https://nixos.wiki/wiki/Distributed_build](remote builder),
-which is easiest done using [https://github.com/LnL7/nix-docker#running-as-a-remote-builder](nix-docker).
+1.  Install Docker for Mac: https://www.docker.com/docker-machttps://www.docker.com/docker-mac
+2.  Install Nix: `curl https://nixos.org/nix/install | sh` (just like on Linux)
+3.  Set up a [https://nixos.wiki/wiki/Distributed_build](remote Linux builder), which is easiest done using
+    [https://github.com/LnL7/nix-docker#running-as-a-remote-builder](nix-docker).
 
 ### Windows 10
 
@@ -71,10 +73,10 @@ Docker for Windows only runs on Windows 10 Pro and Enterprise.
 
 ![stack diagram](docs/Photo%20Garden%20stack%20on%20Windows.svg)
 
-1. Install WSL
-   1. Go to Control Panel\Programs\Programs and Features
-   2. Click "Turn Windows features on or off"
-   3. Enable "Windows Subsystem for Linux"
+1.  Install WSL
+    1.  Go to Control Panel\Programs\Programs and Features
+    2.  Click "Turn Windows features on or off"
+    3.  Enable "Windows Subsystem for Linux"
 2.  Install your favorite WSL distro (I've only tested this using Ubuntu). For instance, install Ubuntu from Microsoft Store: https://www.microsoft.com/store/productId/9NBLGGH4MSV6
 3.  Install Docker Toolbox (if using Windows 10 Home) or Docker for Windows (if using Windows 10 Pro or Enterprise)
 4.  Install Nix by running this in WSL:
@@ -85,7 +87,9 @@ sudo echo "use-sqlite-wal = false" >> /etc/nix/nix.conf
 curl https://nixos.org/nix/install | sh
 ```
 
-5.  Install Docker inside WSL too, see: https://medium.com/@sebagomez/installing-the-docker-client-on-ubuntus-windows-subsystem-for-linux-612b392a44c4
+5.  Enable remote Docker access (if using Docker for Windows)
+    See: https://medium.com/@sebagomez/installing-the-docker-client-on-ubuntus-windows-subsystem-for-linux-612b392a44c4
+6.  Set DOCKER_HOST inside WSL to point to your Docker instance (localhost:2375 when using Docker for Windows)
 
 ## Building
 
@@ -94,8 +98,7 @@ Run `./docker-build.sh` to build and `docker load` the images, and then run `doc
 ## Adding new dependencies
 
 Remote dependencies (from NPM) are automatically picked up from `yarn.lock`, and just require a rebuild.
-However, intra-workspace dependencies need to be specified in `workspace.nix`, in the
-`workspaceDependencies` field.
+However, intra-workspace dependencies need to be specified in `workspace.nix`, in the `workspaceDependencies` field.
 
 ## Adding new projects
 
@@ -113,6 +116,20 @@ You can also run `nix optimise-store`, which will replace identical files with h
 build fast.
 
 Keep in mind that on Mac you'll want to GC both your host Nix and your build slave regularly!
+
+## Troubleshooting
+
+### Nix can't find `/long/path/to/package.json`
+
+Typical error message:
+
+```
+error: opening file '/home/teo/Documents/photo-garden/apps/blah/package.json': No such file or directory
+```
+
+This happens when there are folders inside apps or libs that aren't packages, usually because the package was renamed or
+removed. To fix this, run `git clean -idx apps/blah` (in this example) to remove the remaining node_modules, and then
+rebuild.
 
 # Docker
 
