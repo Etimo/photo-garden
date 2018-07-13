@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "bin": "./run.sh",
   "source": "./src/index.html",
   "scripts": {
     "start:dev": "parcel src/index.html"

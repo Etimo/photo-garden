@@ -22,12 +22,34 @@ let
       "--ignore-engine"
     ];
     packageOverrides = {
-      web-frontend = {
+      web-frontend = let
+        runScript = pkgs.writeScript "run-web-frontend"
+          ''
+            #!${pkgs.bash}/bin/bash
+            set -euo pipefail
+            export PATH="${pkgs.lib.makeBinPath [ pkgs.coreutils pkgs.utillinuxMinimal pkgs.gnugrep pkgs.nodejs ]}:$PATH"
+
+            cd "$(dirname "$(realpath "$0")")/.."
+            TMP_BASE=/tmp/photo-garden/web-frontend
+            mkdir -p $TMP_BASE
+
+            # Parcel will not recompile stuff in node_modules... unless it both:
+            # 1) has a source field in package.json
+            # 2) is a symlink
+            # Please don't ask me to explain what they were thinking
+            FAKE_PKG=$TMP_BASE/fake-symlinked-pkg-to-force-parcel-to-recompile
+            rm -f $FAKE_PKG
+            ln -s $(pwd)/node_modules/web-frontend $FAKE_PKG
+            rm -f $TMP_BASE/node_modules
+            ln -s $(pwd)/node_modules $TMP_BASE/node_modules
+
+            node node_modules/parcel-bundler/bin/cli.js $FAKE_PKG/src/index.html --out-dir=$TMP_BASE/dist --cache-dir=$TMP_BASE/cache
+          '';
+      in {
         extraBuildInputs = [ pkgs.makeWrapper ];
         postInstall =
           ''
-            wrapProgram $out/bin/web-frontend \
-            --prefix PATH : "${pkgs.lib.makeBinPath [ pkgs.coreutils pkgs.utillinuxMinimal pkgs.gnugrep pkgs.nodejs ]}"
+            cp ${runScript} $out/bin/web-frontend
           '';
 
         passthru.useNodemon = false;
