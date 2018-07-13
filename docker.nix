@@ -68,7 +68,10 @@ in rec {
         Cmd = if pkg.useNodemon or true
           then [ "${nodemon}/bin/nodemon" "--exec" "${nodejs}/bin/node" "--config" nodemonConfigJSON pkgBin ]
           else [ pkgBin ];
-        Env = [ "PHOTO_GARDEN_CONFIG=/photo-garden.json"];
+        Env = [
+          "PHOTO_GARDEN_CONFIG=/photo-garden.json"
+          "APP_NAME=${name}"
+        ];
       };
     };
   }) packages ++ [{
