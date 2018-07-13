@@ -8,6 +8,9 @@ env:
   - PROD=false
   - PROD=true
 
+before_script:
+  - nix-channel --update
+
 script:
   - ./docker-build.sh --arg prod $PROD
 
