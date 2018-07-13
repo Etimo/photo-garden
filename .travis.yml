@@ -11,6 +11,7 @@ env:
 
 before_script:
   - curl https://nixos.org/nix/install | sh
+  - . ~/.nix-profile/etc/profile.d/nix.sh
   - nix-channel --update
 
 script:
