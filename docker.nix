@@ -2,6 +2,9 @@
   # Photo garden packages
   workspace, packages,
 
+  # Config
+  prod,
+
   # Dependencies
   lib,
   dockerTools,
@@ -65,7 +68,7 @@ in rec {
         };
         nodemonConfigJSON = writeText "nodemon.json" (builtins.toJSON nodemonConfig);
       in {
-        Cmd = if pkg.useNodemon or true
+        Cmd = if (!prod) && (pkg.useNodemon or true)
           then [ "${nodemon}/bin/nodemon" "--exec" "${nodejs}/bin/node" "--config" nodemonConfigJSON pkgBin ]
           else [ pkgBin ];
         Env = [
@@ -89,7 +92,7 @@ in rec {
         let
           existing = ((composeFileBase.services or {}).${name} or {}).volumes or [];
           dependencyVolumes = map (dep: "./${relativizePath ./. dep.src}:/node_modules/${dep.pname}") (pkgAndDeps workspace.${name});
-        in existing ++ dependencyVolumes;
+        in existing ++ lib.optionals (!prod) dependencyVolumes;
       };
     }) packages);
   };

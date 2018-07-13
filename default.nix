@@ -1,5 +1,6 @@
 {
   useDocker ? false,
+  prod ? false,
   pkgsOpts ?
     if useDocker
       then { system = "x86_64-linux"; }
@@ -62,7 +63,7 @@ let
     path = workspace."${name}";
   }) packages;
   dockerBuild = pkgs.callPackage ./docker.nix {
-    inherit packages workspace;
+    inherit packages workspace prod;
     inherit (pkgs.nodePackages) nodemon;
   };
 in
