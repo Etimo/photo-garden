@@ -3,8 +3,6 @@ services:
   - docker
 sudo: required
 
-# before_script: ./test.sh
-
 env:
   - PROD=false
   - PROD=true
@@ -13,9 +11,12 @@ before_script:
   - curl https://nixos.org/nix/install | sh
   - . ~/.nix-profile/etc/profile.d/nix.sh
   - nix-channel --update
+  # For some reason import-from-derivation doesn't work on Travis o.O
+  - wget -O ~/yarn2nix.zip https://github.com/teozkr/yarn2nix/archive/74356856bd584196c458a5e3f6e08fc99e70e34c.zip
+  - unzip ~/yarn2nix.zip -d ~
 
 script:
-  - ./docker-build.sh --arg prod $PROD
+  - ./docker-build.sh --arg prod $PROD --arg yarn2nixSrc ~/yarn2nix-*
 
 deploy:
   provider: script
