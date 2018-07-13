@@ -19,6 +19,7 @@ let
     yarnFlags = [
       "--offline"
       "--frozen-lockfile"
+      "--ignore-engine"
     ];
     packageOverrides = {
       web-frontend = {
@@ -38,6 +39,7 @@ let
   }) packages;
   dockerBuild = pkgs.callPackage ./docker.nix {
     inherit packages workspace;
+    inherit (pkgs.nodePackages) nodemon;
   };
 in
   pkgs.linkFarm "photo-garden" (pkgs.lib.optionals useDocker (dockerBuild.images ++ dockerBuild.extraFiles) ++ rawBuilds)

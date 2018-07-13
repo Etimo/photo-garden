@@ -7,9 +7,11 @@
   dockerTools,
   linkFarm, symlinkJoin, runCommand, writeText,
   bashInteractive, coreutils, less, nodejs, remarshal,
+  nodemon,
 }:
 let
   relativizePath = base: path: lib.removePrefix (toString base + "/") (toString path);
+  pkgAndDeps = pkg: [pkg] ++ lib.attrValues pkg.workspaceDependencies;
 
   symlinkAddPkg = pkg: symlinkJoin {
     name = "${pkg.name}-symlinkJoin";
@@ -51,9 +53,18 @@ in rec {
       name = "photo-garden-${name}";
       tag = "latest";
       fromImage = baseImage;
-      contents = [ imageConfig workspace."${name}" ];
-      config = {
-        Cmd = [ "/bin/${name}" ];
+      contents = [ imageConfig workspace.${name} ];
+      config =
+      let
+        watchDirs = map (dep: "/node_modules/${dep.pname}") (pkgAndDeps workspace.${name});
+        nodemonConfig = {
+          watch = watchDirs;
+          # By default nodemon ignores everything inside node_modules
+          ignoreRoot = [];
+        };
+        nodemonConfigJSON = writeText "nodemon.json" (builtins.toJSON nodemonConfig);
+      in {
+        Cmd = [ "${nodemon}/bin/nodemon" "--exec" "${nodejs}/bin/node" "--config" nodemonConfigJSON "/bin/${name}" ];
         Env = [ "PHOTO_GARDEN_CONFIG=/photo-garden.json"];
       };
     };
@@ -66,13 +77,12 @@ in rec {
   composeFileOverrides = {
     services = lib.listToAttrs (map (name: rec {
       inherit name;
-      pkg = workspace.${name};
       value = {
         image = "photo-garden-${name}:latest";
         volumes =
         let
           existing = ((composeFileBase.services or {}).${name} or {}).volumes or [];
-          dependencyVolumes = map (dep: "./${relativizePath ./. dep.src}:/node_modules/${dep.pname}") ([pkg] ++ lib.attrValues pkg.workspaceDependencies);
+          dependencyVolumes = map (dep: "./${relativizePath ./. dep.src}:/node_modules/${dep.pname}") (pkgAndDeps workspace.${name});
         in existing ++ dependencyVolumes;
       };
     }) packages);
