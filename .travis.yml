@@ -1,18 +1,18 @@
-notifications:
-  email: false
-language: node_js
-node_js:
-  - 8
-sudo: required
+language: nix
 services:
   - docker
 
-install: no
-
 # before_script: ./test.sh
 
-script: ./build.sh
+env:
+  - PROD=false
+  - PROD=true
 
-after_success:
-  - ./push.sh
-  - ./deploy.sh
+script:
+  - ./docker-build.sh --arg prod $PROD
+
+deploy:
+  provider: script
+  script: ./deploy.sh
+  on:
+    branch: master
