@@ -7,7 +7,7 @@ NIX_OPTS="--arg useDocker true $@"
 
 echo "Building images"
 # nix build shows nice progress bars, but doesn't report the final derivation path
-if [ "$CI" != true ]; then
+if [ "${CI-}" != true ]; then
   nix build --max-jobs 32 --no-link $NIX_OPTS
 fi
 NIX_OUT=$(nix-build --no-out-link --readonly-mode $NIX_OPTS)
