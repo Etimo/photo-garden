@@ -56,15 +56,18 @@ in rec {
       contents = [ imageConfig workspace.${name} ];
       config =
       let
-        watchDirs = map (dep: "/node_modules/${dep.pname}") (pkgAndDeps workspace.${name});
+        pkg = workspace.${name};
+        pkgBin = "/bin/${name}";
         nodemonConfig = {
-          watch = watchDirs;
+          watch = map (dep: "/node_modules/${dep.pname}") (pkgAndDeps pkg);
           # By default nodemon ignores everything inside node_modules
           ignoreRoot = [];
         };
         nodemonConfigJSON = writeText "nodemon.json" (builtins.toJSON nodemonConfig);
       in {
-        Cmd = [ "${nodemon}/bin/nodemon" "--exec" "${nodejs}/bin/node" "--config" nodemonConfigJSON "/bin/${name}" ];
+        Cmd = if pkg.useNodemon or true
+          then [ "${nodemon}/bin/nodemon" "--exec" "${nodejs}/bin/node" "--config" nodemonConfigJSON pkgBin ]
+          else [ pkgBin ];
         Env = [ "PHOTO_GARDEN_CONFIG=/photo-garden.json"];
       };
     };

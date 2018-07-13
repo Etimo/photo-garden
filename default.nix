@@ -29,6 +29,8 @@ let
             wrapProgram $out/bin/web-frontend \
             --prefix PATH : "${pkgs.lib.makeBinPath [ pkgs.coreutils pkgs.utillinuxMinimal pkgs.gnugrep pkgs.nodejs ]}"
           '';
+
+        passthru.useNodemon = false;
       };
     };
   };
