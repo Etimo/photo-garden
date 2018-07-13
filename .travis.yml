@@ -1,6 +1,7 @@
 language: nix
 services:
   - docker
+sudo: required
 
 # before_script: ./test.sh
 
