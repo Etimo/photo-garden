@@ -1,4 +1,4 @@
-language: nix
+# language: nix
 services:
   - docker
 sudo: required
@@ -10,6 +10,7 @@ env:
   - PROD=true
 
 before_script:
+  - curl https://nixos.org/nix/install | sh
   - nix-channel --update
 
 script:
