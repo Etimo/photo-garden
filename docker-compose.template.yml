@@ -29,6 +29,7 @@ services:
       - PHOTO_GARDEN_PROVIDERS_DROPBOX_CLIENT_ID
       - PHOTO_GARDEN_PROVIDERS_INSTAGRAM_CLIENT_ID
       - PHOTO_GARDEN_PROVIDERS_INSTAGRAM_CLIENT_SECRET
+      - LOG_LEVEL
     depends_on:
       - queue
       - db
@@ -40,6 +41,8 @@ services:
 
   photo-server:
     build: services/photo-server
+    environment:
+      - LOG_LEVEL
     volumes:
       - photo-storage:/usr/share/nginx/html/
     ports:
@@ -47,6 +50,8 @@ services:
 
   be-dropbox:
     image: photo-garden-be-dropbox:latest
+    environment:
+      - LOG_LEVEL
     depends_on:
       - queue
       - db
@@ -56,6 +61,8 @@ services:
 
   be-process-exif:
     image: photo-garden-be-process-exif:latest
+    environment:
+      - LOG_LEVEL
     volumes:
       - photo-storage:/usr/src/photos
     depends_on:
@@ -67,6 +74,8 @@ services:
 
   be-download-user-photo-google-drive:
     image: photo-garden-be-download-user-photo-google-drive:latest
+    environment:
+      - LOG_LEVEL
     volumes:
       - photo-storage:/usr/src/photos
     depends_on:
@@ -76,6 +85,8 @@ services:
 
   be-download-user-photo:
     image: photo-garden-be-download-user-photo:latest
+    environment:
+      - LOG_LEVEL
     volumes:
       - photo-storage:/usr/src/photos
     depends_on:
@@ -85,6 +96,8 @@ services:
 
   be-instagram:
     image: photo-garden-be-instagram:latest
+    environment:
+      - LOG_LEVEL
     volumes:
       - photo-storage:/usr/src/photos
     depends_on:
@@ -96,6 +109,8 @@ services:
 
   be-normalize-user-photo-google-drive:
     image: photo-garden-be-normalize-user-photo-google-drive:latest
+    environment:
+      - LOG_LEVEL
     depends_on:
       - queue
     links:
@@ -103,6 +118,8 @@ services:
 
   api-photos:
     image: photo-garden-api-photos:latest
+    environment:
+      - LOG_LEVEL
     ports:
       - "3002:3000"
     depends_on:
@@ -112,6 +129,8 @@ services:
 
   web-frontend:
     image: photo-garden-web-frontend:latest
+    environment:
+      - LOG_LEVEL
     ports:
       - "3001:1234"
 
