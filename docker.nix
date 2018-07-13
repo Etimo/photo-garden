@@ -5,11 +5,16 @@
   # Dependencies
   lib,
   dockerTools,
-  linkFarm, runCommand, writeText,
+  linkFarm, symlinkJoin, runCommand, writeText,
   bashInteractive, coreutils, less, nodejs, remarshal,
 }:
 let
   relativizePath = base: path: lib.removePrefix (toString base + "/") (toString path);
+
+  symlinkAddPkg = pkg: symlinkJoin {
+    name = "${pkg.name}-symlinkJoin";
+    paths = pkg;
+  };
 
   # Adapted from https://github.com/xtruder/kubenix/blob/bc37b314ee5123da9f61721e2845291a2fdd0e58/k8s.nix
   loadYAML = path: builtins.fromJSON (builtins.readFile (runCommand "yaml-to-json" {} "${remarshal}/bin/remarshal -i ${path} -if yaml -of json > $out"));
@@ -20,7 +25,7 @@ in rec {
   } ];
   baseImage = dockerTools.buildImage {
     name = "photo-garden-base";
-    contents = [
+    contents = map symlinkAddPkg [
       # Debugging
       bashInteractive
       coreutils
