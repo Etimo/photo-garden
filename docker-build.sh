@@ -10,4 +10,4 @@ nix build --max-jobs 32 --no-link $NIX_OPTS
 NIX_OUT=$(nix-build --no-out-link --readonly-mode $NIX_OPTS)
 docker load -i $NIX_OUT/docker-base.tar.gz
 parallel docker load -i ::: $NIX_OUT/*.docker.tar.gz
-cp $NIX_OUT/docker-compose.yml .
+cp --no-preserve=mode $NIX_OUT/docker-compose.yml .
