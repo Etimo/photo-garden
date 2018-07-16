@@ -8,25 +8,18 @@ env:
   - PROD=true
 
 before_script:
-  # - mkdir /nix-tmp
   - sudo mount -t tmpfs none /run/user -o remount,size=8G
-  - mount
-  - sudo mount
-  - pwd
-  - df -h
-  - sudo df -h
-  - env | grep NIX_
-  # - env | grep TMPDIR
   - curl https://nixos.org/nix/install | sh
   - . ~/.nix-profile/etc/profile.d/nix.sh
   - nix-channel --update
 
 script:
-  - df -h
   - ./docker-build.sh --arg prod $PROD
 
 deploy:
   provider: script
   script: ./deploy.sh
   on:
+    repo: etimo/photo-garden
     branch: master
+    condition: "$PROD = true"
