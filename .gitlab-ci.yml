@@ -1,0 +1,34 @@
+image: nixorg/nix:latest
+services:
+- docker:dind
+
+variables:
+  DOCKER_HOST: tcp://docker:2375
+  DOCKER_DRIVER: overlay2
+
+before_script:
+- nix-channel --add https://nixos.org/channels/nixpkgs-unstable
+- nix-channel --update
+- nix-env -iA nixpkgs.docker -j32
+- docker version
+- docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
+
+.prod: &prod
+  variables:
+    PROD: true
+
+.no_prod: &no_prod
+  variables:
+    PROD: false
+
+.build: &build
+  script:
+    ./docker-build.sh --arg prod $PROD
+
+build_no_prod:
+  <<: *no_prod
+  <<: *build
+
+build_prod:
+  <<: *prod
+  <<: *build
