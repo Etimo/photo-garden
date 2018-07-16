@@ -15,11 +15,11 @@ before_script:
 
 .prod: &prod
   variables:
-    PROD: true
+    PROD: "true"
 
 .no_prod: &no_prod
   variables:
-    PROD: false
+    PROD: "false"
 
 .build: &build
   script:
