@@ -9,10 +9,12 @@ env:
 
 before_script:
   # - mkdir /nix-tmp
-  - mount -t tmpfs none /run/user -o remount,size=8G
+  - sudo mount -t tmpfs none /run/user -o remount,size=8G
   - mount
+  - sudo mount
   - pwd
   - df -h
+  - sudo df -h
   - env | grep NIX_
   # - env | grep TMPDIR
   - curl https://nixos.org/nix/install | sh
