@@ -8,6 +8,7 @@ env:
   - PROD=true
 
 before_script:
+  - mount
   - curl https://nixos.org/nix/install | sh
   - . ~/.nix-profile/etc/profile.d/nix.sh
   - nix-channel --update
