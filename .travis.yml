@@ -8,11 +8,13 @@ env:
   - PROD=true
 
 before_script:
+  # - mkdir /nix-tmp
+  - mount -t tmpfs none /run/user -o remount,size=8G
   - mount
   - pwd
   - df -h
   - env | grep NIX_
-  - env | grep TMPDIR
+  # - env | grep TMPDIR
   - curl https://nixos.org/nix/install | sh
   - . ~/.nix-profile/etc/profile.d/nix.sh
   - nix-channel --update
