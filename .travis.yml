@@ -9,6 +9,8 @@ env:
 
 before_script:
   - mount
+  - pwd
+  - sysctl -a
   - curl https://nixos.org/nix/install | sh
   - . ~/.nix-profile/etc/profile.d/nix.sh
   - nix-channel --update
