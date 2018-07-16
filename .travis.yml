@@ -10,8 +10,10 @@ env:
 before_script:
   - mount
   - pwd
+  - df -h
   - sysctl -a
   - env | grep NIX_
+  - env | grep TMPDIR
   - curl https://nixos.org/nix/install | sh
   - . ~/.nix-profile/etc/profile.d/nix.sh
   - nix-channel --update
