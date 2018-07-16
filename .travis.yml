@@ -1,4 +1,4 @@
-# language: nix
+language: nix
 services:
   - docker
 sudo: required
@@ -8,9 +8,8 @@ env:
   - PROD=true
 
 before_script:
+  # /run/user is 100MB by default, which is not enough for Nix to build our Docker images
   - sudo mount -t tmpfs none /run/user -o remount,size=8G
-  - curl https://nixos.org/nix/install | sh
-  - . ~/.nix-profile/etc/profile.d/nix.sh
   - nix-channel --update
 
 script:
