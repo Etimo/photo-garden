@@ -1,4 +1,4 @@
-# language: nix
+language: nix
 services:
   - docker
 sudo: required
@@ -8,18 +8,17 @@ env:
   - PROD=true
 
 before_script:
-  - curl https://nixos.org/nix/install | sh
-  - . ~/.nix-profile/etc/profile.d/nix.sh
+  # /run/user is 100MB by default, which is not enough for Nix to build our Docker images
+  - sudo mount -t tmpfs none /run/user -o remount,size=8G
   - nix-channel --update
-  # For some reason import-from-derivation doesn't work on Travis o.O
-  - wget -O ~/yarn2nix.zip https://github.com/teozkr/yarn2nix/archive/74356856bd584196c458a5e3f6e08fc99e70e34c.zip
-  - unzip ~/yarn2nix.zip -d ~
 
 script:
-  - ./docker-build.sh --arg prod $PROD --arg yarn2nixSrc ~/yarn2nix-*
+  - ./docker-build.sh --arg prod $PROD
 
 deploy:
   provider: script
   script: ./deploy.sh
   on:
+    repo: etimo/photo-garden
     branch: master
+    condition: "$PROD = true"
