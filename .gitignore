@@ -9,3 +9,5 @@ terraform
 lerna-debug.log
 yarn-error.log
 .eslintcache
+result
+docker-compose.yml

@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 const providers = require("./providers");
 const logger = require("logging");
 const express = require("express");
@@ -34,7 +36,7 @@ app.use(
 );
 
 app.use(bodyParser.json());
-app.use(express.static("public"));
+app.use(express.static(__dirname + "/public"));
 
 app.get("/", [isAuthenticated], (req, res) => {
   res.redirect(appUrl);

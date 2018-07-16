@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 const communication = require("communication");
 const logger = require("logging");
 const fs = require("fs");

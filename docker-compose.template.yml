@@ -22,18 +22,14 @@ services:
       - "5432:5432"
 
   gateway:
-    extends:
-      file: common-service.yml
-      service: base-service
-    build:
-      args:
-        APP_NAME: gateway
+    image: photo-garden-gateway:latest
     environment:
       - PHOTO_GARDEN_PROVIDERS_GOOGLE_DRIVE_CLIENT_ID
       - PHOTO_GARDEN_PROVIDERS_GOOGLE_DRIVE_CLIENT_SECRET
       - PHOTO_GARDEN_PROVIDERS_DROPBOX_CLIENT_ID
       - PHOTO_GARDEN_PROVIDERS_INSTAGRAM_CLIENT_ID
       - PHOTO_GARDEN_PROVIDERS_INSTAGRAM_CLIENT_SECRET
+      - LOG_LEVEL
     depends_on:
       - queue
       - db
@@ -45,18 +41,17 @@ services:
 
   photo-server:
     build: services/photo-server
+    environment:
+      - LOG_LEVEL
     volumes:
       - photo-storage:/usr/share/nginx/html/
     ports:
       - "3010:80"
 
   be-dropbox:
-    extends:
-      file: common-service.yml
-      service: base-service
-    build:
-      args:
-        APP_NAME: be-dropbox
+    image: photo-garden-be-dropbox:latest
+    environment:
+      - LOG_LEVEL
     depends_on:
       - queue
       - db
@@ -65,12 +60,9 @@ services:
       - db
 
   be-process-exif:
-    extends:
-      file: common-service.yml
-      service: base-service
-    build:
-      args:
-        APP_NAME: be-process-exif
+    image: photo-garden-be-process-exif:latest
+    environment:
+      - LOG_LEVEL
     volumes:
       - photo-storage:/usr/src/photos
     depends_on:
@@ -81,12 +73,9 @@ services:
       - db
 
   be-download-user-photo-google-drive:
-    extends:
-      file: common-service.yml
-      service: base-service
-    build:
-      args:
-        APP_NAME: be-download-user-photo-google-drive
+    image: photo-garden-be-download-user-photo-google-drive:latest
+    environment:
+      - LOG_LEVEL
     volumes:
       - photo-storage:/usr/src/photos
     depends_on:
@@ -95,12 +84,9 @@ services:
       - queue
 
   be-download-user-photo:
-    extends:
-      file: common-service.yml
-      service: base-service
-    build:
-      args:
-        APP_NAME: be-download-user-photo
+    image: photo-garden-be-download-user-photo:latest
+    environment:
+      - LOG_LEVEL
     volumes:
       - photo-storage:/usr/src/photos
     depends_on:
@@ -109,12 +95,9 @@ services:
       - queue
 
   be-instagram:
-    extends:
-      file: common-service.yml
-      service: base-service
-    build:
-      args:
-        APP_NAME: be-instagram
+    image: photo-garden-be-instagram:latest
+    environment:
+      - LOG_LEVEL
     volumes:
       - photo-storage:/usr/src/photos
     depends_on:
@@ -125,24 +108,18 @@ services:
       - db
 
   be-normalize-user-photo-google-drive:
-    extends:
-      file: common-service.yml
-      service: base-service
-    build:
-      args:
-        APP_NAME: be-normalize-user-photo-google-drive
+    image: photo-garden-be-normalize-user-photo-google-drive:latest
+    environment:
+      - LOG_LEVEL
     depends_on:
       - queue
     links:
       - queue
 
   api-photos:
-    extends:
-      file: common-service.yml
-      service: base-service
-    build:
-      args:
-        APP_NAME: api-photos
+    image: photo-garden-api-photos:latest
+    environment:
+      - LOG_LEVEL
     ports:
       - "3002:3000"
     depends_on:
@@ -151,12 +128,9 @@ services:
       - db
 
   web-frontend:
-    extends:
-      file: common-service.yml
-      service: base-service
-    build:
-      args:
-        APP_NAME: web-frontend
+    image: photo-garden-web-frontend:latest
+    environment:
+      - LOG_LEVEL
     ports:
       - "3001:1234"
 

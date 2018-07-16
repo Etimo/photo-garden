@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "app.js",
+  "bin": "app.js",
   "scripts": {
     "start:dev": "nodemon --watch ../../libs --watch . app.js",
     "start:debug": "node --inspect app.js",
