@@ -11,6 +11,7 @@ before_script:
   - mount
   - pwd
   - sysctl -a
+  - env | grep NIX_
   - curl https://nixos.org/nix/install | sh
   - . ~/.nix-profile/etc/profile.d/nix.sh
   - nix-channel --update
@@ -19,6 +20,7 @@ before_script:
   - unzip ~/yarn2nix.zip -d ~
 
 script:
+  - nix-instantiate --read-write-mode
   - ./docker-build.sh --arg prod $PROD --arg yarn2nixSrc ~/yarn2nix-*
 
 deploy:
