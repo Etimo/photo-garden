@@ -12,7 +12,8 @@
   "dependencies": {
     "communication": "^1.0.0",
     "config": "^1.0.0",
-    "logging": "^1.0.0"
+    "logging": "^1.0.0",
+    "photo-db": "^1.0.0"
   },
   "devDependencies": {
     "nodemon": "^1.17.3"
