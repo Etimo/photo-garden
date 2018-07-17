@@ -4,9 +4,7 @@ const logger = require("logging");
 const fs = require("fs");
 const dropbox = require("dropbox-api");
 const dropboxDb = require("dropbox-db");
-const imagePath = require("image-path");
 const photoDb = require("photo-db");
-const photoColor = require("photo-color");
 
 function normalizePhotoInfo(fileInfo, user) {
   return {
