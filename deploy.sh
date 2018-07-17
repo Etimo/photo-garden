@@ -4,9 +4,6 @@ set -euo pipefail
 
 if [ "${TRAVIS_PULL_REQUEST}" ] || [ "${TRAVIS_PULL_REQUEST}" == "false" ]; then
   if [ "${TRAVIS_BRANCH}" == "master" ]; then
-    eval $(aws ecr get-login --no-include-email --region eu-west-1)
-
-    ./docker-build.sh --arg prod true
     ./push.sh
 
     mkdir ~/.kube
