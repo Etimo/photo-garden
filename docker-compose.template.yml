@@ -82,11 +82,13 @@ services:
       - queue
       - db
 
-  be-normalize-user-photo-google-drive:
+  be-google-drive:
     depends_on:
       - queue
+      - db
     links:
       - queue
+      - db
 
   api-photos:
     ports:
