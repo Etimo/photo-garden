@@ -3,6 +3,7 @@ const communication = require("communication");
 const logger = require("logging");
 const config = require("config");
 const photoDb = require("photo-db");
+const googleTokens = require("provider-google-drive-tokens");
 
 function normalizePhotoInfo(fileInfo, user) {
   return {
@@ -28,17 +29,32 @@ communication.subscribe(options, async msg => {
 
   const id = await photoDb.insert(normalized);
 
+  const userTokens = JSON.parse(await googleTokens.getTokens(data.user));
+  const accessToken = userTokens.access_token;
+
   // Prepare for downloader
-  const thumbnailUrl = data.photo.thumbnailLink;
+  const authHeaders = {
+    Authorization: `Bearer ${accessToken}`
+  };
   const sizes = {
     small: {
-      url: thumbnailUrl
+      url: data.photo.thumbnailLink
     },
     large: {
-      url: thumbnailUrl
+      url: `https://www.googleapis.com/drive/v3/files/${
+        data.photo.id
+      }?alt=media`,
+      headers: authHeaders
+    },
+    exif: {
+      url: `https://www.googleapis.com/drive/v3/files/${
+        data.photo.id
+      }?alt=media`,
+      headers: Object.assign({}, authHeaders, {
+        Range: "bytes=0-40960"
+      })
     }
   };
-  console.log(sizes);
 
   logger.info(`Normalized user photo ${data.photo.id} for user ${data.user}`);
   communication.publish("user-photo--prepared", {
