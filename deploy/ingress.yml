@@ -1,0 +1,16 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    ingress.kubernetes.io/rewrite-target: /
+  name: photo-garden-ingress
+spec:
+  tls:
+  - secretName: photo-garden-cert-secret
+  rules:
+  - http:
+      paths:
+      - backend:
+          serviceName: gateway
+          servicePort: 80
+        path: /

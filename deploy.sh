@@ -13,6 +13,7 @@ if [ "${TRAVIS_PULL_REQUEST}" ] || [ "${TRAVIS_PULL_REQUEST}" == "false" ]; then
     #   ./kubectl --kubeconfig=kubeconfig set image deploy/$app $app=${ECR_BASE}$app:latest
     # done
     kubectl --kubeconfig=kubeconfig apply -f deploy/keys.yml
+    kubectl --kubeconfig=kubeconfig apply -f deploy/ingress.yml
     kubectl --kubeconfig=kubeconfig apply -f apps/gateway/kubernetes.yml
   else
     echo "Not master, not deploying"
