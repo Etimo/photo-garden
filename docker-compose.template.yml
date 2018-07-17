@@ -72,17 +72,6 @@ services:
       - queue
       - db
 
-  be-download-user-photo-google-drive:
-    image: photo-garden-be-download-user-photo-google-drive:latest
-    environment:
-      - LOG_LEVEL
-    volumes:
-      - photo-storage:/usr/src/photos
-    depends_on:
-      - queue
-    links:
-      - queue
-
   be-download-user-photo:
     image: photo-garden-be-download-user-photo:latest
     environment:
