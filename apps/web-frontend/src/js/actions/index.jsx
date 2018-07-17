@@ -1,3 +1,5 @@
+import { SESSION_LOGOUT } from "../constants/action-types";
+
 export const addGardenPhoto = photo => ({
   type: "ADD_GARDENPHOTO",
   photo: photo
@@ -26,4 +28,7 @@ export const reverseGarden = () => ({
 });
 export const sortByColor = () => ({
   type: "GARDEN_COLORSORT"
+});
+export const logout = () => ({
+  type: SESSION_LOGOUT
 });
