@@ -1,6 +1,6 @@
 #!/usr/bin/nix-shell
 #! nix-shell -i bash -p bash kubectl awscli
-set +uex
+set -euo pipefail
 
 if [ "${TRAVIS_PULL_REQUEST}" ] || [ "${TRAVIS_PULL_REQUEST}" == "false" ]; then
   if [ "${TRAVIS_BRANCH}" == "master" ]; then

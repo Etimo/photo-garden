@@ -1,5 +1,5 @@
 #!/bin/bash
-set +uex
+set -euo pipefail
 
 if [ -z "${TRAVIS_PULL_REQUEST}" ] || [ "${TRAVIS_PULL_REQUEST}" == "false" ]; then
   if [ "${TRAVIS_BRANCH}" == "master" ]; then
