@@ -1,4 +1,4 @@
-#!/usr/bin/nix-shell
+#!/usr/bin/env nix-shell
 #! nix-shell -i bash -p bash kubectl awscli
 set -euo pipefail
 
