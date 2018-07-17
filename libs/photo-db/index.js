@@ -11,7 +11,7 @@ async function insert(image) {
   const urlFull = imagePath.getUrl(
     image.owner,
     image.provider,
-    image.providerId,
+    image.providerId + "large",
     image.extension
   );
   const response = await dbClient.query(
