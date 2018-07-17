@@ -12,9 +12,12 @@ if [ "${TRAVIS_PULL_REQUEST}" ] || [ "${TRAVIS_PULL_REQUEST}" == "false" ]; then
     # for app in $(ls apps); do
     #   ./kubectl --kubeconfig=kubeconfig set image deploy/$app $app=${ECR_BASE}$app:latest
     # done
-    kubectl --kubeconfig=kubeconfig apply -f deploy/keys.yml
-    kubectl --kubeconfig=kubeconfig apply -f deploy/ingress.yml
-    kubectl --kubeconfig=kubeconfig apply -f apps/gateway/kubernetes.yml
+    for file in deploy/*.yml; do
+      kubectl --kubeconfig=kubeconfig apply -f ./$file
+    done
+    for app in gateway web-frontend; do
+      kubectl --kubeconfig=kubeconfig apply -f apps/$app/kubernetes.yml
+    done
   else
     echo "Not master, not deploying"
   fi
