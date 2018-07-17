@@ -14,3 +14,7 @@ spec:
           serviceName: gateway
           servicePort: 80
         path: /
+      - backend:
+          serviceName: web-frontend
+          servicePort: 1234
+        path: /ui/
