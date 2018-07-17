@@ -1,5 +1,5 @@
 #!/usr/bin/env nix-shell
-#! nix-shell -i bash -p nix bash docker parallel-rust -j32
+#! nix-shell -i bash -p nix bash docker parallel-rust -j30
 
 set -euo pipefail
 

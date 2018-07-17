@@ -1,5 +1,5 @@
 #!/usr/bin/env nix-shell
-#! nix-shell -i bash -p bash kubectl awscli
+#! nix-shell -i bash -p bash kubectl awscli -j32
 set -euo pipefail
 
 if [ "${TRAVIS_PULL_REQUEST}" ] || [ "${TRAVIS_PULL_REQUEST}" == "false" ]; then
