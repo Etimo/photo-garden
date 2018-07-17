@@ -19,6 +19,6 @@ deploy:
   provider: script
   script: ./deploy.sh
   on:
-    repo: etimo/photo-garden
+    repo: Etimo/photo-garden
     branch: master
     condition: "$PROD = true"
