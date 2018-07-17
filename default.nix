@@ -1,5 +1,6 @@
 {
   useDocker ? false,
+  prod ? false,
   pkgsOpts ?
     if useDocker
       then { system = "x86_64-linux"; }
@@ -45,7 +46,27 @@ let
 
             exec node node_modules/parcel-bundler/bin/cli.js $FAKE_PKG/src/index.html --out-dir=$TMP_BASE/dist --cache-dir=$TMP_BASE/cache
           '';
-      in {
+
+        prodRunScript = pkgs.writeScript "run-web-frontend-prod"
+          ''
+            #!${pkgs.bash}/bin/bash
+            set -euo pipefail
+
+            cd "$(dirname "$(realpath "$0")")/.."
+
+            exec ${pkgs.darkhttpd}/bin/darkhttpd dist --port 1234
+          '';
+      in if prod
+        then {
+        extraBuildInputs = [ pkgs.utillinuxMinimal ];
+        installPhase =
+          ''
+            node node_modules/parcel-bundler/bin/cli.js build src/index.html --out-dir=$out/dist
+            mkdir -p $out/bin
+            cp ${prodRunScript} $out/bin/web-frontend
+          '';
+        }
+        else {
         extraBuildInputs = [ pkgs.makeWrapper ];
         postInstall =
           ''
@@ -62,7 +83,7 @@ let
     path = workspace."${name}";
   }) packages;
   dockerBuild = pkgs.callPackage ./docker.nix {
-    inherit packages workspace;
+    inherit packages workspace prod;
     inherit (pkgs.nodePackages) nodemon;
   };
 in
