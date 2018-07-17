@@ -4,7 +4,6 @@ import Header from "./header.jsx";
 import Footer from "./footer.jsx";
 import Garden from "./components/garden/garden";
 import main from "../sass/main.scss";
-import mockData from "../mock/garden.json";
 import SinglePhoto from "./components/single-photo/single-photo";
 import { Provider } from "react-redux";
 import store from "./store/index";
