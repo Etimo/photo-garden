@@ -1,27 +1,29 @@
 language: nix
 services:
-  - docker
+- docker
 sudo: required
-
 env:
-  - PROD=false
-  - PROD=true
-
+- PROD=false
+- PROD=true
 before_script:
-  # /run/user is 100MB by default, which is not enough for Nix to build our Docker images
-  - sudo mount -t tmpfs none /run/user -o remount,size=8G
-  - nix-channel --update
-  - nix-env -if https://github.com/cachix/cachix/tarball/master --substituters https://cachix.cachix.org --trusted-public-keys cachix.cachix.org-1:eWNHQldwUO7G2VkjpnjDbWwy4KQ/HNxht7H4SSoMckM=
-  - cachix use photogarden
-
+- sudo mount -t tmpfs none /run/user -o remount,size=8G
+- nix-channel --update
+- nix-env -iA nixpkgs.git-crypt
+- git crypt unlock git-crypt.key
+- nix-env -if https://github.com/cachix/cachix/tarball/master --substituters https://cachix.cachix.org
+  --trusted-public-keys cachix.cachix.org-1:eWNHQldwUO7G2VkjpnjDbWwy4KQ/HNxht7H4SSoMckM=
+- cachix use photogarden
 script:
-  - nix-build -j32 --arg prod $PROD | cachix push photogarden
-  - ./docker-build.sh --arg prod $PROD
-
+- nix-build -j32 --arg prod $PROD | cachix push photogarden
+- "./docker-build.sh --arg prod $PROD"
 deploy:
   provider: script
-  script: ./deploy.sh
+  script: "./deploy.sh"
+  skip_cleanup: true
   on:
     repo: Etimo/photo-garden
     branch: master
     condition: "$PROD = true"
+before_install:
+- openssl aes-256-cbc -K $encrypted_8abf8cb4f491_key -iv $encrypted_8abf8cb4f491_iv
+  -in git-crypt.key.enc -out git-crypt.key -d
