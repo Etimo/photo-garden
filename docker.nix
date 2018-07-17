@@ -86,13 +86,17 @@ in rec {
   composeFileOverrides = {
     services = lib.listToAttrs (map (name: rec {
       inherit name;
+      existingService = (composeFileBase.services or {}).${name} or {};
       value = {
         image = "photo-garden-${name}:latest";
         volumes =
         let
-          existing = ((composeFileBase.services or {}).${name} or {}).volumes or [];
+          existing = existingService.volumes or [];
           dependencyVolumes = map (dep: "./${relativizePath ./. dep.src}:/node_modules/${dep.pname}") (pkgAndDeps workspace.${name});
         in existing ++ lib.optionals (!prod) dependencyVolumes;
+        environment = (existingService.environment or []) ++ [
+          "LOG_LEVEL"
+        ];
       };
     }) packages);
   };
