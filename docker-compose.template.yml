@@ -73,8 +73,6 @@ services:
       - queue
 
   be-instagram:
-    volumes:
-      - photo-storage:/usr/src/photos
     depends_on:
       - queue
       - db
