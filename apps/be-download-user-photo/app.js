@@ -56,7 +56,7 @@ communication.subscribe(options, async msg => {
       res.body.pipe(dest);
 
       // await imageDownloader.image(options);
-      logger.info(`Downloaded thumbnail image ${data.id} to ${options.dest}`);
+      logger.info(`Downloaded ${key} image ${data.id} to ${options.dest}`);
     }
   }
 
