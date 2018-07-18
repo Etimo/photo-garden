@@ -27,7 +27,7 @@ in rec {
   imageConfig = linkFarm "config" [ {
     name = "photo-garden.json";
     path = if prod
-      then ./config.production.json;
+      then ./config.production.json
       else ./config.development.json;
   } ];
   baseImage = dockerTools.buildImage {
