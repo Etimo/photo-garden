@@ -8,13 +8,17 @@ spec:
   tls:
   - secretName: photo-garden-cert-secret
   rules:
-  - http:
+  - host: photo.garden
+    http:
+      paths:
+      - backend:
+          serviceName: web-frontend
+          servicePort: 1234
+        path: /
+  - host: api.photo.garden
+    http:
       paths:
       - backend:
           serviceName: gateway
           servicePort: 80
-        path: /gateway/
-      - backend:
-          serviceName: web-frontend
-          servicePort: 1234
         path: /
