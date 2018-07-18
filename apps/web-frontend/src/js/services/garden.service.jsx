@@ -16,7 +16,10 @@ const GardenService = () => {
       }
     })
     .then(user => {
-      fetch(`http://localhost:3002/photos?user_id=${user.user}`)
+      fetch("http://localhost:3000/user/me/photos", {
+        method: "GET",
+        credentials: "include"
+      })
         .then(response => {
           return response.json();
         })
