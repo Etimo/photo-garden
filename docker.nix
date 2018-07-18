@@ -10,7 +10,7 @@
   dockerTools,
   linkFarm, symlinkJoin, runCommand, writeText,
   bashInteractive, coreutils, less, nodejs, remarshal,
-  nodemon,
+  nodemon, callPackage,
 }:
 let
   relativizePath = base: path: lib.removePrefix (toString base + "/") (toString path);
@@ -52,33 +52,34 @@ in rec {
       nodejs
     ];
   };
+  appImages = lib.listToAttrs (map (name: lib.nameValuePair name (dockerTools.buildImage {
+    name = "photo-garden-${name}";
+    tag = "latest";
+    fromImage = baseImage;
+    contents = [ imageConfig workspace.${name} ];
+    config =
+    let
+      pkg = workspace.${name};
+      pkgBin = "/bin/${name}";
+      nodemonConfig = {
+        watch = map (dep: "/node_modules/${dep.pname}") (pkgAndDeps pkg);
+        # By default nodemon ignores everything inside node_modules
+        ignoreRoot = [];
+      };
+      nodemonConfigJSON = writeText "nodemon.json" (builtins.toJSON nodemonConfig);
+    in {
+      Cmd = if (!prod) && (pkg.useNodemon or true)
+        then [ "${nodemon}/bin/nodemon" "--exec" "${nodejs}/bin/node" "--config" nodemonConfigJSON pkgBin ]
+        else [ pkgBin ];
+      Env = [
+        "PHOTO_GARDEN_CONFIG=/photo-garden.json"
+        "APP_NAME=${name}"
+      ];
+    };
+  })) apps);
   images = map (name: {
     name = "${name}.docker.tar.gz";
-    path = dockerTools.buildImage {
-      name = "photo-garden-${name}";
-      tag = "latest";
-      fromImage = baseImage;
-      contents = [ imageConfig workspace.${name} ];
-      config =
-      let
-        pkg = workspace.${name};
-        pkgBin = "/bin/${name}";
-        nodemonConfig = {
-          watch = map (dep: "/node_modules/${dep.pname}") (pkgAndDeps pkg);
-          # By default nodemon ignores everything inside node_modules
-          ignoreRoot = [];
-        };
-        nodemonConfigJSON = writeText "nodemon.json" (builtins.toJSON nodemonConfig);
-      in {
-        Cmd = if (!prod) && (pkg.useNodemon or true)
-          then [ "${nodemon}/bin/nodemon" "--exec" "${nodejs}/bin/node" "--config" nodemonConfigJSON pkgBin ]
-          else [ pkgBin ];
-        Env = [
-          "PHOTO_GARDEN_CONFIG=/photo-garden.json"
-          "APP_NAME=${name}"
-        ];
-      };
-    };
+    path = appImages.${name};
   }) apps ++ [{
     name = "docker-base.tar.gz";
     path = baseImage;
@@ -110,10 +111,18 @@ in rec {
       ${builtins.toJSON composeFileData}
     '';
 
+  kubernetesConfig = callPackage ./kubernetes.nix {
+    inherit apps loadYAML;
+  };
+
   extraFiles = [
     {
       name = "docker-compose.yml";
       path = composeFile;
+    }
+    {
+      name = "kubernetes";
+      path = kubernetesConfig;
     }
   ];
 }
