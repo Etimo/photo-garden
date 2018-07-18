@@ -26,18 +26,6 @@ router.get("/photos", async (req, res) => {
   res.header("Access-Control-Allow-Credentials", "true");
   res.send(images);
 });
-router.post("/photos", async (req, res) => {
-  const owner = req.query.user_id;
-  const url = req.query.url;
-  const mimeType = req.query.mime_type;
-
-  const id = await model.insert({
-    owner,
-    url,
-    mimeType
-  });
-  res.send({ id });
-});
 
 app.listen(port);
 logger.info(`Listening on port ${port}`);
