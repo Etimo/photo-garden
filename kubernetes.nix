@@ -6,17 +6,28 @@
   lib, linkFarm, symlinkJoin, writeText, loadYAML
 }:
 let
+  baseDeploymentTemplate = loadYAML ./deploy/deployment.template.yml;
+
   appDeployment = app:
   let
-    template = loadYAML (./apps + "/${app}/kube.deployment.yml");
-  in lib.recursiveUpdate template {
-    metadata.name = app;
-    spec.template.metadata.labels.app = app;
-    spec.template.spec.containers = map (container: lib.recursiveUpdate container {
-      name = app;
-      image = "${appImages.${app}.imageName}:${appImages.${app}.imageTag}";
-    }) template.spec.template.spec.containers;
-  };
+    templatePath = ./apps + "/${app}/kube.deployment.yml";
+    template = if builtins.pathExists templatePath
+      then loadYAML templatePath
+      else {};
+  in lib.foldr lib.recursiveUpdate {} [
+    baseDeploymentTemplate
+    template
+    {
+      apiVersion = "apps/v1beta1";
+      kind = "Deployment";
+      metadata.name = app;
+      spec.template.metadata.labels.app = app;
+      spec.template.spec.containers = map (container: lib.recursiveUpdate container {
+        name = app;
+        image = "${appImages.${app}.imageName}:${appImages.${app}.imageTag}";
+      }) template.spec.template.spec.containers;
+    }
+  ];
   appDeploymentFile = app: writeText "${app}.kube.deployment.yml" (builtins.toJSON (appDeployment app));
   appFiles = app: linkFarm "${app}-kube" [
     {
