@@ -101,6 +101,8 @@ services:
       - "3001:1234"
       # HMR Websocket
       - "33710:33710"
+    environment:
+      - PHOTO_GARDEN_GATEWAY_BASE_URL=http://localhost:3000
 
 volumes:
   photo-storage:

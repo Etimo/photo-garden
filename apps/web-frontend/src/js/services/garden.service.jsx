@@ -3,7 +3,7 @@ import uuidv1 from "uuid";
 import store from "../store/index";
 import axios from "axios";
 
-export const gatewayBaseUrl = "http://localhost:3000";
+export const gatewayBaseUrl = process.env.PHOTO_GARDEN_GATEWAY_BASE_URL;
 
 const GardenService = async () => {
   let user;

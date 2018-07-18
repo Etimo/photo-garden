@@ -44,7 +44,7 @@ let
             rm -f $TMP_BASE/node_modules
             ln -s $(pwd)/node_modules $TMP_BASE/node_modules
 
-            exec node node_modules/parcel-bundler/bin/cli.js $FAKE_PKG/src/index.html --hmr-port=33710 --out-dir=$TMP_BASE/dist --cache-dir=$TMP_BASE/cache --no-autoinstall
+            exec node node_modules/parcel-bundler/bin/cli.js $FAKE_PKG --hmr-port=33710 --out-dir=$TMP_BASE/dist --cache-dir=$TMP_BASE/cache --no-autoinstall
           '';
 
         prodRunScript = pkgs.writeScript "run-web-frontend-prod"
@@ -61,7 +61,7 @@ let
         extraBuildInputs = [ pkgs.utillinuxMinimal ];
         installPhase =
           ''
-            node node_modules/parcel-bundler/bin/cli.js build src/index.html --out-dir=$out/dist
+            node node_modules/parcel-bundler/bin/cli.js build --out-dir=$out/dist
             mkdir -p $out/bin
             cp ${prodRunScript} $out/bin/web-frontend
           '';
