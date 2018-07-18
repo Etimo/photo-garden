@@ -44,7 +44,7 @@ let
             rm -f $TMP_BASE/node_modules
             ln -s $(pwd)/node_modules $TMP_BASE/node_modules
 
-            exec node node_modules/parcel-bundler/bin/cli.js $FAKE_PKG/src/index.html --hmr-port=33710 --out-dir=$TMP_BASE/dist --cache-dir=$TMP_BASE/cache
+            exec node node_modules/parcel-bundler/bin/cli.js $FAKE_PKG/src/index.html --hmr-port=33710 --out-dir=$TMP_BASE/dist --cache-dir=$TMP_BASE/cache --no-autoinstall
           '';
 
         prodRunScript = pkgs.writeScript "run-web-frontend-prod"
