@@ -9,7 +9,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "db": "^1.0.0",
-    "image-path": "^1.0.0"
+    "db": "^1.0.0"
   }
 }

@@ -1,0 +1,3 @@
+ALTER TABLE photos DROP COLUMN url;
+ALTER TABLE photos DROP COLUMN url_thumbnail;
+ALTER TABLE photos ADD COLUMN extension TEXT NOT NULL;
