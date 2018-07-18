@@ -15,6 +15,13 @@ spec:
           serviceName: web-frontend
           servicePort: 1234
         path: /
+  - host: www.photo.garden
+    http:
+      paths:
+      - backend:
+          serviceName: web-frontend
+          servicePort: 1234
+        path: /
   - host: api.photo.garden
     http:
       paths:
