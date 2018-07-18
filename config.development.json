@@ -2,6 +2,9 @@
   "urls": {
     "app": "http://localhost:3001"
   },
+  "serviceUrls": {
+    "photos": "http://api-photos:3000"
+  },
   "queue": {
     "host": "queue",
     "port": 4222

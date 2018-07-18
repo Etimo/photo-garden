@@ -9,11 +9,13 @@ const path = require("path");
 const sessions = require("client-sessions");
 const GoogleAuth = require("google-auth-library");
 const bodyParser = require("body-parser");
+const axios = require("axios");
 
 const auth = new GoogleAuth();
 const app = express();
 const port = config.get("gateway.port");
 const appUrl = config.get("urls.app");
+const photoApiUrl = config.get("serviceUrls.photos");
 
 //Login-block
 const asyncWrapper = wrapFunction => (req, res, next) => {
@@ -56,6 +58,18 @@ app.get("/logout", (req, res) => {
 
 app.get("/user", [allowCors, isAuthenticated], (req, res) => {
   res.json({ user: req.gardenSession.userIdentity });
+});
+
+app.get("/user/me/photos", [allowCors, isAuthenticated], (req, res, next) => {
+  axios
+    .get("/photos", {
+      baseURL: photoApiUrl,
+      params: {
+        user_id: req.gardenSession.userIdentity
+      }
+    })
+    .then(response => res.json(response.data))
+    .catch(next);
 });
 
 function allowCors(req, res, next) {
