@@ -6,30 +6,39 @@
   lib, linkFarm, symlinkJoin, writeText, loadYAML
 }:
 let
-  baseDeploymentTemplate = loadYAML ./deploy/deployment.template.yml;
-
-  appDeployment = app:
+  kubeAppYamlFile = {fileType, app, override}:
   let
-    templatePath = ./apps + "/${app}/kube.deployment.yml";
-    template = if builtins.pathExists templatePath
-      then loadYAML templatePath
-      else {};
-  in lib.foldl (base: new: lib.recursiveUpdate base (new base)) {} [
-    (super: baseDeploymentTemplate)
-    (super: template)
-    (super: {
+    baseTemplate = loadYAML (./deploy + "/${fileType}.template.yml");
+    appTemplatePath = ./apps + "/${app}/kube.${fileType}.yml";
+    appTemplate =
+      if builtins.pathExists appTemplatePath
+        then loadYAML appTemplatePath
+        else {};
+    appFileData =
+      lib.foldl (base: new: lib.recursiveUpdate base (new base)) {} [
+        (super: baseTemplate)
+        (super: appTemplate)
+        override
+      ];
+  in
+    writeText "${app}.${fileType}.yml" (builtins.toJSON appFileData);
+
+  appDeploymentFile = app: kubeAppYamlFile {
+    inherit app;
+    fileType = "deployment";
+    override = super: {
       metadata.name = app;
       spec.template.metadata.labels.app = app;
       spec.template.spec.containers = map (container: lib.recursiveUpdate container {
         name = app;
         image = "${appImages.${app}.imageName}:${appImages.${app}.imageTag}";
       }) super.spec.template.spec.containers;
-    })
-  ];
-  appDeploymentFile = app: writeText "${app}.kube.deployment.yml" (builtins.toJSON (appDeployment app));
+    };
+  };
+
   appFiles = app: linkFarm "${app}-kube" [
     {
-      name = "${app}.kube.deployment.yml";
+      name = "${app}.deployment.yml";
       path = appDeploymentFile app;
     }
   ];
