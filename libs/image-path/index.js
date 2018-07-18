@@ -3,6 +3,8 @@ const config = require("config");
 const path = require("path");
 const destPath = config.get("images.path");
 
+const photoServerBaseUrl = config.get("urls.photoServer");
+
 function assertPath(userId, providerName, providerId, extension) {
   console.log(
     "Create path",
@@ -37,7 +39,7 @@ function getFullPathAndFile(userId, providerName, providerId, extension) {
 }
 
 function getUrl(userId, providerName, providerId, extension) {
-  return `http://localhost:3010/${getPathAndFile(
+  return `${photoServerBaseUrl}/${getPathAndFile(
     userId,
     providerName,
     providerId,
