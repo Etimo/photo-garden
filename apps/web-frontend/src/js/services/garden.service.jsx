@@ -1,28 +1,29 @@
 import { addGardenPhoto } from "../actions/index";
 import uuidv1 from "uuid";
 import store from "../store/index";
+import axios from "axios";
+
+export const gatewayBaseUrl = "http://localhost:3000";
 
 const GardenService = () => {
-  fetch("http://localhost:3000/user", {
-    method: "GET",
-    credentials: "include"
-  })
-    .catch(err => {})
-    .then(response => {
-      if (response.status < 400) {
-        return response.json();
-      } else {
-        location.href = "http://localhost:3000/login";
+  axios
+    .get("/user", {
+      baseURL: gatewayBaseUrl,
+      withCredentials: true
+    })
+    .catch(err => {
+      if (err.response.status === 401) {
+        location.href = `${gatewayBaseUrl}/login`;
       }
     })
+    .then(response => response.data)
     .then(user => {
-      fetch("http://localhost:3000/user/me/photos", {
-        method: "GET",
-        credentials: "include"
-      })
-        .then(response => {
-          return response.json();
+      axios
+        .get("/user/me/photos", {
+          baseURL: gatewayBaseUrl,
+          withCredentials: true
         })
+        .then(response => response.data)
         .then(jsonResponse => {
           jsonResponse.forEach(photo => {
             let gardenPhoto = {

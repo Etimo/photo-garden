@@ -15,7 +15,7 @@ const auth = new GoogleAuth();
 const app = express();
 const port = config.get("gateway.port");
 const appUrl = config.get("urls.app");
-const photoApiUrl = config.get("serviceUrls.photos");
+const photosApiBaseUrl = config.get("serviceUrls.photos");
 
 //Login-block
 const asyncWrapper = wrapFunction => (req, res, next) => {
@@ -63,7 +63,7 @@ app.get("/user", [allowCors, isAuthenticated], (req, res) => {
 app.get("/user/me/photos", [allowCors, isAuthenticated], (req, res, next) => {
   axios
     .get("/photos", {
-      baseURL: photoApiUrl,
+      baseURL: photosApiBaseUrl,
       params: {
         user_id: req.gardenSession.userIdentity
       }
