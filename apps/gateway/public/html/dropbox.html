@@ -5,7 +5,7 @@
         var raw = window.location.hash;
         var string = raw.split('#')[1];
         fetch('/dropbox/auth/finish2?' + string, { credentials: 'include'}).then(response => {
-            if (response.status < 400) { window.location.href = 'http://localhost:3001'; }
+            if (response.status < 400) { window.location.href = '/'; }
             else { window.location.href = '/login'; }
         }).catch(err => {
             window.location.href = '/login'
