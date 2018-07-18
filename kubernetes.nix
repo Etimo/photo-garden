@@ -23,7 +23,7 @@ let
   in
     writeText "${app}.${fileType}.yml" (builtins.toJSON appFileData);
 
-  appDeploymentFile = app: kubeAppYamlFile {
+  appDeployment = app: kubeAppYamlFile {
     inherit app;
     fileType = "deployment";
     override = super: {
@@ -35,11 +35,23 @@ let
       }) super.spec.template.spec.containers;
     };
   };
+  appService = app: kubeAppYamlFile {
+    inherit app;
+    fileType = "service";
+    override = super: {
+      metadata.name = app;
+      spec.selector.app = app;
+    };
+  };
 
   appFiles = app: linkFarm "${app}-kube" [
     {
       name = "${app}.deployment.yml";
-      path = appDeploymentFile app;
+      path = appDeployment app;
+    }
+    {
+      name = "${app}.service.yml";
+      path = appService app;
     }
   ];
 in
