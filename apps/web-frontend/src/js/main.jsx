@@ -11,6 +11,8 @@ import GardenService from "./services/garden.service";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { photoClosed } from "./actions/index";
+import "babel-polyfill";
+
 class ConnectedMain extends React.Component {
   onmessage(event) {
     var json = JSON.parse(event.data);

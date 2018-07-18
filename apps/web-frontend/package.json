@@ -12,6 +12,7 @@
   "license": "ISC",
   "dependencies": {
     "axios": "^0.18.0",
+    "babel-polyfill": "^6.26.0",
     "color-sort": "1.0.0",
     "prop-types": "^15.6.2",
     "react": "^16.2.0",
