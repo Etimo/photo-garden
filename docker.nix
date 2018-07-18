@@ -112,7 +112,7 @@ in rec {
     '';
 
   kubernetesConfig = callPackage ./kubernetes.nix {
-    inherit apps loadYAML;
+    inherit apps appImages loadYAML;
   };
 
   extraFiles = [
