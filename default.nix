@@ -58,23 +58,25 @@ let
           '';
       in if prod
         then {
-        extraBuildInputs = [ pkgs.utillinuxMinimal ];
-        installPhase =
-          ''
-            node node_modules/parcel-bundler/bin/cli.js build --out-dir=$out/dist
-            mkdir -p $out/bin
-            cp ${prodRunScript} $out/bin/web-frontend
-          '';
+          PHOTO_GARDEN_GATEWAY_BASE_URL = "http://api.photo.garden";
+
+          extraBuildInputs = [ pkgs.utillinuxMinimal ];
+          installPhase =
+            ''
+              node node_modules/parcel-bundler/bin/cli.js build --out-dir=$out/dist
+              mkdir -p $out/bin
+              cp ${prodRunScript} $out/bin/web-frontend
+            '';
         }
         else {
-        extraBuildInputs = [ pkgs.makeWrapper ];
-        postInstall =
-          ''
-            cp ${runScript} $out/bin/web-frontend
-          '';
+          extraBuildInputs = [ pkgs.makeWrapper ];
+          postInstall =
+            ''
+              cp ${runScript} $out/bin/web-frontend
+            '';
 
-        passthru.useNodemon = false;
-      };
+          passthru.useNodemon = false;
+        };
     };
   };
   packages = pkgs.lib.mapAttrsToList (name: tpe: name) (builtins.readDir ./apps);
