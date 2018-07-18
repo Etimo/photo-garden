@@ -3,7 +3,7 @@
   workspace, apps,
 
   # Config
-  prod,
+  prod, dockerTag, dockerImagePrefix,
 
   # Dependencies
   lib,
@@ -31,7 +31,7 @@ in rec {
       else ./config.development.json;
   } ];
   baseImage = dockerTools.buildImage {
-    name = "photo-garden-base";
+    name = "${dockerImagePrefix}base";
     contents = map symlinkAddPkg [
       # Debugging
       bashInteractive
@@ -53,8 +53,8 @@ in rec {
     ];
   };
   appImages = lib.listToAttrs (map (name: lib.nameValuePair name (dockerTools.buildImage {
-    name = "photo-garden-${name}";
-    tag = "latest";
+    name = "${dockerImagePrefix}${name}";
+    tag = dockerTag;
     fromImage = baseImage;
     contents = [ imageConfig workspace.${name} ];
     config =
@@ -91,7 +91,7 @@ in rec {
       inherit name;
       existingService = (composeFileBase.services or {}).${name} or {};
       value = {
-        image = "photo-garden-${name}:latest";
+        image = "${appImages.${name}.imageName}:${appImages.${name}.imageTag}";
         volumes =
         let
           existing = existingService.volumes or [];

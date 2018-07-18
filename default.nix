@@ -1,5 +1,7 @@
 {
   useDocker ? false,
+  dockerTag ? "latest",
+  dockerImagePrefix ? "photo-garden-",
   prod ? false,
   pkgsOpts ?
     if useDocker
@@ -85,7 +87,7 @@ let
     path = workspace."${name}";
   }) apps;
   dockerBuild = pkgs.callPackage ./docker.nix {
-    inherit apps workspace prod;
+    inherit apps workspace prod dockerTag dockerImagePrefix;
     inherit (pkgs.nodePackages) nodemon;
   };
 in
