@@ -14,6 +14,7 @@
     "axios": "^0.18.0",
     "babel-polyfill": "^6.26.0",
     "color-sort": "1.0.0",
+    "prettier": "^1.11.1",
     "prop-types": "^15.6.2",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
@@ -27,6 +28,6 @@
     "babel-preset-react-app": "^3.1.0",
     "eslint": "^4.19.1",
     "node-sass": "^4.7.2",
-    "parcel-bundler": "^1.9.4"
+    "parcel-bundler": "^1.9.7"
   }
 }
