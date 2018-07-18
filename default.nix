@@ -79,13 +79,13 @@ let
         };
     };
   };
-  packages = pkgs.lib.mapAttrsToList (name: tpe: name) (builtins.readDir ./apps);
+  apps = pkgs.lib.mapAttrsToList (name: tpe: name) (builtins.readDir ./apps);
   rawBuilds = map (name: {
     name = "${name}";
     path = workspace."${name}";
-  }) packages;
+  }) apps;
   dockerBuild = pkgs.callPackage ./docker.nix {
-    inherit packages workspace prod;
+    inherit apps workspace prod;
     inherit (pkgs.nodePackages) nodemon;
   };
 in

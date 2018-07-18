@@ -1,6 +1,6 @@
 {
   # Photo garden packages
-  workspace, packages,
+  workspace, apps,
 
   # Config
   prod,
@@ -79,7 +79,7 @@ in rec {
         ];
       };
     };
-  }) packages ++ [{
+  }) apps ++ [{
     name = "docker-base.tar.gz";
     path = baseImage;
   }];
@@ -100,7 +100,7 @@ in rec {
           "LOG_LEVEL"
         ];
       };
-    }) packages);
+    }) apps);
   };
   composeFileData = lib.recursiveUpdate composeFileBase composeFileOverrides;
   composeFile = writeText "docker-compose.yml"
