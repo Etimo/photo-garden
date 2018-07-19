@@ -1,7 +1,7 @@
 {
   "urls": {
     "app": "http://localhost:3001",
-    "photoServer": "http://localhost:3010"
+    "photoServer": "http://localhost:9000/photos"
   },
   "serviceUrls": {
     "photos": "http://api-photos:3000"

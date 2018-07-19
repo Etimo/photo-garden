@@ -46,15 +46,6 @@ services:
     ports:
       - "3000:3000"
 
-  photo-server:
-    build: services/photo-server
-    environment:
-      - LOG_LEVEL
-    volumes:
-      - photo-storage:/usr/share/nginx/html/
-    ports:
-      - "3010:80"
-
   be-dropbox:
     depends_on:
       - queue
@@ -74,8 +65,6 @@ services:
       - db
 
   be-download-user-photo:
-    volumes:
-      - photo-storage:/usr/src/photos
     depends_on:
       - queue
       - minio

@@ -31,17 +31,6 @@ const options = {
   clientId: "user-photo-downloader"
 };
 communication.subscribe(options, async msg => {
-  // {
-  //   id,
-  //   extension,
-  //   headers, provider, user
-
-  //
-  //   urls: {
-  //   large: data.photo.images.standard_resolution.url,
-  //   small: data.photo.images.standard_resolution.url
-  // }
-  // }
   const data = JSON.parse(msg.data);
 
   // Create path to download to, if not already existing
@@ -56,29 +45,22 @@ communication.subscribe(options, async msg => {
   for (const key in data.sizes) {
     if (data.sizes.hasOwnProperty(key)) {
       const size = data.sizes[key];
-      let options = {
-        headers: size.headers,
-        url: size.url,
-        dest: imagePath.getFullPathAndFile(
-          data.user,
-          data.provider,
-          data.providerId + key,
-          data.extension
-        )
-      };
       const res = await fetch(size.url, {
         headers: size.headers
       });
+      const dest = imagePath.getPathAndFile(
+        data.user,
+        data.provider,
+        data.providerId + key,
+        data.extension
+      );
       const putOperation = await minioClient.putObject(
         s3Bucket,
-        options.dest,
+        dest,
         res.body
       );
-      const dest = fs.createWriteStream(options.dest);
-      res.body.pipe(dest);
 
-      // await imageDownloader.image(options);
-      logger.info(`Downloaded ${key} image ${data.id} to ${options.dest}`);
+      logger.info(`Downloaded ${key} image ${data.id} to ${dest}`);
     }
   }
 
