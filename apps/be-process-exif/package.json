@@ -17,6 +17,7 @@
     "image-downloader": "^3.3.0",
     "image-path": "^1.0.0",
     "logging": "^1.0.0",
+    "minio": "^6.0.0",
     "node-fetch": "^2.1.2",
     "photo-db": "^1.0.0"
   },

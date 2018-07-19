@@ -55,14 +55,14 @@ services:
       - db
 
   be-process-exif:
-    volumes:
-      - photo-storage:/usr/src/photos
     depends_on:
       - queue
       - db
+      - minio
     links:
       - queue
       - db
+      - minio
 
   be-download-user-photo:
     depends_on:

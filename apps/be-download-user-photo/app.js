@@ -7,8 +7,8 @@ const imageDownloader = require("image-downloader");
 const imagePath = require("image-path");
 const fetch = require("node-fetch");
 const fs = require("fs");
-const Minio = require("minio");
 
+const Minio = require("minio");
 const minioClient = new Minio.Client({
   endPoint: config.get("s3.endpoint"),
   port: config.get("s3.port"),
