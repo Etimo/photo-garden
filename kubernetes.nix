@@ -44,7 +44,7 @@ let
     };
   };
 
-  appFiles = app: linkFarm "${app}-kube" [
+  appFiles = app: linkFarm "photo-garden-kube-${app}" [
     {
       name = "${app}.deployment.yml";
       path = appDeployment app;
@@ -54,11 +54,19 @@ let
       path = appService app;
     }
   ];
+
+  sharedFiles = linkFarm "photo-garden-kube-shared" [
+    {
+      name = "ingress.yml";
+      path = deploy/ingress.yml;
+    }
+    {
+      name = "keys.yml";
+      path = deploy/keys.yml;
+    }
+  ];
 in
   symlinkJoin {
     name = "photo-garden-kube";
-    paths = map appFiles apps ++ [
-      deploy/ingress.yml
-      deploy/keys.yml
-    ];
+    paths = map appFiles apps ++ [sharedFiles];
   }
