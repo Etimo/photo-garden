@@ -33,14 +33,6 @@ const options = {
 communication.subscribe(options, async msg => {
   const data = JSON.parse(msg.data);
 
-  // Create path to download to, if not already existing
-  imagePath.assertPath(
-    data.user,
-    data.provider,
-    data.providerId,
-    data.extension
-  );
-
   // Download thumbnail
   for (const key in data.sizes) {
     if (data.sizes.hasOwnProperty(key)) {
