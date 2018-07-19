@@ -15,7 +15,8 @@ before_script:
 - cachix use photogarden
 script:
 - nix-build -j32 --arg prod $PROD | cachix push photogarden
-- "./docker-build.sh --arg prod $PROD"
+- export DOCKER_TAG=$(git rev-parse HEAD)
+- ./docker-build.sh --arg prod $PROD --argstr dockerImagePrefix $ECR_BASE --argstr dockerTag $DOCKER_TAG
 deploy:
   provider: script
   script: "./deploy.sh"

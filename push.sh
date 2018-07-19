@@ -6,8 +6,7 @@ if [ -z "${TRAVIS_PULL_REQUEST}" ] || [ "${TRAVIS_PULL_REQUEST}" == "false" ]; t
   if [ "${TRAVIS_BRANCH}" == "master" ]; then
     eval $(aws ecr get-login --no-include-email --region eu-west-1)
     for app in $(ls apps); do
-      REMOTE_URL=${ECR_BASE}$app
-      docker tag photo-garden-$app:latest $REMOTE_URL
+      REMOTE_URL=${ECR_BASE}$app:$DOCKER_TAG
       docker push $REMOTE_URL
     done
   else

@@ -10,7 +10,7 @@ echo "Building images"
 if [ "${CI-}" != true ]; then
   nix build --max-jobs 30 --no-link $NIX_OPTS
 fi
-NIX_OUT=$(nix-build --max-jobs 30 --no-out-link $NIX_OPTS)
+NIX_OUT=$(nix-build --max-jobs 30 $NIX_OPTS)
 
 echo "Loading base image"
 docker load -i $NIX_OUT/docker-base.tar.gz

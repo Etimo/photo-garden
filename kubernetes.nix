@@ -57,5 +57,8 @@ let
 in
   symlinkJoin {
     name = "photo-garden-kube";
-    paths = map appFiles apps;
+    paths = map appFiles apps ++ [
+      deploy/ingress.yml
+      deploy/keys.yml
+    ];
   }
