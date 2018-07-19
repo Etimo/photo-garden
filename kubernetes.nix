@@ -6,7 +6,7 @@
   lib, linkFarm, symlinkJoin, writeText, loadYAML
 }:
 let
-  kubeAppYamlFile = {fileType, app, override}:
+  kubeAppYamlFile = {fileType, app, override, skipIfMissing ? true}:
   let
     baseTemplate = loadYAML (./deploy + "/${fileType}.template.yml");
     appTemplatePath = ./apps + "/${app}/kube.${fileType}.yml";
@@ -21,11 +21,14 @@ let
         override
       ];
   in
-    writeText "${app}.${fileType}.yml" (builtins.toJSON appFileData);
+    writeText "${app}.${fileType}.yml" (builtins.toJSON appFileData) // {
+      skip = skipIfMissing && (!builtins.pathExists appTemplatePath);
+    };
 
   appDeployment = app: kubeAppYamlFile {
     inherit app;
     fileType = "deployment";
+    skipIfMissing = false;
     override = super: {
       metadata.name = app;
       spec.template.metadata.labels.app = app;
@@ -44,7 +47,7 @@ let
     };
   };
 
-  appFiles = app: linkFarm "photo-garden-kube-${app}" [
+  appFiles = app: linkFarm "photo-garden-kube-${app}" (lib.filter (file: !file.path.skip) [
     {
       name = "${app}.deployment.yml";
       path = appDeployment app;
@@ -53,7 +56,7 @@ let
       name = "${app}.service.yml";
       path = appService app;
     }
-  ];
+  ]);
 
   sharedFiles = linkFarm "photo-garden-kube-shared" [
     {

@@ -12,7 +12,7 @@ if [ "${TRAVIS_PULL_REQUEST}" ] || [ "${TRAVIS_PULL_REQUEST}" == "false" ]; then
     # for app in $(ls apps); do
     #   ./kubectl --kubeconfig=kubeconfig set image deploy/$app $app=${ECR_BASE}$app:latest
     # done
-    kubectl --kubeconfig=kubeconfig apply -f result/kubernetes -R
+    kubectl --kubeconfig=kubeconfig apply -f result/kubernetes/ -R
   else
     echo "Not master, not deploying"
   fi
