@@ -10,7 +10,7 @@
   dockerTools,
   linkFarm, symlinkJoin, runCommand, writeText,
   bashInteractive, coreutils, less, nodejs, remarshal,
-  nodemon, callPackage,
+  callPackage,
 }:
 let
   relativizePath = base: path: lib.removePrefix (toString base + "/") (toString path);
@@ -70,7 +70,7 @@ in rec {
       nodemonConfigJSON = writeText "nodemon.json" (builtins.toJSON nodemonConfig);
     in {
       Cmd = if (!prod) && (pkg.useNodemon or true)
-        then [ "${nodemon}/bin/nodemon" "--exec" "${nodejs}/bin/node" "--config" nodemonConfigJSON pkgBin ]
+        then [ "/node_modules/nodemon/bin/nodemon.js" "--exec" "${nodejs}/bin/node" "--config" nodemonConfigJSON pkgBin ]
         else [ pkgBin ];
       Env = [
         "PHOTO_GARDEN_CONFIG=/photo-garden.json"

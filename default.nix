@@ -88,7 +88,6 @@ let
   }) apps;
   dockerBuild = pkgs.callPackage ./docker.nix {
     inherit apps workspace prod dockerTag dockerImagePrefix;
-    inherit (pkgs.nodePackages) nodemon;
   };
 in
   pkgs.linkFarm "photo-garden" (pkgs.lib.optionals useDocker (dockerBuild.images ++ dockerBuild.extraFiles) ++ rawBuilds)
