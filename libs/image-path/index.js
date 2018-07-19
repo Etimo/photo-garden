@@ -31,10 +31,7 @@ function getPathAndFile(userId, providerName, providerId, extension) {
 function getFullPathAndFile(userId, providerName, providerId, extension) {
   return path.join(
     destPath,
-    `${getPath(userId, providerName, providerId, extension)}/${getFilename(
-      providerId,
-      extension
-    )}`
+    getPathAndFile(userId, providerName, providerId, extension)
   );
 }
 

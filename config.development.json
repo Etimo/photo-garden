@@ -10,6 +10,15 @@
     "host": "queue",
     "port": 4222
   },
+  "s3": {
+    "endpoint": "minio",
+    "port": 9000,
+    "secure": false,
+    "accessKey": "SU6FIR46M1SZJ53PQEHM",
+    "secretKey": "kibnCqXUonl14maP/sf3lGR11brOYMux66AjmjiT",
+    "bucket": "photos",
+    "region": "eu-west-1"
+  },
   "databases": {
     "garden": {
       "host": "db",
