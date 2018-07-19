@@ -2,7 +2,7 @@ const dbClient = require("db").create("garden");
 
 async function insert(image) {
   const response = await dbClient.query(
-    "INSERT INTO photos(owner, extension, mime_type, provider, provider_id, original) VALUES($1, $2, $3, $4, $5, $6) ON CONFLICT ON CONSTRAINT provider_id_unique DO UPDATE SET provider_id=$6 RETURNING id",
+    "INSERT INTO photos(owner, extension, mime_type, provider, provider_id, original) VALUES($1, $2, $3, $4, $5, $6) ON CONFLICT ON CONSTRAINT provider_id_unique DO UPDATE SET provider_id=$5 RETURNING id",
     [
       image.owner,
       image.extension,
