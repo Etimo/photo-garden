@@ -14,8 +14,8 @@
     "endpoint": "minio",
     "port": 9000,
     "secure": false,
-    "accessKey": "SU6FIR46M1SZJ53PQEHM",
-    "secretKey": "kibnCqXUonl14maP/sf3lGR11brOYMux66AjmjiT",
+    "accessKey": "not-so-access",
+    "secretKey": "not-so-secret",
     "bucket": "photos",
     "region": "eu-west-1"
   },

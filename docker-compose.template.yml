@@ -29,6 +29,9 @@ services:
     volumes:
       - photo-storage:/data
       - photo-storage-config:/root/.minio
+    environment:
+      - MINIO_ACCESS_KEY=not-so-access
+      - MINIO_SECRET_KEY=not-so-secret
 
   gateway:
     environment:
