@@ -24,11 +24,12 @@ let
   # Adapted from https://github.com/xtruder/kubenix/blob/bc37b314ee5123da9f61721e2845291a2fdd0e58/k8s.nix
   loadYAML = path: builtins.fromJSON (builtins.readFile (runCommand "yaml-to-json" {} "${remarshal}/bin/remarshal -i ${path} -if yaml -of json > $out"));
 in rec {
-  imageConfig = linkFarm "config" [ {
+  imageConfig = if prod
+    then ./config.production.json
+    else ./config.development.json;
+  imageConfigDir = linkFarm "config" [ {
     name = "photo-garden.json";
-    path = if prod
-      then ./config.production.json
-      else ./config.development.json;
+    path = imageConfig;
   } ];
   baseImage = dockerTools.buildImage {
     name = "${dockerImagePrefix}base";
@@ -56,13 +57,13 @@ in rec {
     name = "${dockerImagePrefix}${name}";
     tag = dockerTag;
     fromImage = baseImage;
-    contents = [ imageConfig workspace.${name} ];
+    contents = [ imageConfigDir workspace.${name} ];
     config =
     let
       pkg = workspace.${name};
       pkgBin = "/bin/${name}";
       nodemonConfig = {
-        watch = map (dep: "/node_modules/${dep.pname}") (pkgAndDeps pkg);
+        watch = map (dep: "/node_modules/${dep.pname}") (pkgAndDeps pkg) ++ ["/photo-garden.json"];
         # By default nodemon ignores everything inside node_modules
         ignoreRoot = [];
       };
@@ -96,7 +97,8 @@ in rec {
         let
           existing = existingService.volumes or [];
           dependencyVolumes = map (dep: "./${relativizePath ./. dep.src}:/node_modules/${dep.pname}") (pkgAndDeps workspace.${name});
-        in existing ++ lib.optionals (!prod) dependencyVolumes;
+          configVolume = "./${relativizePath ./. imageConfig}:/photo-garden.json";
+        in existing ++ lib.optionals (!prod) (dependencyVolumes ++ [configVolume]);
         environment = (existingService.environment or []) ++ [
           "LOG_LEVEL"
         ];
