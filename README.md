@@ -95,6 +95,11 @@ curl https://nixos.org/nix/install | sh
 
 Run `./docker-build.sh` to build and `docker load` the images, and then run `docker-compose up` to start everything.
 
+## Caching
+
+All our CI builds are cached, which you can use to dramatically speed up your first-time build times. To enable the cache,
+download [Cachix](https://cachix.org/) and then run `cachix use photogarden`.
+
 ## Adding new dependencies
 
 Remote dependencies (from NPM) are automatically picked up from `yarn.lock`, and just require a rebuild.
