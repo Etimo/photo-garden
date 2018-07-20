@@ -1,5 +1,5 @@
 #!/usr/bin/env nix-shell
-#! nix-shell -i bash -p bash kubectl helm helmfile awscli docker -j32
+#! nix-shell -i bash -p bash kubectl helm helmfile awscli docker parallel-rust -j32
 set -euo pipefail
 
 mkdir -p ~/.kube
@@ -7,9 +7,7 @@ export KUBECONFIG=$(pwd)/kubeconfig
 
 echo Pushing Docker Images
 eval $(aws ecr get-login --no-include-email --region eu-west-1)
-for app in $(ls apps); do
-  docker push ${ECR_BASE}$app:$DOCKER_TAG
-done
+parallel docker push "${ECR_BASE}{}:$DOCKER_TAG" ::: $(ls apps)
 
 echo Deploying Kube Dashboard
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/master/src/deploy/recommended/kubernetes-dashboard.yaml
