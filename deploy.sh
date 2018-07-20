@@ -4,7 +4,7 @@ set -euo pipefail
 
 ./push.sh
 
-mkdir ~/.kube
+mkdir -p ~/.kube
 export KUBECONFIG=$(pwd)/kubeconfig
 
 echo Deploying Kube Dashboard
