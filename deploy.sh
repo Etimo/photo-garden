@@ -10,6 +10,7 @@ export KUBECONFIG=$(pwd)/kubeconfig
 echo Deploying Kube Dashboard
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/master/src/deploy/recommended/kubernetes-dashboard.yaml
 echo Deploying Dependencies
+helm init --upgrade --service-account tiller
 helmfile sync
 
 echo Deploying Photo Garden
