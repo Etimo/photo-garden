@@ -1,16 +1,21 @@
 #!/usr/bin/env nix-shell
-#! nix-shell -i bash -p bash kubectl helm helmfile awscli -j32
+#! nix-shell -i bash -p bash kubectl helm helmfile awscli docker -j32
 set -euo pipefail
-
-./push.sh
 
 mkdir -p ~/.kube
 export KUBECONFIG=$(pwd)/kubeconfig
 
+echo Pushing Docker Images
+eval $(aws ecr get-login --no-include-email --region eu-west-1)
+for app in $(ls apps); do
+  docker push ${ECR_BASE}$app:$DOCKER_TAG
+done
+
 echo Deploying Kube Dashboard
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/master/src/deploy/recommended/kubernetes-dashboard.yaml
-echo Deploying Dependencies
+echo Deploying Helm
 helm init --upgrade --service-account tiller
+echo Deploying Other Dependencies
 helmfile sync
 
 echo Deploying Photo Garden
