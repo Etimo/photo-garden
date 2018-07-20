@@ -5,7 +5,7 @@ releases:
   set:
   - name: rbac.create
     value: true
-# - name: cert-manager
-#   namespace: kube-system
-#   chart: stable/cert-manager
-#   version: 0.4.0
+- name: cert-manager
+  namespace: kube-system
+  chart: stable/cert-manager
+  version: 0.4.0

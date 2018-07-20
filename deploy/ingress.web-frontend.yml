@@ -1,0 +1,20 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    ingress.kubernetes.io/rewrite-target: /
+    certmanager.k8s.io/cluster-issuer: letsencrypt-prod
+  name: web-frontend-ingress
+spec:
+  tls:
+  - secretName: photo-garden-cert-web-frontend-secret
+    hosts:
+    - photo.garden
+  rules:
+  - host: photo.garden
+    http:
+      paths:
+      - backend:
+          serviceName: web-frontend
+          servicePort: 1234
+        path: /
