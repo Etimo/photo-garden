@@ -1,5 +1,5 @@
 #!/usr/bin/env nix-shell
-#! nix-shell -i bash -p bash kubectl helm helmfile awscli docker parallel-rust -j32
+#! nix-shell -i bash -p bash kubectl kubernetes-helm helmfile awscli docker parallel-rust -j32
 set -euo pipefail
 
 mkdir -p ~/.kube
