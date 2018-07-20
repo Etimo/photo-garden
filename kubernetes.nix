@@ -58,20 +58,10 @@ let
     }
   ]);
 
-  sharedFiles = linkFarm "photo-garden-kube-shared" [
-    {
-      name = "ingress.yml";
-      path = deploy/ingress.yml;
-    }
-    {
-      name = "keys.yml";
-      path = deploy/keys.yml;
-    }
-    {
-      name = "serviceaccount.tiller.yml";
-      path = deploy/serviceaccount.tiller.yml;
-    }
-  ];
+  sharedFiles = lib.cleanSourceWith {
+    src = ./deploy;
+    filter = (name: type: !lib.hasSuffix ".template.yml" name);
+  };
 in
   symlinkJoin {
     name = "photo-garden-kube";
