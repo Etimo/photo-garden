@@ -1,0 +1,11 @@
+releases:
+- name: nginx-ingress
+  chart: stable/nginx-ingress
+  version: 0.17.1
+  set:
+  - name: rbac.create
+    value: true
+# - name: cert-manager
+#   namespace: kube-system
+#   chart: stable/cert-manager
+#   version: 0.4.0

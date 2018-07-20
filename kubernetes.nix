@@ -67,6 +67,10 @@ let
       name = "keys.yml";
       path = deploy/keys.yml;
     }
+    {
+      name = "serviceaccount.tiller.yml";
+      path = deploy/serviceaccount.tiller.yml;
+    }
   ];
 in
   symlinkJoin {

@@ -3,10 +3,15 @@ kind: Ingress
 metadata:
   annotations:
     ingress.kubernetes.io/rewrite-target: /
+    certmanager.k8s.io/cluster-issuer: letsencrypt-staging
   name: photo-garden-ingress
 spec:
   tls:
   - secretName: photo-garden-cert-secret
+    hosts:
+    - photo.garden
+    - www.photo.garden
+    - api.photo.garden
   rules:
   - host: photo.garden
     http:
