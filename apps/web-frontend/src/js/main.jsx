@@ -37,13 +37,14 @@ class ConnectedMain extends React.Component {
     return (
       <div className="wrapper">
         <Header />
-        <main className="main">{this.getMain()}</main>
+          <main className="main">{this.getMain()}</main>
         <Footer />
       </div>
     );
   }
 
   getMain() {
+    //State switch implementation neeeded here. Suggest appState.
     if (this.props.selectedPhoto !== '') {
       return (
         <section onClick={this.props.photoClosed}>

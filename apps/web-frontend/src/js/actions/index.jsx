@@ -9,3 +9,13 @@ export const selectGardenPhoto = photo => ({
 export const photoClosed = () => ({
   type: "PHOTO_CLOSED"
 });
+export const openMenu = () => ({
+  type: "MENU_OPEN"
+});
+export const closeMenu = () => ({
+  type: "MENU_CLOSE"
+});
+export const setApplicationState = (appState) => ({
+  type: "SET_STATE",
+  appState:appState
+});

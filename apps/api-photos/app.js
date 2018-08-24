@@ -2,13 +2,14 @@
 const express = require("express");
 const Router = require("express-promise-router");
 const logger = require("logging");
+
 const config = require("config");
 const model = require("./model.js");
 
 const port = config.get("apis.photos.port");
-
 const app = express();
 const router = new Router();
+
 app.use(express.static("public"));
 app.use(router);
 

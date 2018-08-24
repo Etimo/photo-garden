@@ -1,9 +1,10 @@
-
 import React from 'react';
+import MenuButton from './components/menu/menu-button'
+
 const Header = () =>(
     <header>
         <span>Photo garden</span>
-        <div className="icon-menu right"> </div>
+        <MenuButton/>
     </header>
 ) 
 export default Header;
