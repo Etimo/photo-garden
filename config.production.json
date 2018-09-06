@@ -34,14 +34,14 @@
   "providers": {
     "googleDrive": {
       "validPhotos": ["image/jpeg"],
-      "clientRedirectUri": "http://api.photo.garden/google-drive/auth/finish",
+      "clientRedirectUri": "https://api.photo.garden/google-drive/auth/finish",
       "scopes": ["https://www.googleapis.com/auth/drive.readonly", "email"]
     },
     "dropbox": {
-      "clientRedirectUri": "http://api.photo.garden/dropbox/auth/finish"
+      "clientRedirectUri": "https://api.photo.garden/dropbox/auth/finish"
     },
     "instagram": {
-      "clientRedirectUri": "http://api.photo.garden/instagram/auth/finish"
+      "clientRedirectUri": "https://api.photo.garden/instagram/auth/finish"
     }
   },
   "apis": {
