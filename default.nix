@@ -24,6 +24,7 @@ let
       "--frozen-lockfile"
       "--ignore-engine"
     ];
+
     packageOverrides = {
       web-frontend = let
         runScript = pkgs.writeScript "run-web-frontend"
@@ -80,6 +81,17 @@ let
           passthru.useNodemon = false;
         };
     };
+
+
+    # Prevent node-gyp (dependency of node-sass) from redownloading the Node headers
+    # (network access is not allowed inside the sandbox)
+    pkgConfig.node-gyp = {
+      buildInputs = [ pkgs.python ];
+    };
+    yarnPreBuild =
+      ''
+        export npm_config_nodedir=${pkgs.nodejs}
+      '';
   };
   apps = pkgs.lib.mapAttrsToList (name: tpe: name) (builtins.readDir ./apps);
   rawBuilds = map (name: {
