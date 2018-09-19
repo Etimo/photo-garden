@@ -12,6 +12,7 @@ parallel docker push "${ECR_BASE}{}:$DOCKER_TAG" ::: $(ls apps)
 echo Deploying Kube Dashboard
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/master/src/deploy/recommended/kubernetes-dashboard.yaml
 echo Deploying Helm
+kubectl apply -f result/kubernetes/serviceaccount.tiller.yml
 helm init --upgrade --service-account tiller
 echo Deploying Other Dependencies
 helmfile sync
