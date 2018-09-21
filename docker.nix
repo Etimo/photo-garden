@@ -117,6 +117,12 @@ in rec {
     inherit apps appImages loadYAML;
   };
 
+  dockerEnv = writeText "docker-env"
+    ''
+      export DOCKER_IMAGE_PREFIX=${dockerImagePrefix}
+      export DOCKER_TAG=${dockerTag}
+    '';
+
   extraFiles = [
     {
       name = "docker-compose.yml";
@@ -125,6 +131,10 @@ in rec {
     {
       name = "kubernetes";
       path = kubernetesConfig;
+    }
+    {
+      name = "docker-env";
+      path = dockerEnv;
     }
   ];
 }
