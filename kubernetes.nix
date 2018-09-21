@@ -1,15 +1,15 @@
 {
   # Photo garden packages
-  apps, appImages,
+  apps, jobs, appImages,
 
   # Dependencies
   lib, linkFarm, symlinkJoin, writeText, loadYAML
 }:
 let
-  kubeAppYamlFile = {fileType, app, override, skipIfMissing ? true}:
+  kubeAppYamlFile = {fileType, app, override, base ? ./apps, skipIfMissing ? true}:
   let
     baseTemplate = loadYAML (./deploy + "/${fileType}.template.yml");
-    appTemplatePath = ./apps + "/${app}/kube.${fileType}.yml";
+    appTemplatePath = base + "/${app}/kube.${fileType}.yml";
     appTemplate =
       if builtins.pathExists appTemplatePath
         then loadYAML appTemplatePath
@@ -25,9 +25,8 @@ let
       skip = skipIfMissing && (!builtins.pathExists appTemplatePath);
     };
 
-  appDeployment = app: kubeAppYamlFile {
+  controller = args: app: kubeAppYamlFile ({
     inherit app;
-    fileType = "deployment";
     skipIfMissing = false;
     override = super: {
       metadata.name = app;
@@ -37,6 +36,10 @@ let
         image = "${appImages.${app}.imageName}:${appImages.${app}.imageTag}";
       }) super.spec.template.spec.containers;
     };
+  } // args);
+
+  appDeployment = controller {
+    fileType = "deployment";
   };
   appService = app: kubeAppYamlFile {
     inherit app;
@@ -47,7 +50,14 @@ let
     };
   };
 
-  appFiles = app: linkFarm "photo-garden-kube-${app}" (lib.filter (file: !file.path.skip) [
+  jobController = controller {
+    fileType = "job";
+    base = ./jobs;
+  };
+
+  entityFiles = entityType: app: files: linkFarm "photo-garden-kube-${entityType}-${app}" (lib.filter (file: !file.path.skip) files);
+
+  appFiles = app: entityFiles "app" app [
     {
       name = "${app}.deployment.yml";
       path = appDeployment app;
@@ -56,7 +66,13 @@ let
       name = "${app}.service.yml";
       path = appService app;
     }
-  ]);
+  ];
+  jobFiles = job: entityFiles "job" job [
+    {
+      name = "${job}.job.yml";
+      path = jobController job;
+    }
+  ];
 
   sharedFiles = lib.cleanSourceWith {
     src = ./deploy;
@@ -65,5 +81,5 @@ let
 in
   symlinkJoin {
     name = "photo-garden-kube";
-    paths = map appFiles apps ++ [sharedFiles];
+    paths = map appFiles apps ++ map jobFiles jobs ++ [sharedFiles];
   }

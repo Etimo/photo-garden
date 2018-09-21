@@ -1,7 +1,9 @@
 {
-  "name": "admin",
+  "name": "db-migrations",
   "version": "1.0.0",
   "scripts": {},
+  "main": "app.js",
+  "bin": "app.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Etimo/photo-garden.git"
@@ -12,7 +14,10 @@
     "url": "https://github.com/Etimo/photo-garden/issues"
   },
   "homepage": "https://github.com/Etimo/photo-garden#readme",
-  "devDependencies": {
+  "dependencies": {
+    "command-line-args": "^4.0.7",
+    "config": "1.0.0",
+    "logging": "1.0.0",
     "postgrator-cli": "^0.2.2"
   }
 }

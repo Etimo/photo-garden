@@ -1,6 +1,6 @@
 {
   # Photo garden packages
-  workspace, apps,
+  workspace, apps, jobs,
 
   # Config
   prod, dockerTag, dockerImagePrefix,
@@ -77,11 +77,11 @@ in rec {
         "APP_NAME=${name}"
       ];
     };
-  })) apps);
+  })) (apps ++ jobs));
   images = map (name: {
     name = "${name}.docker.tar.gz";
     path = appImages.${name};
-  }) apps ++ [{
+  }) (apps ++ jobs) ++ [{
     name = "docker-base.tar.gz";
     path = baseImage;
   }];
@@ -114,7 +114,7 @@ in rec {
     '';
 
   kubernetesConfig = callPackage ./kubernetes.nix {
-    inherit apps appImages loadYAML;
+    inherit apps jobs appImages loadYAML;
   };
 
   dockerEnv = writeText "docker-env"

@@ -6,6 +6,7 @@
   "homepage": "https://github.com/Etimo/photo-garden#readme",
   "workspaces": [
     "apps/*",
+    "jobs/*",
     "libs/*"
   ],
   "scripts": {

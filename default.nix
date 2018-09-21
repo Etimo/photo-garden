@@ -94,12 +94,13 @@ let
       '';
   };
   apps = pkgs.lib.mapAttrsToList (name: tpe: name) (builtins.readDir ./apps);
+  jobs = pkgs.lib.mapAttrsToList (name: tpe: name) (builtins.readDir ./jobs);
   rawBuilds = map (name: {
     name = "${name}";
     path = workspace."${name}";
-  }) apps;
+  }) (apps ++ jobs);
   dockerBuild = pkgs.callPackage ./docker.nix {
-    inherit apps workspace prod dockerTag dockerImagePrefix;
+    inherit apps jobs workspace prod dockerTag dockerImagePrefix;
   };
 in
   pkgs.linkFarm "photo-garden" (pkgs.lib.optionals useDocker (dockerBuild.images ++ dockerBuild.extraFiles) ++ rawBuilds)
