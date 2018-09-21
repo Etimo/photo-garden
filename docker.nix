@@ -103,7 +103,7 @@ in rec {
           "LOG_LEVEL"
         ];
       };
-    }) apps);
+    }) (apps ++ jobs));
   };
   composeFileData = lib.recursiveUpdate composeFileBase composeFileOverrides;
   composeFile = writeText "docker-compose.yml"

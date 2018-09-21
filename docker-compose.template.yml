@@ -1,14 +1,6 @@
 version: "2.1"
 services:
   # Other services
-  db-migrations:
-    build: services/db-migrations
-    command: ./setup-photo-garden.sh
-    depends_on:
-      - db
-    links:
-      - db
-
   queue:
     image: nats-streaming
     command: -m 8222 -store file -dir datastore
