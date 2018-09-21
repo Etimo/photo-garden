@@ -3,7 +3,6 @@ const communication = require("communication");
 const config = require("config");
 const logger = require("logging");
 const photoDb = require("photo-db");
-const imageDownloader = require("image-downloader");
 const imagePath = require("image-path");
 const fetch = require("node-fetch");
 const fs = require("fs");

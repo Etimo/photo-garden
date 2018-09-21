@@ -12,7 +12,6 @@
   "dependencies": {
     "communication": "^1.0.0",
     "config": "^1.0.0",
-    "image-downloader": "^3.3.0",
     "image-path": "^1.0.0",
     "logging": "^1.0.0",
     "minio": "^6.0.0",
