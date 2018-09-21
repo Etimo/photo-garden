@@ -10,6 +10,13 @@
     "host": "queue",
     "port": 4222
   },
+  "s3": {
+    "endpoint": "s3.amazonaws.com",
+    "port": 443,
+    "secure": true,
+    "bucket": "photo-garden-photos",
+    "region": "eu-west-1"
+  },
   "databases": {
     "garden": {
       "host": "db",
