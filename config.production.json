@@ -18,13 +18,7 @@
     "region": "eu-west-1"
   },
   "databases": {
-    "garden": {
-      "host": "db",
-      "port": 5432,
-      "user": "the_gardener",
-      "password": "mysecretpassword",
-      "database": "photo_garden"
-    },
+    "garden": {},
     "unleash": {
       "host": "db",
       "port": 5432,

@@ -1,2 +1,2 @@
-keys.yml filter=git-crypt diff=git-crypt
+deploy/keys.yml filter=git-crypt diff=git-crypt
 kubeconfig filter=git-crypt diff=git-crypt

@@ -1,0 +1,15 @@
+spec:
+  template:
+    spec:
+      containers:
+        - env:
+          - name: PHOTO_GARDEN_S3_ACCESS_KEY
+            valueFrom:
+              secretKeyRef:
+                name: photo-garden-keys
+                key: PHOTO_GARDEN_S3_ACCESS_KEY
+          - name: PHOTO_GARDEN_S3_SECRET_KEY
+            valueFrom:
+              secretKeyRef:
+                name: photo-garden-keys
+                key: PHOTO_GARDEN_S3_SECRET_KEY
