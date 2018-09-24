@@ -19,4 +19,4 @@ echo "Loading base image"
 docker load -i $NIX_OUT/docker-base.tar.gz
 
 echo "Loading images"
-parallel docker load -i ::: $NIX_OUT/*.docker.tar.gz
+parallel -j20 docker load -i ::: $NIX_OUT/*.docker.tar.gz
