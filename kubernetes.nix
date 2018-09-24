@@ -25,18 +25,18 @@ let
       skip = skipIfMissing && (!builtins.pathExists appTemplatePath);
     };
 
-  controller = args@{nameAttr ? "name", ...}: app: kubeAppYamlFile ({
+  controller = args: app: kubeAppYamlFile ({
     inherit app;
     skipIfMissing = false;
     override = super: {
-      metadata.${nameAttr} = app;
+      metadata.name = app;
       spec.template.metadata.labels.app = app;
       spec.template.spec.containers = map (container: lib.recursiveUpdate container {
         name = app;
         image = "${appImages.${app}.imageName}:${appImages.${app}.imageTag}";
       }) super.spec.template.spec.containers;
     };
-  } // removeAttrs args [ "nameAttr" ]);
+  } // args);
 
   appDeployment = controller {
     fileType = "deployment";
@@ -53,7 +53,6 @@ let
   jobController = controller {
     fileType = "job";
     base = ./jobs;
-    nameAttr = "generateName";
   };
 
   entityFiles = entityType: app: files: linkFarm "photo-garden-kube-${entityType}-${app}" (lib.filter (file: !file.path.skip) files);
