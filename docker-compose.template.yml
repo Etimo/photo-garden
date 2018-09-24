@@ -11,7 +11,7 @@ services:
   db:
     build: services/db
     ports:
-      - "5432:5432"
+      - "5433:5432"
 
   minio:
     image: minio/minio

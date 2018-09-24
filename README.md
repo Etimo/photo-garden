@@ -166,7 +166,8 @@ The following services will be exposed to your machine when docker compose is ru
 - `localhost:9000` - Minio file storage server (Amazon S3 clone)
   - Access key: `not-so-access`
   - Secret key: `not-so-secret`
-- `localhost:5432` - Postgres db. Exposed on your machine to allow easy inspection.
+- `localhost:5433` - Postgres db. Exposed on your machine to allow easy inspection.
+  - Connect by running `psql --host=localhost --port=5433 --user=postgres`
 
 ## Reset db and queue
 
