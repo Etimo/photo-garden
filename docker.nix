@@ -33,6 +33,7 @@ in rec {
   } ];
   baseImage = dockerTools.buildImage {
     name = "${dockerImagePrefix}base";
+    keepContentsDirlinks = true;
     contents = map symlinkAddPkg [
       # Debugging
       bashInteractive
@@ -57,6 +58,7 @@ in rec {
     name = "${dockerImagePrefix}${name}";
     tag = dockerTag;
     fromImage = baseImage;
+    keepContentsDirlinks = true;
     contents = [ imageConfigDir workspace.${name} ];
     config =
     let
