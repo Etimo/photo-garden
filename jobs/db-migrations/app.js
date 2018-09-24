@@ -25,7 +25,6 @@ options["migration-directory"] = path.join(__dirname, "migrations");
 for (const optionName in configOptionNames) {
   const configOptionName = configOptionNames[optionName];
   options[optionName] = config.get(`${configPrefix}.${configOptionName}`);
-  console.log({ optionName, value: options[optionName] });
 }
 
 postgratorCli.run(options, err => {
