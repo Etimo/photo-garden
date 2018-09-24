@@ -11,8 +11,10 @@ parallel docker push "${DOCKER_IMAGE_PREFIX}{}:$DOCKER_TAG" ::: $(ls apps jobs)
 
 echo Deploying Kube Dashboard
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/master/src/deploy/recommended/kubernetes-dashboard.yaml
+echo Deploying Helm
+helm init --client-only
+echo 'Not deploying tiller due to race conditions (run `helm init --upgrade --service-acount tiller` manually if required)'
 # Disabled due to a race condition (tiller is down for a while after `helm init`)
-# echo Deploying Helm
 # kubectl apply -f result/kubernetes/serviceaccount.tiller.yml
 # helm init --upgrade --service-account tiller
 echo Deploying Other Dependencies
