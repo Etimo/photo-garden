@@ -163,6 +163,9 @@ The following services will be exposed to your machine when docker compose is ru
 - http://localhost:3001 - The photo app frontend (web-frontend)
 - `localhost:4222` - Nats streaming server
 - `localhost:8222` - Nats streaming server monitoring
+- `localhost:9000` - Minio file storage server (Amazon S3 clone)
+  - Access key: `not-so-access`
+  - Secret key: `not-so-secret`
 - `localhost:5432` - Postgres db. Exposed on your machine to allow easy inspection.
 
 ## Reset db and queue
