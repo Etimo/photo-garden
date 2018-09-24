@@ -7,7 +7,7 @@
 
   # Dependencies
   lib,
-  dockerTools,
+  dockerTools, skopeo,
   linkFarm, symlinkJoin, runCommand, writeText,
   bashInteractive, coreutils, less, nodejs, remarshal,
   callPackage,
@@ -55,8 +55,7 @@ in rec {
     ];
   };
   appImages = lib.listToAttrs (map (name: lib.nameValuePair name (dockerTools.buildImage {
-    name = "${dockerImagePrefix}${name}";
-    tag = dockerTag;
+    inherit name;
     fromImage = baseImage;
     keepContentsDirlinks = true;
     contents = [ imageConfigDir workspace.${name} ];
@@ -80,10 +79,10 @@ in rec {
       ];
     };
   })) (apps ++ jobs));
-  images = map (name: {
+  images = lib.mapAttrsToList (name: img: {
     name = "${name}.docker.tar.gz";
-    path = appImages.${name};
-  }) (apps ++ jobs) ++ [{
+    path = img;
+  }) appImages ++ [{
     name = "docker-base.tar.gz";
     path = baseImage;
   }];
@@ -94,7 +93,7 @@ in rec {
       inherit name;
       existingService = (composeFileBase.services or {}).${name} or {};
       value = {
-        image = "${appImages.${name}.imageName}:${appImages.${name}.imageTag}";
+        image = "${dockerImagePrefix}${name}:${dockerTag}";
         volumes =
         let
           existing = existingService.volumes or [];
@@ -119,6 +118,10 @@ in rec {
     inherit apps jobs appImages loadYAML;
   };
 
+  skopeoLoadImgMap = targetProto: name: img: "docker-archive:${img} ${targetProto}${dockerImagePrefix}${name}:${dockerTag}";
+  skopeoLoadImgsMap = targetProto: lib.concatStringsSep "\n" (lib.mapAttrsToList (skopeoLoadImgMap targetProto) appImages);
+  skopeoLoadMap = writeText "docker-load" (skopeoLoadImgsMap "docker-daemon:");
+  skopeoUploadMap = writeText "docker-upload" (skopeoLoadImgsMap "docker://");
   dockerEnv = writeText "docker-env"
     ''
       export DOCKER_IMAGE_PREFIX=${dockerImagePrefix}
@@ -137,6 +140,14 @@ in rec {
     {
       name = "docker-env";
       path = dockerEnv;
+    }
+    {
+      name = "skopeo-load-map";
+      path = skopeoLoadMap;
+    }
+    {
+      name = "skopeo-upload-map";
+      path = skopeoUploadMap;
     }
   ];
 }

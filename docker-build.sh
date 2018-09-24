@@ -1,5 +1,5 @@
 #!/usr/bin/env nix-shell
-#! nix-shell -i bash -p nix bash docker parallel-rust -j30
+#! nix-shell -i bash -p nix bash docker parallel-rust skopeo -j30
 
 set -euo pipefail
 
@@ -19,4 +19,4 @@ echo "Loading base image"
 docker load -i $NIX_OUT/docker-base.tar.gz
 
 echo "Loading images"
-parallel -j20 docker load -i ::: $NIX_OUT/*.docker.tar.gz
+parallel -j20 skopeo copy :::: $NIX_OUT/skopeo-load-map
