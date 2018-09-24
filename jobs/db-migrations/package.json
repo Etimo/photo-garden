@@ -19,5 +19,8 @@
     "config": "1.0.0",
     "logging": "1.0.0",
     "postgrator-cli": "^0.2.2"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.3"
   }
 }

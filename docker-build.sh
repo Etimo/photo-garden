@@ -12,11 +12,11 @@ if [ "${CI-}" != true ]; then
 fi
 NIX_OUT=$(nix-build --max-jobs 30 $NIX_OPTS)
 
+echo "Copying docker-compose.yml"
+cp --no-preserve=mode $NIX_OUT/docker-compose.yml .
+
 echo "Loading base image"
 docker load -i $NIX_OUT/docker-base.tar.gz
 
 echo "Loading images"
 parallel docker load -i ::: $NIX_OUT/*.docker.tar.gz
-
-echo "Copying docker-compose.yml"
-cp --no-preserve=mode $NIX_OUT/docker-compose.yml .
