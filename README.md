@@ -149,13 +149,13 @@ the the `name` attribute matches the name of the directory it is located in.
 
 # Docker
 
-Docker can now be used to run a full dev environment. Just run:
+Docker can be used to run a full dev environment. Just run (after following the setup procedure in the previous section):
 
 ```
-docker-compose up --build
+./docker-build.sh # Only if there are new dependencies since the last rebuild
+docker-compose up --detach db
+docker-compose up
 ```
-
-All apps are run in the same container using [pm2](https://pm2.keymetrics.io). This will also setup a database, initial schema and run all needed migrations (depending on the state of your db). Read more about db and migrations further down.
 
 The following services will be exposed to your machine when docker compose is running:
 
