@@ -21,7 +21,5 @@ echo Deploying Other Dependencies
 helmfile sync
 
 echo Deploying Photo Garden
-# for app in $(ls apps); do
-#   ./kubectl set image deploy/$app $app=${ECR_BASE}$app:latest
-# done
-kubectl apply -f result/kubernetes/ -R
+kubectl delete jobs/db-migrations --ignore-not-found
+kubectl apply --file result/kubernetes/ --recursive
