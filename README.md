@@ -93,7 +93,7 @@ curl https://nixos.org/nix/install | sh
 
 ## Building
 
-Run `./docker-build.sh` to build and `docker load` the images, and then run `docker-compose up` to start everything.
+Run `./docker-build.sh` to build and `docker load` the images, and then run `docker-compopse up --detach db && docker-compose up` to start everything.
 
 ## Caching
 
@@ -135,6 +135,17 @@ error: opening file '/home/teo/Documents/photo-garden/apps/blah/package.json': N
 This happens when there are folders inside apps or libs that aren't packages, usually because the package was renamed or
 removed. To fix this, run `git clean -idx apps/blah` (in this example) to remove the remaining node_modules, and then
 rebuild.
+
+### Nix can't find package attribute
+
+Typical error message:
+
+```
+error: attribute 'db-migrations' missing, at /path/to/docker.nix
+```
+
+This happens when the Yarn package has a different name than its folder. Open its `package.json` file, and verify that
+the the `name` attribute matches the name of the directory it is located in.
 
 # Docker
 
