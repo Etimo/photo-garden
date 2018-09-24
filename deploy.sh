@@ -22,4 +22,4 @@ helmfile sync
 
 echo Deploying Photo Garden
 kubectl delete jobs/db-migrations --ignore-not-found
-kubectl apply --file result/kubernetes/ --recursive
+kubectl apply --filename=result/kubernetes/ --recursive
