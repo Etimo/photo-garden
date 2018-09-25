@@ -23,6 +23,8 @@ let
 
   # Adapted from https://github.com/xtruder/kubenix/blob/bc37b314ee5123da9f61721e2845291a2fdd0e58/k8s.nix
   loadYAML = path: builtins.fromJSON (builtins.readFile (runCommand "yaml-to-json" {} "${remarshal}/bin/remarshal -i ${path} -if yaml -of json > $out"));
+
+  dockerImageRef = app: "${dockerImagePrefix}${app}:${dockerTag}";
 in rec {
   imageConfig = if prod
     then ./config.production.json
@@ -32,7 +34,7 @@ in rec {
     path = imageConfig;
   } ];
   baseImage = dockerTools.buildImage {
-    name = "${dockerImagePrefix}base";
+    name = "photo-garden-base";
     keepContentsDirlinks = true;
     contents = map symlinkAddPkg [
       # Debugging
@@ -93,7 +95,7 @@ in rec {
       inherit name;
       existingService = (composeFileBase.services or {}).${name} or {};
       value = {
-        image = "${dockerImagePrefix}${name}:${dockerTag}";
+        image = dockerImageRef name;
         volumes =
         let
           existing = existingService.volumes or [];
@@ -115,10 +117,10 @@ in rec {
     '';
 
   kubernetesConfig = callPackage ./kubernetes.nix {
-    inherit apps jobs appImages loadYAML;
+    inherit apps jobs appImages dockerImageRef loadYAML;
   };
 
-  skopeoLoadImgMap = targetProto: name: img: "docker-archive:${img} ${targetProto}${dockerImagePrefix}${name}:${dockerTag}";
+  skopeoLoadImgMap = targetProto: name: img: "docker-archive:${img} ${targetProto}${dockerImageRef name}";
   skopeoLoadImgsMap = targetProto: lib.concatStringsSep "\n" (lib.mapAttrsToList (skopeoLoadImgMap targetProto) appImages);
   skopeoLoadMap = writeText "docker-load" (skopeoLoadImgsMap "docker-daemon:");
   skopeoUploadMap = writeText "docker-upload" (skopeoLoadImgsMap "docker://");

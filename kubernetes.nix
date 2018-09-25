@@ -1,6 +1,6 @@
 {
   # Photo garden packages
-  apps, jobs, appImages,
+  apps, jobs, appImages, dockerImageRef,
 
   # Dependencies
   lib, linkFarm, symlinkJoin, writeText, loadYAML
@@ -33,7 +33,7 @@ let
       spec.template.metadata.labels.app = app;
       spec.template.spec.containers = map (container: lib.recursiveUpdate container {
         name = app;
-        image = "${appImages.${app}.imageName}:${appImages.${app}.imageTag}";
+        image = dockerImageRef app;
       }) super.spec.template.spec.containers;
     };
   } // args);
