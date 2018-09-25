@@ -9,5 +9,13 @@ releases:
   namespace: kube-system
   chart: stable/cert-manager
   version: 0.4.0
+- name: metrics-server
+  namespace: kube-system
+  chart: stable/metrics-server
+  version: 2.0.2
+- name: heapster
+  namespace: kube-system
+  chart: stable/heapster
+  version: 0.3.1
 - name: nats-operator
   chart: ./vendor/nats-operator/helm/nats-operator
