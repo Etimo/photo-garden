@@ -9,3 +9,5 @@ releases:
   namespace: kube-system
   chart: stable/cert-manager
   version: 0.4.0
+- name: nats-operator
+  chart: ./vendor/nats-operator/helm/nats-operator
