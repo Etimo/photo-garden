@@ -1,0 +1,22 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: queue
+  labels:
+    app: nats-streaming
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: queue
+    spec:
+      serviceAccountName: photo-garden
+      containers:
+      - image: nats-streaming:0.11.0
+        name: queue
+        ports:
+        - containerPort: 4222
+          name: nats
+        - containerPort: 8222
+          name: http
