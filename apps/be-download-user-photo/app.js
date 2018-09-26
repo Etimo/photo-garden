@@ -45,11 +45,17 @@ communication.subscribe(options, async msg => {
         data.providerId + key,
         data.extension
       );
-      const putOperation = await minioClient.putObject(
-        s3Bucket,
-        dest,
-        res.body
-      );
+      if (res.ok) {
+        const putOperation = await minioClient.putObject(
+          s3Bucket,
+          dest,
+          res.body,
+          undefined,
+          {
+            "Content-Type": res.headers.get("content-type")
+          }
+        );
+      }
 
       logger.info(`Downloaded ${key} image ${data.id} to ${dest}`);
     }
