@@ -1,3 +1,0 @@
-[submodule "vendor/nats-operator"]
-	path = vendor/nats-operator
-	url = https://github.com/nats-io/nats-operator
