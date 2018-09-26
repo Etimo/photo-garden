@@ -1,10 +1,10 @@
 {
   "urls": {
     "app": "https://photo.garden",
-    "photoServer": "http://localhost:3010"
+    "photoServer": "https://photo-garden-photos.s3.amazonaws.com"
   },
   "serviceUrls": {
-    "photos": "https://api.photo.garden"
+    "photos": "http://api-photos"
   },
   "queue": {
     "host": "queue",
