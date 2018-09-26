@@ -167,13 +167,15 @@ docker-compose up --detach db
 docker-compose up
 ```
 
+Then go to http://localhost:9000/ and mark the bucket public.
+
 The following services will be exposed to your machine when docker compose is running:
 
 - http://localhost:3000 - The gateway app
 - http://localhost:3001 - The photo app frontend (web-frontend)
 - `localhost:4222` - Nats streaming server
-- `localhost:8222` - Nats streaming server monitoring
-- `localhost:9000` - Minio file storage server (Amazon S3 clone)
+- http://localhost:8222/ - Nats streaming server monitoring
+- http://localhost:9000/ - Minio file storage server (Amazon S3 clone)
   - Access key: `not-so-access`
   - Secret key: `not-so-secret`
 - `localhost:5433` - Postgres db. Exposed on your machine to allow easy inspection.
