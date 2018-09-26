@@ -3,6 +3,7 @@ kind: Job
 spec:
   template:
     spec:
+      serviceAccountName: photo-garden
       restartPolicy: Never
       containers:
       - {}
