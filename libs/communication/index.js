@@ -26,7 +26,8 @@ function connect(clusterName, clientId) {
   if (!clientId) {
     throw new Error("Missing client id for nats connection");
   }
-  logger.info(`Connecting to nats on ${connectionString}`);
+  clientId = `${clientId}-${generateRandomId()}`;
+  logger.info(`Connecting to nats on ${connectionString} as ${clientId}`);
   conn = stan.connect(
     clusterName,
     clientId,
