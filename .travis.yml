@@ -6,6 +6,7 @@ env:
 - PROD=false
 - PROD=true
 before_script:
+- echo madvise | sudo tee /sys/kernel/mm/transparent_hugepage/enabled
 - sudo mount -t tmpfs none /run/user -o remount,size=8G
 - nix-channel --update
 - nix-env -j32 -iA nixpkgs.git-crypt
