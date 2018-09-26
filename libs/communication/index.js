@@ -7,6 +7,7 @@ const uuid = require("uuid/v1");
 
 const host = config.get("queue.host");
 const port = config.get("queue.port");
+const token = config.get("queue.token");
 
 const connectionString = `nats://${host}:${port}`;
 let channel = null;
@@ -32,6 +33,7 @@ function connect(clusterName, clientId) {
     {
       maxReconnectAttempts: -1,
       url: connectionString,
+      token: token,
       waitOnFirstConnect: true
     }
   );
