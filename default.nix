@@ -61,7 +61,7 @@ let
           '';
       in if prod
         then {
-          PHOTO_GARDEN_GATEWAY_BASE_URL = "http://api.photo.garden";
+          PHOTO_GARDEN_GATEWAY_BASE_URL = "https://api.photo.garden";
 
           extraBuildInputs = [ pkgs.utillinuxMinimal ];
           installPhase =
