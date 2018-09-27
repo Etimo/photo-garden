@@ -17,7 +17,7 @@ async function insert(image) {
   return response.rows[0].id;
 }
 
-///delete when implement geolocation in photos.
+// TODO: Delete this function when we store the real position
 function getRandomInRange(from, to, fixed) {
   return (Math.random() * (to - from) + from).toFixed(fixed) * 1;
 }
