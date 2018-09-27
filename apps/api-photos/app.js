@@ -27,10 +27,7 @@ router.get("/photos", async (req, res) => {
   res.send(images);
 });
 router.get("/map", async (req, res) => {
-  const viewerId = req.query.user_id;
-  const images = await model.findAllMap({
-    owner: viewerId
-  });
+  const images = await model.getAllPhotos(req.gardenSession.userIdentity);
   res.header("Access-Control-Allow-Origin", "*");
   res.header(
     "Access-Control-Allow-Headers",
