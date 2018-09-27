@@ -3,14 +3,14 @@ const imagePath = require("image-path");
 
 async function getAllPhotos(userId) {
   if (!userId) {
-    throw "userId must be specified";
+    //throw "userId must be specified";
   }
 
   const response = await dbClient.query(
     "SELECT p.owner, p.id, p.provider, p.provider_id, p.original, p.latitude, p.longitude, p.extension " +
-      "FROM photos p " +
-      "WHERE owner=$1",
-    [userId]
+      "FROM photos p "
+    //"WHERE owner=$1",
+    //[userId]
   );
 
   return response.rows.map(mapRowToPhoto);
