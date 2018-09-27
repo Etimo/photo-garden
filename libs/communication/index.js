@@ -11,70 +11,47 @@ const token = config.get("queue.token");
 
 const connectionString = `nats://${host}:${port}`;
 let channel = null;
-const timeout = 2000;
-let connecting = false;
-let connected = false;
-let conn;
+
+let connection;
 
 function generateRandomId() {
   return `client-${uuid()}`;
 }
 
 function connect(clusterName, clientId) {
-  connecting = true;
-  clusterName = clusterName || "test-cluster";
-  if (!clientId) {
-    throw new Error("Missing client id for nats connection");
-  }
-  clientId = `${clientId}-${generateRandomId()}`;
-  logger.info(`Connecting to nats on ${connectionString} as ${clientId}`);
-  conn = stan.connect(
-    clusterName,
-    clientId,
-    {
-      maxReconnectAttempts: -1,
-      url: connectionString,
-      token: token,
-      waitOnFirstConnect: true
+  return new Promise((resolve, reject) => {
+    if (!clientId) {
+      throw new Error("Missing client id for nats connection");
     }
-  );
-  conn.on("connect", () => {
-    logger.info("Connected to nats");
-    conn.on("close", function() {
-      process.exit();
+    clusterName = clusterName || "test-cluster";
+    clientId = `${clientId}-${generateRandomId()}`;
+    logger.info(`Connecting to nats on ${connectionString} as ${clientId}`);
+    const conn = stan.connect(
+      clusterName,
+      clientId,
+      {
+        reconnect: false,
+        maxReconnectAttempts: 2,
+        url: connectionString,
+        token: token,
+        waitOnFirstConnect: true
+      }
+    );
+    conn.on("connect", () => {
+      logger.info("Connected to nats");
+      conn.on("close", () => {
+        logger.error("Nats closed");
+        process.exit();
+      });
+      resolve(conn);
     });
-    connected = true;
-  });
-  conn.on("error", err => {
-    logger.error("Nats connection error", err);
-  });
-  conn.on("disconnect", () => {
-    logger.error("Nats disconnected");
+    conn.on("error", reject);
+    conn.on("disconnect", () => {
+      logger.error("Nats disconnected");
+      process.exit(2);
+    });
   });
 }
-
-function connectionPromiseCallback(resolve, reject) {
-  if (!connected) {
-    setTimeout(_ => {
-      connectionPromiseCallback(resolve, reject);
-    }, 1000);
-  } else {
-    process.on("SIGINT", () => {
-      logger.info("SIGINT captured, disconnecting from nats");
-      conn.close();
-    });
-    resolve();
-  }
-}
-
-const waitForConnection = new Promise(connectionPromiseCallback);
-
-const waitForReadyConnection = new Promise((resolve, reject) => {
-  logger.debug("Waiting for connection to nats");
-  waitForConnection.then(_ => {
-    resolve();
-  });
-});
 
 function setDeliveryType(natsOptions, sequence) {
   if (typeof sequence === "number") {
@@ -93,17 +70,20 @@ function setDeliveryType(natsOptions, sequence) {
 }
 
 function connectIfNeeded(options) {
-  if (!conn && !connecting) {
-    connect(
+  if (connection === undefined) {
+    connection = connect(
       options.clusterName,
       options.clientId
-    );
+    ).catch(err => {
+      logger.error("Nats connection failed", err);
+      process.exit(1);
+    });
   }
+  return connection;
 }
 
 function subscribe(options, callback) {
-  connectIfNeeded(options);
-  waitForReadyConnection.then(_ => {
+  connectIfNeeded(options).then(conn => {
     logger.info(`Setup subscription to ${options.channel}`);
     const opts = conn.subscriptionOptions();
     setDeliveryType(opts, options.sequence);
@@ -134,7 +114,7 @@ function publish(optionsOrChannel, message) {
   if (typeof optionsOrChannel !== "string") {
     connectIfNeeded(optionsOrChannel);
   }
-  waitForReadyConnection.then(_ => {
+  connection.then(conn => {
     const channel =
       typeof optionsOrChannel === "string"
         ? optionsOrChannel
