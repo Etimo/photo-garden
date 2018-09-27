@@ -32,3 +32,13 @@ export const sortByColor = () => ({
 export const logout = () => ({
   type: SESSION_LOGOUT
 });
+export const openMenu = () => ({
+  type: "MENU_OPEN"
+});
+export const closeMenu = () => ({
+  type: "MENU_CLOSE"
+});
+export const setApplicationState = (appState) => ({
+  type: "SET_STATE",
+  appState:appState
+});

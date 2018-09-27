@@ -5,3 +5,5 @@ export const PHOTO_CLOSED = "PHOTO_CLOSED";
 export const GARDEN_REVERSE = "GARDEN_REVERSE";
 export const GARDEN_COLORSORT = "GARDEN_COLORSORT";
 export const SESSION_LOGOUT = "SESSION_LOGOUT";
+export const MENU_OPEN = 'MENU_OPEN';
+export const MENU_CLOSE = 'MENU_CLOSE';
