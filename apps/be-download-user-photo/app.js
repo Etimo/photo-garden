@@ -42,8 +42,9 @@ communication.subscribe(options, async msg => {
       const dest = imagePath.getPathAndFile(
         data.user,
         data.provider,
-        data.providerId + key,
-        data.extension
+        data.providerId,
+        data.extension,
+        key
       );
       if (res.ok) {
         const putOperation = await minioClient.putObject(

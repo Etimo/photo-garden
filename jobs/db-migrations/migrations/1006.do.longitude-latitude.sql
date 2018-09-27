@@ -1,0 +1,2 @@
+ALTER TABLE photos ADD COLUMN longitude NUMERIC;
+ALTER TABLE photos ADD COLUMN latitude NUMERIC;

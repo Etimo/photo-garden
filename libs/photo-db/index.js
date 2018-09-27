@@ -2,18 +2,26 @@ const dbClient = require("db").create("garden");
 
 async function insert(image) {
   const response = await dbClient.query(
-    "INSERT INTO photos(owner, extension, mime_type, provider, provider_id, original) VALUES($1, $2, $3, $4, $5, $6) ON CONFLICT ON CONSTRAINT provider_id_unique DO UPDATE SET provider_id=$5 RETURNING id",
+    "INSERT INTO photos(owner, extension, mime_type, provider, provider_id, original,longitude,latitude) VALUES($1, $2, $3, $4, $5, $6, $7, $8) ON CONFLICT ON CONSTRAINT provider_id_unique DO UPDATE SET provider_id=$5 RETURNING id",
     [
       image.owner,
       image.extension,
       image.mimeType,
       image.provider,
       image.providerId,
-      image.original
+      image.original,
+      getRandomInRange(17.509316333, 18.2509316333, 8), //18.0509316333;,
+      getRandomInRange(59.3210922667, 59.5210922667, 8) //59.3210922667;
     ]
   );
   return response.rows[0].id;
 }
+
+///delete when implement geolocation in photos.
+function getRandomInRange(from, to, fixed) {
+  return (Math.random() * (to - from) + from).toFixed(fixed) * 1;
+}
+
 // async function storeColors(photoId, image) {
 //   // logger.info(image.color, "color", photoId);
 //   if (image.color) {
