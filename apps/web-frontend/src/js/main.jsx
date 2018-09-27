@@ -4,14 +4,15 @@ import Header from "./header.jsx";
 import Footer from "./footer.jsx";
 import Garden from "./components/garden/garden";
 import main from "../sass/main.scss";
-import mockData from "../mock/garden.json";
 import SinglePhoto from "./components/single-photo/single-photo";
 import { Provider } from "react-redux";
 import store from "./store/index";
-import GardenService from "./services/garden.service"
+import GardenService from "./services/garden.service";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { photoClosed } from "./actions/index";
+import "babel-polyfill";
+
 class ConnectedMain extends React.Component {
   onmessage(event) {
     var json = JSON.parse(event.data);
@@ -35,28 +36,28 @@ class ConnectedMain extends React.Component {
   }
   render() {
     return (
-      <div className="wrapper">
+      <div>
         <Header />
-          <main className="main">{this.getMain()}</main>
+        {this.getMain()}
         <Footer />
       </div>
     );
   }
 
   getMain() {
-    //State switch implementation neeeded here. Suggest appState.
-    if (this.props.selectedPhoto !== '') {
+    if (this.props.selectedPhoto) {
       return (
-        <section onClick={this.props.photoClosed}>
-          <SinglePhoto source={this.props.selectedPhoto} />
-        </section>
-      )
-    };
+        <main className="container">
+          <SinglePhoto />
+        </main>
+      );
+    }
     return (
-      <Garden/>
+      <main className="container">
+        <Garden />
+      </main>
     );
   }
-
 }
 
 const Main = connect(
@@ -73,10 +74,14 @@ const Main = connect(
 )(ConnectedMain);
 
 ConnectedMain.propTypes = {
-  selectedPhoto: PropTypes.string.isRequired,
+  selectedPhoto: PropTypes.object,
   photoClosed: PropTypes.func.isRequired
 };
-const element =   (<Provider store={store}><Main /></Provider>);
+const element = (
+  <Provider store={store}>
+    <Main />
+  </Provider>
+);
 document.addEventListener("DOMContentLoaded", () => {
   ReactDOM.render(element, document.getElementById("root"));
 });
