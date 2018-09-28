@@ -4,6 +4,7 @@ const logger = require("logging");
 const config = require("config");
 const stan = require("node-nats-streaming");
 const uuid = require("uuid/v1");
+const appName = require("app-name");
 
 const host = config.get("queue.host");
 const port = config.get("queue.port");
@@ -92,11 +93,7 @@ function subscribe(options, callback) {
       opts.setDurableName(options.durableName);
     }
 
-    const subscription = conn.subscribe(
-      options.channel,
-      options.queueGroup,
-      opts
-    );
+    const subscription = conn.subscribe(options.channel, appName, opts);
     subscription.on("message", msg => {
       logger.debug(
         `Received message ${msg.getSequence()} on ${options.channel}`

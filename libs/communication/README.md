@@ -48,19 +48,4 @@ communication.subscribe(
     console.log("client-1 (subscription 3, durable) received: ", msg);
   }
 );
-
-// Consume foo using a worker pool of 2 workers. They will split the messages between them.
-// Can be combined with any option above
-[1, 2].forEach(index => {
-  communication.subscribe(
-    {
-      channel: "foo",
-      clientId: "client-2",
-      queueGroup: "worker-pool"
-    },
-    msg => {
-      console.log(`client-2 (worker ${index}) received: `, msg);
-    }
-  );
-});
 ```
