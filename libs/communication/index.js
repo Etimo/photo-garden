@@ -95,7 +95,7 @@ function subscribe(options, callback) {
     const manualAck = options.ackTimeoutMillis !== undefined;
     opts.setManualAckMode(manualAck);
     if (manualAck) {
-      opts.setAckWait(opts.ackTimeoutMillis);
+      opts.setAckWait(options.ackTimeoutMillis);
     }
 
     const subscription = conn.subscribe(options.channel, appName, opts);
