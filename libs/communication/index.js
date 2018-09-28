@@ -88,9 +88,14 @@ function subscribe(options, callback) {
     logger.info(`Setup subscription to ${options.channel}`);
     const opts = conn.subscriptionOptions();
     setDeliveryType(opts, options.sequence);
-    if (options.hasOwnProperty("durableName")) {
+    if (options.durableName !== undefined) {
       opts.setDeliverAllAvailable();
       opts.setDurableName(options.durableName);
+    }
+    const manualAck = options.ackTimeoutMillis !== undefined;
+    opts.setManualAckMode(manualAck);
+    if (manualAck) {
+      opts.setAckWait(opts.ackTimeoutMillis);
     }
 
     const subscription = conn.subscribe(options.channel, appName, opts);
@@ -98,11 +103,14 @@ function subscribe(options, callback) {
       logger.debug(
         `Received message ${msg.getSequence()} on ${options.channel}`
       );
-      callback({
+      const ackPromise = callback({
         sequence: msg.getSequence(),
         data: msg.getData(),
         timestamp: msg.getTimestamp()
       });
+      if (manualAck) {
+        ackPromise.then(() => msg.ack());
+      }
     });
   });
 }

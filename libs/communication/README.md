@@ -25,6 +25,19 @@ communication.subscribe(
   }
 );
 
+// You can also ack messages asynchronously (useful for async jobs that might fail)
+communication.subscribe(
+  {
+    channel: "foo",
+    clientId: "client-1",
+    ackTimeoutMillis: 2 * 1000
+  },
+  msg =>
+    new Promise(resolve => {
+      setTimeout(resolve, 1000);
+    })
+);
+
 // Subscribe too foo channel and start with the latest value
 communication.subscribe(
   {
