@@ -58,3 +58,6 @@ releases:
       - secretName: grafana-cert-secret
         hosts:
         - grafana.photo.garden
+    grafana.ini:
+      auth.anonymous:
+        enabled: true
