@@ -3,32 +3,31 @@ import { connect } from "react-redux";
 
 const mapStateToProps = state => {
     return {
-      visible : state.menuSelector.menu
+        visible : state.menuSelector.menu
     }
-  }
-  
-  const mapDispatchToProps = dispatch => {
-      console.log("I AM DISPATCH"+dispatch);
+}
+
+const mapDispatchToProps = dispatch => {
 
     return {
-      open : () => dispatch({
-        type : 'MENU_OPEN'
-      }),
+        open : () => dispatch({
+                type : 'MENU_OPEN'
+        }),
 
-      close : () => dispatch({
-        type : 'MENU_CLOSE'
-      })
+        close : () => dispatch({
+                type : 'MENU_CLOSE'
+        })
 
     }
 
-  }
-  
+}
+
 
 
 const MenuButton = ({visible,open,close}) => 
-        <div role="button" className={"icon-menu right"+ (visible ? "highlight" :"")}  onClick={(visible ? close : open)}><p>{visible}</p></div>
+<div role="button" className={"icon-menu right"+ (visible ? " highlight" :"")}  onClick={(visible ? close : open)}><p>{visible}</p></div>
 
-  export default connect(
+export default connect(
     mapStateToProps,
     mapDispatchToProps
-  )(MenuButton)
+)(MenuButton)

@@ -5,7 +5,9 @@ import PropTypes from "prop-types";
 import garden from "./garden.scss";
 
 const mapStateToProps = state => {
-  return { gardenPhotos: state.gardenPhotos };
+  return { 
+      gardenPhotos : state.gardenPhotos
+  };
 };
 
 const ConnectedGarden = ({ gardenPhotos }) => (

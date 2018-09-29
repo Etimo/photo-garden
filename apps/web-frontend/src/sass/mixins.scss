@@ -11,3 +11,6 @@
   width: 100vw;
   z-index: 999;
 }
+@mixin paddings {
+  padding:1em;
+}

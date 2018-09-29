@@ -6,8 +6,7 @@ import MenuButton from './components/menu/menu-button';
 const Header = () => (
   <header>
     <h5>Photo garden</h5>
-    <Sort />
-    <Session />
+    <MenuButton />
   </header>
 );
 

@@ -83,7 +83,7 @@ function allowCors(req, res, next) {
 }
 
 function isAuthenticated(req, res, next) {
-  logger.info("logged in as: ", req.userIdentity);
+  logger.info("logged in as: ", req.gardenSession.userIdentity);
   if (req.gardenSession.userIdentity) {
     return next();
   } else {
