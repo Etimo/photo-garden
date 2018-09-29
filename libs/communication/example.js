@@ -19,6 +19,19 @@ communication.subscribe(
   }
 );
 
+// You can also ack messages asynchronously (useful for async jobs that might fail)
+communication.subscribe(
+  {
+    channel: "foo",
+    clientId: "client-1",
+    ackTimeoutMillis: 2 * 1000
+  },
+  msg =>
+    new Promise(resolve => {
+      setTimeout(resolve, 1000);
+    })
+);
+
 // Subscribe too foo channel and start with the latest value
 communication.subscribe(
   {
@@ -42,18 +55,3 @@ communication.subscribe(
     logger.info("client-1 (subscription 3, durable) received: ", msg);
   }
 );
-
-// Consume foo using a worker pool of 2 workers. They will split the messages between them.
-// Can be combined with any option above
-[1, 2].forEach(index => {
-  communication.subscribe(
-    {
-      channel: "foo",
-      clientId: "client-2",
-      queueGroup: "worker-pool"
-    },
-    msg => {
-      logger.info(`client-2 (worker ${index}) received: `, msg);
-    }
-  );
-});

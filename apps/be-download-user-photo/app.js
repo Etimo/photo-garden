@@ -27,7 +27,8 @@ const options = {
   channel: "user-photo--prepared",
   durableName: "user-photo-downloader",
   // sequence: "earliest",
-  clientId: "user-photo-downloader"
+  clientId: "user-photo-downloader",
+  ackTimeoutMillis: 5 * 1000
 };
 communication.subscribe(options, async msg => {
   const data = JSON.parse(msg.data);
