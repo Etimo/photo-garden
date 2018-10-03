@@ -8,13 +8,14 @@
       then { system = "x86_64-linux"; }
       else {},
   pkgs ? import <nixpkgs> pkgsOpts,
+  nodejs ? pkgs.nodejs,
   yarn2nixSrc ? pkgs.fetchFromGitHub {
     owner = "teozkr";
     repo = "yarn2nix";
     rev = "74356856bd584196c458a5e3f6e08fc99e70e34c";
     sha256 = "1jb2w57z6jrbzvshkg801vjc5pxnzq3yb7kr0544ysx7lqvqz2f7";
   },
-  yarn2nix ? import yarn2nixSrc { inherit pkgs; },
+  yarn2nix ? import yarn2nixSrc { inherit pkgs nodejs; },
 }:
 let
   workspace = yarn2nix.mkYarnWorkspace rec {
@@ -31,7 +32,7 @@ let
           ''
             #!${pkgs.bash}/bin/bash
             set -euo pipefail
-            export PATH="${pkgs.lib.makeBinPath [ pkgs.coreutils pkgs.utillinuxMinimal pkgs.gnugrep pkgs.nodejs ]}:$PATH"
+            export PATH="${pkgs.lib.makeBinPath [ pkgs.coreutils pkgs.utillinuxMinimal pkgs.gnugrep nodejs ]}:$PATH"
 
             cd "$(dirname "$(realpath "$0")")/.."
             TMP_BASE=/tmp/photo-garden/web-frontend
@@ -86,11 +87,11 @@ let
     # Prevent node-gyp (dependency of node-sass) from redownloading the Node headers
     # (network access is not allowed inside the sandbox)
     pkgConfig.node-gyp = {
-      buildInputs = [ pkgs.python ];
+      buildInputs = [ nodejs.python ];
     };
     yarnPreBuild =
       ''
-        export npm_config_nodedir=${pkgs.nodejs}
+        export npm_config_nodedir=${nodejs}
       '';
   };
   apps = pkgs.lib.mapAttrsToList (name: tpe: name) (builtins.readDir ./apps);
@@ -100,7 +101,7 @@ let
     path = workspace."${name}";
   }) (apps ++ jobs);
   dockerBuild = pkgs.callPackage ./docker.nix {
-    inherit apps jobs workspace prod dockerTag dockerImagePrefix;
+    inherit apps jobs workspace prod dockerTag dockerImagePrefix nodejs;
   };
 in
   pkgs.linkFarm "photo-garden" (pkgs.lib.optionals useDocker (dockerBuild.images ++ dockerBuild.extraFiles) ++ rawBuilds)
