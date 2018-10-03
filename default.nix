@@ -67,10 +67,12 @@ let
           extraBuildInputs = [ pkgs.utillinuxMinimal ];
           installPhase =
             ''
-              node node_modules/parcel-bundler/bin/cli.js build src/index.html --out-dir=$out/dist --out-file=index.html
+              node node_modules/parcel-bundler/bin/cli.js build src/index.html --out-dir=$out/dist --out-file=index.html --no-source-maps
               mkdir -p $out/bin
               cp ${prodRunScript} $out/bin/web-frontend
             '';
+
+          passthru.useBaseLayer = false;
         }
         else {
           extraBuildInputs = [ pkgs.makeWrapper ];

@@ -58,7 +58,9 @@ in rec {
   };
   appImages = lib.listToAttrs (map (name: lib.nameValuePair name (dockerTools.buildImage {
     inherit name;
-    fromImage = baseImage;
+    fromImage = if workspace.${name}.useBaseLayer or true
+      then baseImage
+      else null;
     keepContentsDirlinks = true;
     contents = [ imageConfigDir workspace.${name} ];
     config =
