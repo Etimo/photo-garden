@@ -32,7 +32,7 @@ let
           ''
             #!${pkgs.bash}/bin/bash
             set -euo pipefail
-            export PATH="${pkgs.lib.makeBinPath [ pkgs.coreutils pkgs.utillinuxMinimal pkgs.gnugrep nodejs ]}:$PATH"
+            export PATH="${pkgs.lib.makeBinPath [ pkgs.coreutils pkgs.utillinuxMinimal pkgs.gnugrep nodejs ]}"
 
             cd "$(dirname "$(realpath "$0")")/.."
             TMP_BASE=/tmp/photo-garden/web-frontend
@@ -84,14 +84,23 @@ let
     };
 
 
-    # Prevent node-gyp (dependency of node-sass) from redownloading the Node headers
+    # Prevent  (dependency of node-sass) from redownloading the Node headers
     # (network access is not allowed inside the sandbox)
-    pkgConfig.node-gyp = {
-      buildInputs = [ nodejs.python ];
-    };
+    pkgConfig.node-gyp.buildInputs = [ nodejs.python ];
     yarnPreBuild =
       ''
         export npm_config_nodedir=${nodejs}
+        export SKIP_SASS_BINARY_DOWNLOAD_FOR_CI=1
+      '';
+
+    # Strip debugging references for the sake of the closure size
+    pkgConfig.node-sass.postInstall =
+      ''
+        find -iname binding.node -exec strip -s {} +
+      '';
+    pkgConfig.snappy.postInstall =
+      ''
+        find -iname binding.node -exec strip -s {} +
       '';
   };
   apps = pkgs.lib.mapAttrsToList (name: tpe: name) (builtins.readDir ./apps);

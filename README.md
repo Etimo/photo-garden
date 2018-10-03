@@ -147,16 +147,6 @@ error: attribute 'db-migrations' missing, at /path/to/docker.nix
 This happens when the Yarn package has a different name than its folder. Open its `package.json` file, and verify that
 the the `name` attribute matches the name of the directory it is located in.
 
-### Rebuilding gets stuck for a while at `Rebuilding fresh packages`, and the produced Docker images are massive
-
-This happens because native libraries (such as `node-sass`) are prevented by the Nix sandbox from accessing the internet
-and downloading the prebuilt binaries, forcing a local rebuild instead. The Docker images are large because the Node build
-tools refer to the compiler location, making Nix think that this is a legitimate dependency (which should be included in the
-final image.
-
-As a workaround you can disable the Nix sandbox. If you use NixOS then add `nix.useSandbox = false;` to
-`/etc/nixos/configuration.nix` and rebuild (`sudo nixos-rebuild switch`). Otherwise, add `sandbox = false` to `/etc/nix/nix.conf`.
-
 # Docker
 
 Docker can be used to run a full dev environment. Just run (after following the setup procedure in the previous section):
