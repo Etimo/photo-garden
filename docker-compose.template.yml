@@ -25,6 +25,17 @@ services:
       - MINIO_ACCESS_KEY=not-so-access
       - MINIO_SECRET_KEY=not-so-secret
 
+  minio-setup:
+    build: services/minio-setup
+    depends_on:
+      - minio
+    links:
+      - minio
+    restart: on-failure
+    environment:
+      - MINIO_ACCESS_KEY=not-so-access
+      - MINIO_SECRET_KEY=not-so-secret
+
   # Jobs
   db-migrations:
     depends_on:
@@ -62,6 +73,7 @@ services:
       - queue
       - db
       - minio
+      - minio-setup
     links:
       - queue
       - db
@@ -71,6 +83,7 @@ services:
     depends_on:
       - queue
       - minio
+      - minio-setup
     links:
       - queue
       - minio
