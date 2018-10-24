@@ -3,12 +3,23 @@
   dockerTag ? "latest",
   dockerImagePrefix ? "photo-garden-",
   prod ? false,
+
   pkgsOpts ?
     if useDocker
       then { system = "x86_64-linux"; }
       else {},
-  pkgs ? import <nixpkgs> pkgsOpts,
-  nodejs ? pkgs.nodejs,
+  pkgsBootstrap ? import <nixpkgs> pkgsOpts,
+  pkgsSrc ? pkgsBootstrap.fetchgit {
+    url = "https://github.com/nixos/nixpkgs-channels";
+    rev = "45a419ab5a23c93421c18f3d9cde015ded22e712";
+    branchName = "nixos-unstable";
+    sha256 = "00mpq5p351xsk0p682xjggw17qgd079i45yj0aa6awawpckfx37s";
+  },
+  pkgs ? import pkgsSrc {},
+
+  nodejsName ? "nodejs",
+  nodejs ? pkgs.${nodejsName},
+
   yarn2nixSrc ? pkgs.fetchFromGitHub {
     owner = "teozkr";
     repo = "yarn2nix";
