@@ -12,19 +12,12 @@ const publishToQueue = (item, user) => {
 };
 
 const fetchPhotos = async (token, user) => {
-  const nextPageToken = await dropboxDb.getDropboxNextPageTokenByUserId(user);
-  let photoList = await dropboxApi.getPhotos(token, nextPageToken);
+  let photoList = await dropboxApi.getPhotos(token, 0);
   if (!photoList.success) {
     return;
   }
 
   photoList.data.matches.forEach(match => publishToQueue(match.metadata, user));
-  if (photoList.data.matches.length === 25) {
-    await dropboxDb.setDropboxNextPageToken(user, nextPageToken + 1);
-    // fetchPhotos(token, user);
-  } else {
-    return;
-  }
 };
 
 module.exports = {

@@ -10,6 +10,9 @@
     "host": "queue",
     "port": 4222
   },
+  "limits": {
+    "maxPhotoCountPerAccount": 100
+  },
   "s3": {
     "endpoint": "minio",
     "port": 9000,
