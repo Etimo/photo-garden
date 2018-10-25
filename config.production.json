@@ -40,9 +40,6 @@
     },
     "dropbox": {
       "clientRedirectUri": "https://api.photo.garden/dropbox/auth/finish"
-    },
-    "instagram": {
-      "clientRedirectUri": "https://api.photo.garden/instagram/auth/finish"
     }
   },
   "apis": {
