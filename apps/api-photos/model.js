@@ -2,9 +2,14 @@ const dbClient = require("db").create("garden");
 const imagePath = require("image-path");
 
 async function getAllPhotos(userId) {
+
+  console.log("User Id modelGetallphotos"+userId);
   const response = await dbClient.query(
     "SELECT p.owner, p.id, p.provider, p.provider_id, p.original, p.latitude, p.longitude, p.extension " +
-      "FROM photos p "
+      "FROM photos p , users u " +
+      "where u.id=p.owner "+
+      "and u.id=$1",
+      [userId]
   );
 
   return response.rows.map(mapRowToPhoto);
