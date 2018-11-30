@@ -4,7 +4,7 @@ const dbClient = require("db").create("garden");
 async function insert(image) {
   logger.info(`Longitude of image: ${image.longitude}`);
   const response = await dbClient.query(
-    "INSERT INTO photos(owner, extension, mime_type, provider, provider_id, original,longitude,latitude) VALUES($1, $2, $3, $4, $5, $6, $7, $8) ON CONFLICT ON CONSTRAINT provider_id_unique DO UPDATE SET provider_id=$5 RETURNING id",
+    "INSERT INTO photos(owner, extension, mime_type, provider, provider_id, original, longitude, latitude) VALUES($1, $2, $3, $4, $5, $6, $7, $8) ON CONFLICT ON CONSTRAINT provider_id_unique DO UPDATE SET provider_id=$5 RETURNING id",
     [
       image.owner,
       image.extension,
@@ -14,8 +14,6 @@ async function insert(image) {
       image.original,
       image.longitude,
       image.latitude
-      //image.longitude ? image.longitude : getRandomInRange(17.509316333, 18.2509316333, 8), //18.0509316333;,
-      //image.latitude ? image.latitude : getRandomInRange(59.3210922667, 59.5210922667, 8) //59.3210922667;
     ]
   );
   return response.rows[0].id;
