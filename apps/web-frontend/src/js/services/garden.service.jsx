@@ -27,8 +27,8 @@ const GardenService = async () => {
     let gardenPhoto = {
       photo: {
         id: photo.id,
-        source: photo.url,
-        thumbnail: photo.url_thumbnail,
+        source: photo.webViewLink,
+        thumbnail: photo.thumbnailLink,
         providerId: photo.provider_id,
         edit: {
           contrast: 100,

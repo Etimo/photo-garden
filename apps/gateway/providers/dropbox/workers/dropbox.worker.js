@@ -5,6 +5,7 @@ const dropboxApi = require("dropbox-api");
 const dropboxDb = require("dropbox-db");
 
 const publishToQueue = (item, user) => {
+  console.log("FETCHING", { item });
   communication.publish("user-photo--dropbox--received", {
     user: user,
     photo: item
@@ -13,6 +14,7 @@ const publishToQueue = (item, user) => {
 
 const fetchPhotos = async (token, user) => {
   let photoList = await dropboxApi.getPhotos(token, 0);
+  console.log({ photoList });
   if (!photoList.success) {
     return;
   }

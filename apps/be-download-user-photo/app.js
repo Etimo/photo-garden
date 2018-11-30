@@ -27,7 +27,6 @@ const options = {
 };
 communication.subscribe(options, async msg => {
   const data = JSON.parse(msg.data);
-
   // Download thumbnail
   for (const key in data.sizes) {
     if (data.sizes.hasOwnProperty(key)) {
@@ -38,8 +37,9 @@ communication.subscribe(options, async msg => {
       const dest = imagePath.getPathAndFile(
         data.user,
         data.provider,
-        data.providerId + key,
-        data.extension
+        data.providerId,
+        data.extension,
+        key
       );
       if (res.ok) {
         const putOperation = await minioClient.putObject(

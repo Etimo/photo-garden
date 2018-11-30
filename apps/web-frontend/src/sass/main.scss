@@ -1,106 +1,93 @@
 @import "colors";
 @import "mixins";
-
-$font-color: $etimo-cyan;
-$font-size: 10px;
-
-$header-height: 5em;
-$footer-height: 3em;
+@import "config";
 
 :root {
-    font-size: $font-size;
+  font-size: $font-size;
 }
 
 body {
-    font-family: "Open Sans", Arial, sans-serif;
-    max-height: 100vh;
-    overflow: hidden;
-    font-size: $font-size;
-    background-color: $background-color;
-    color: $etimo-blue;
+  font-family: "Open Sans", Arial, sans-serif;
+  max-height: 100vh;
+  overflow: hidden;
+  font-size: $font-size;
+  background-color: $background-color;
+  color: $etimo-blue;
 }
 
 .container {
-    @include base-container();
-    overflow: scroll;
-    height: 100vh;
-    max-width: 93.5rem;
-    padding-bottom: $footer-height;
-    padding-top: $header-height;
-    @include paddings;
+  @include base-container();
+  overflow: scroll;
+  height: 100vh;
+  max-width: 93.5rem;
+  padding-bottom: $footer-height;
+  padding-top: $header-height;
+  @include paddings;
 }
 
 .container-single {
-    @include base-container();
-    max-width: 93.5rem;
-    padding-bottom: $footer-height;
-    padding-top: $header-height;
+  @include base-container();
+  max-width: 93.5rem;
+  padding-bottom: $footer-height;
+  padding-top: $header-height;
 }
 
 .icon {
-    display: inline-block;
-    width: 1.5em;
-    height: 1.5em;
+  display: inline-block;
+  width: 2.5em;
+  height: 2.5em;
 }
 
 .icon-menu {
-    @extend .icon;
-    background: url("../public/navicon-round.svg");
-    background-size: cover;
+  margin-top: 0.6em;
+  @extend .icon;
+  background-image: url("../public/navicon-round.svg");
+  background-size: cover;
+  background-color: $etimo-light-font;
 }
 .icon-filter {
-    @extend .icon;
-    background: url("../public/android-search.svg");
-    background-size: cover;
+  @extend .icon;
+  background: url("../public/android-search.svg");
+  background-size: cover;
 }
-body .closed  {
-    display:none;
+body .closed {
+  display: none;
 }
 
-.sidebar {
-    background-color:$etimo-cyan;
-    position:fixed;
-    width: 85%;
-    height:100%;
-    display:inline-block;
-    top: $header-height;
-    right:0;
-    @include paddings;
-}
 .right {
-    position: absolute;
-    right: 4em !important;
-    padding:0;
-    top:1.5em;
+  position: absolute;
+  right: 4em !important;
+  padding: 0;
+  top: 1.5em;
 }
 .text-center {
-    text-align: center;
+  text-align: center;
 }
 footer {
-    @include fixed-overlay();
-    @include base-container();
-    bottom: 0;
-    left: 0;
-    min-height: $footer-height;
-    border-top-width: 1px;
-    border-top-color: $etimo-cyan;
-    border-top-style: solid;
+  @include fixed-overlay();
+  @include base-container();
+  bottom: 0;
+  left: 0;
+  min-height: $footer-height;
+  border-top-width: 1px;
+  border-top-color: $etimo-cyan;
+  border-top-style: solid;
 }
 header {
-    @include fixed-overlay();
-    @include base-container();
-    top: 0;
-    left: 0;
-    height: $header-height;
+  @include fixed-overlay();
+  @include base-container();
+  top: 0;
+  left: 0;
+  height: $header-height;
 }
 button {
-    background-color: white;
-    border: 1px solid $etimo-cyan;
-    color: $etimo-blue;
-    padding: 10px 24px;
-    cursor: pointer;
-    &:hover {
-        background-color: $etimo-blue;
-        color: white;
-    }
+  background-color: white;
+  border: 1px solid $etimo-cyan;
+  color: $etimo-blue;
+  padding: 10px 24px;
+  cursor: pointer;
+  &:hover {
+    background-color: $etimo-blue;
+    color: white;
+  }
 }
