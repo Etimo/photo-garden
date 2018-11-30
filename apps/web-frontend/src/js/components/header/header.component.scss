@@ -1,0 +1,7 @@
+@import "../../../sass/colors.scss";
+@import "../../../sass/mixins.scss";
+#header-component {
+  background: $etimo-blue;
+  color: $etimo-light-font;
+  @include paddings;
+}

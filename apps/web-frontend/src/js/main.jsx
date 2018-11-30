@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import Header from "./header.jsx";
+import Header from "./components/header/header.jsx";
 import Footer from "./footer.jsx";
 import Garden from "./components/garden/garden";
 import MenuSidebar from "./components/menu/menu-sidebar.jsx";
@@ -39,7 +39,7 @@ class ConnectedMain extends React.Component {
     return (
       <div>
         <Header />
-            {this.getMain()}
+        {this.getMain()}
         <Footer />
       </div>
     );
@@ -56,7 +56,7 @@ class ConnectedMain extends React.Component {
     return (
       <main className="container">
         <Garden />
-        <MenuSidebar/>
+        <MenuSidebar />
       </main>
     );
   }

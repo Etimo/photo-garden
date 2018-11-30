@@ -1,27 +1,22 @@
-
-import React from 'react';
+import React from "react";
 import { connect } from "react-redux";
-import {MenuItem} from './menu-item';
+import { MenuItem } from "./menu-item";
 
 const mapStateToProps = state => {
-    return {
-        visible : state.menuSelector.menu
-    }
-}
+  return {
+    visible: state.menuSelector.menu
+  };
+};
 const mapDispatchToProps = dispatch => {
-
-    return {
-
-    }
-
-}
-const MenuSidebar = ({visible}) => 
-<nav className={"sidebar "+ (visible ? "closed" :"open") }>
+  return {};
+};
+const MenuSidebar = ({ visible }) => (
+  <nav className={"sidebar " + (visible ? "open" : "closed")}>
     <p>Dumbdumbdumb</p>
-</nav>
+  </nav>
+);
 
 export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(MenuSidebar)
-
+  mapStateToProps,
+  mapDispatchToProps
+)(MenuSidebar);
