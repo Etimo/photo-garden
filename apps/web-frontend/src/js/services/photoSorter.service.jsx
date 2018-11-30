@@ -24,13 +24,26 @@ function combineComparersOfSorters(sorters) {
   };
 }
 
-export const ProviderIdSorter = {
-  label: "Provider ID",
-  comparePhotos: compareByKey("providerId")
+export const IdSorter = {
+  label: "ID",
+  comparePhotos: compareByKey("id")
 };
 
-export const sorters = [ProviderIdSorter];
+export const NoopSorter = {
+  label: "None",
+  comparePhotos: () => 0
+};
 
-export function sortPhotos(sorters, photos) {
-  return [...photos].sort(combineComparersOfSorters(sorters));
+export const sorters = {
+  noop: NoopSorter,
+  id: IdSorter
+};
+
+export function sortPhotos(selectedSorters, photos) {
+  // Never mutate external objects in-place
+  let photosClone = [...photos];
+  photosClone.sort(
+    combineComparersOfSorters(selectedSorters.map(sorter => sorters[sorter]))
+  );
+  return photosClone;
 }

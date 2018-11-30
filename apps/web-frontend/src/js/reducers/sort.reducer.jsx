@@ -1,5 +1,4 @@
 import { SORT_BY } from "../constants/action-types.jsx";
-import {} from "../services/photoSorter.service";
 
 const SortReducer = (state = [], action) => {
   switch (action.type) {
