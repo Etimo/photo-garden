@@ -8,6 +8,15 @@ async function setExif(photoId, exif) {
   return response;
 }
 
+async function setLongLatFromExif(photoId, longitude, latitude) {
+  const response = await dbClient.query(
+    "UPDATE  photos SET longitude = $1, latitude =$2 WHERE id = $3",
+    [longitude, latitude, photoId]
+  );
+  return response;
+}
+
 module.exports = {
-  setExif
+  setExif,
+  setLongLatFromExif
 };

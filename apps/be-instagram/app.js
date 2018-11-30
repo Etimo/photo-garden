@@ -11,7 +11,9 @@ function normalizePhotoInfo(fileInfo, user) {
     provider: "Instagram",
     providerId: fileInfo.id,
     original: fileInfo,
-    extension: "jpg"
+    extension: "jpg",
+    longitude: fileInfo.location ? fileInfo.location.longitude : 0,
+    latitude: fileInfo.location ? fileInfo.location.latitude : 0
   };
 }
 

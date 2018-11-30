@@ -15,9 +15,7 @@ app.use(router);
 
 router.get("/photos", async (req, res) => {
   const viewerId = req.query.user_id;
-  const images = await model.findAll({
-    owner: viewerId
-  });
+  const images = await model.getAllPhotos(req.query.user_id);
   res.header("Access-Control-Allow-Origin", appUrl);
   res.header(
     "Access-Control-Allow-Headers",

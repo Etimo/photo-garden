@@ -31,7 +31,6 @@ const options = {
 };
 communication.subscribe(options, async msg => {
   const data = JSON.parse(msg.data);
-
   // Download thumbnail
   for (const key in data.sizes) {
     if (data.sizes.hasOwnProperty(key)) {

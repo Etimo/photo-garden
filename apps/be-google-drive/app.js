@@ -6,6 +6,12 @@ const photoDb = require("photo-db");
 const googleTokens = require("provider-google-drive-tokens");
 
 function normalizePhotoInfo(fileInfo, user) {
+  const location = (fileInfo.imageMediaMetadata &&
+    fileInfo.imageMediaMetadata.location) || {
+    longitude: 0,
+    latitude: 0
+  };
+  console.log("aSDFQOhwelirhj", { fileInfo });
   return {
     owner: user,
     url: fileInfo.thumbnailLink,
@@ -13,8 +19,15 @@ function normalizePhotoInfo(fileInfo, user) {
     provider: "Google",
     providerId: fileInfo.id,
     original: fileInfo,
-    extension: fileInfo.fileExtension
+    extension: fileInfo.fileExtension,
+    longitude: location.longitude,
+    latitude: location.latitude
   };
+}
+
+// TODO: Delete this function when we store the real position
+function getRandomInRange(from, to, fixed) {
+  return (Math.random() * (to - from) + from).toFixed(fixed) * 1;
 }
 
 const options = {
