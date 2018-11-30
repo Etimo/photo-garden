@@ -1,19 +1,24 @@
+const logger = require("logging");
 const dbClient = require("db").create("garden");
 
 async function insert(image) {
+  logger.info(`Longitude of image: ${image.longitude}`);
   const response = await dbClient.query(
-    "INSERT INTO photos(owner, extension, mime_type, provider, provider_id, original) VALUES($1, $2, $3, $4, $5, $6) ON CONFLICT ON CONSTRAINT provider_id_unique DO UPDATE SET provider_id=$5 RETURNING id",
+    "INSERT INTO photos(owner, extension, mime_type, provider, provider_id, original, longitude, latitude) VALUES($1, $2, $3, $4, $5, $6, $7, $8) ON CONFLICT ON CONSTRAINT provider_id_unique DO UPDATE SET provider_id=$5 RETURNING id",
     [
       image.owner,
       image.extension,
       image.mimeType,
       image.provider,
       image.providerId,
-      image.original
+      image.original,
+      image.longitude,
+      image.latitude
     ]
   );
   return response.rows[0].id;
 }
+
 // async function storeColors(photoId, image) {
 //   // logger.info(image.color, "color", photoId);
 //   if (image.color) {

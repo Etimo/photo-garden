@@ -40,19 +40,21 @@ communication.subscribe(options, async msg => {
     const p = imagePath.getPathAndFile(
       data.user,
       data.provider,
-      data.providerId + "exif",
-      data.extension
+      data.providerId,
+      data.extension,
+      "exif"
     );
     const imageBuf = await minioClient
       .getObject(s3Bucket, p)
-      .then(readStreamToBuffer);
+      .then(readStreamToBuffer)
+      .catch(err => console.log(err));
     try {
       new ExifImage({ image: imageBuf }, function(error, exifData) {
         if (error) console.log("Error: " + error.message);
         else {
           let s = JSON.stringify(exifData).replace(/\\u0000/g, "");
-          // console.log(s);
           exifDb.setExif(data.id, s);
+          processExif(data.id, exifData);
         }
       });
     } catch (error) {
@@ -61,3 +63,31 @@ communication.subscribe(options, async msg => {
   }
   communication.publish("user-photo--exifed", data);
 });
+
+function processExif(photoId, exif) {
+  if (exif.gps && exif.gps.GPSLatitude) {
+    const lat = convertDMSToDD(
+      exif.gps.GPSLatitude[0],
+      exif.gps.GPSLatitude[1],
+      exif.gps.GPSLatitude[2],
+      exif.gps.GPSLatitudeRef
+    );
+
+    const long = convertDMSToDD(
+      exif.gps.GPSLongitude[0],
+      exif.gps.GPSLongitude[1],
+      exif.gps.GPSLongitude[2],
+      exif.gps.GPSLongitudeRef
+    );
+    exifDb.setLongLatFromExif(photoId, long, lat);
+  }
+}
+function convertDMSToDD(degrees, minutes, seconds, direction) {
+  // "GPSLatitudeRef": "N", "GPSLongitudeRef": "E"
+  var dd = degrees + minutes / 60 + seconds / (60 * 60);
+
+  if (direction == "S" || direction == "W") {
+    dd = dd * -1;
+  } // Don't do anything for N or E
+  return dd;
+}
