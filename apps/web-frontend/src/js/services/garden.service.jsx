@@ -23,12 +23,13 @@ const GardenService = async () => {
     baseURL: gatewayBaseUrl,
     withCredentials: true
   })).data;
+  console.log(photos);
   for (const photo of photos) {
     let gardenPhoto = {
       photo: {
         id: photo.id,
-        source: photo.url,
-        thumbnail: photo.url_thumbnail,
+        source: photo.webViewLink,
+        thumbnail: photo.thumbnailLink,
         edit: {
           contrast: 100,
           brightness: 100,

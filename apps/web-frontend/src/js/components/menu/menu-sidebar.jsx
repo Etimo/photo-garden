@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { MenuItem } from "./menu-item";
+import { MenuItem } from "./menu-item.jsx";
 
 import { gatewayBaseUrl } from "../../services/garden.service";
 
