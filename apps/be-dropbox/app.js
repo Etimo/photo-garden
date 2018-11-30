@@ -6,14 +6,34 @@ const dropbox = require("dropbox-api");
 const dropboxDb = require("dropbox-db");
 const photoDb = require("photo-db");
 
+function normalizeLocation(fileInfo) {
+  if (fileInfo.media_info) {
+    return {
+      longitude: fileInfo.media_info.metadata.location
+        ? fileInfo.media_info.metadata.location.longitude
+        : 0,
+      latitude: fileInfo.media_info.metadata.location
+        ? fileInfo.media_info.metadata.location.latitude
+        : 0
+    };
+  }
+  return {
+    longitude: 0,
+    latitude: 0
+  };
+}
+
 function normalizePhotoInfo(fileInfo, user) {
+  const location = normalizeLocation(fileInfo);
   return {
     owner: user,
     mimeType: "image/jpeg",
     provider: "Dropbox",
     providerId: fileInfo.id,
     original: fileInfo,
-    extension: "jpg"
+    extension: "jpg",
+    longitude: location.longitude,
+    latitude: location.latitude
   };
 }
 
@@ -33,11 +53,11 @@ communication.subscribe(options, async msg => {
   }
 
   const user = data.user;
+
   const normalized = normalizePhotoInfo(data.photo, user);
 
   // Insert into db
   const id = await photoDb.insert(normalized);
-
   // Prepare data for downloader
   const thumbnailUrl = "https://content.dropboxapi.com/2/files/get_thumbnail";
   const fullUrl = "https://content.dropboxapi.com/2/files/download";

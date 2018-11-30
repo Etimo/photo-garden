@@ -47,6 +47,18 @@ app.get("/", [isAuthenticated], (req, res) => {
 app.get("/login", (req, res) => {
   res.sendFile(path.join(__dirname, "/public/html/login.html"));
 });
+
+app.get("/photoMap", (req, res) => {
+  res.header("Access-Control-Allow-Origin", appUrl);
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
+  );
+  res.header("Access-Control-Allow-Credentials", "true");
+
+  res.sendFile(path.join(__dirname, "/public/html/map.html"));
+});
+
 app.get("/logout", (req, res) => {
   req.gardenSession.reset();
   res.header(

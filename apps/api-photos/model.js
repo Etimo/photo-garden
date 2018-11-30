@@ -1,32 +1,39 @@
 const dbClient = require("db").create("garden");
 const imagePath = require("image-path");
-dbClient.connect();
 
-async function findAll(filters) {
-  if (filters === undefined) {
-    filters = {};
-  }
+async function getAllPhotos(userId) {
   const response = await dbClient.query(
-    "SELECT p.id, p.owner, p.provider, p.provider_id, p.extension, p.mime_type, pc.r, pc.g, pc.b, pc.a FROM photos p LEFT JOIN photo_color pc ON p.id = pc.photo_id WHERE (owner=$1 OR $1 IS NULL)",
-    [filters.owner]
+    "SELECT p.owner, p.id, p.provider, p.provider_id, p.original, p.latitude, p.longitude, p.extension " +
+      "FROM photos p "
   );
-  return response.rows.map(image => {
-    image.url_thumbnail = imagePath.getUrl(
-      image.owner,
-      image.provider,
-      image.provider_id + "small",
-      image.extension
-    );
-    image.url = imagePath.getUrl(
-      image.owner,
-      image.provider,
-      image.provider_id + "large",
-      image.extension
-    );
-    return image;
-  });
+
+  return response.rows.map(mapRowToPhoto);
+}
+
+function mapRowToPhoto(row) {
+  return {
+    id: row.id,
+    name: row.id, //todo find a real name,
+    lat: row.latitude,
+    long: row.longitude,
+    provider: row.provider,
+    thumbnailLink: imagePath.getUrl(
+      row.owner,
+      row.provider,
+      row.provider_id,
+      row.extension,
+      imagePath.imageType.small
+    ),
+    webViewLink: imagePath.getUrl(
+      row.owner,
+      row.provider,
+      row.provider_id,
+      row.extension,
+      imagePath.imageType.large
+    )
+  };
 }
 
 module.exports = {
-  findAll
+  getAllPhotos
 };

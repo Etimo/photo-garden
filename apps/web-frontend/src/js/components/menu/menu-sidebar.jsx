@@ -2,6 +2,7 @@
 import React from 'react';
 import { connect } from "react-redux";
 import {MenuItem} from './menu-item';
+import {gatewayBaseUrl} from '../../services/garden.service';
 
 const mapStateToProps = state => {
     return {
@@ -17,7 +18,9 @@ const mapDispatchToProps = dispatch => {
 }
 const MenuSidebar = ({visible}) => 
 <nav className={"sidebar "+ (visible ? "closed" :"open") }>
-    <p>Dumbdumbdumb</p>
+    <ul>
+        <li><a href={`${gatewayBaseUrl}/photoMap`}>See photos on map</a></li>
+    </ul>
 </nav>
 
 export default connect(
