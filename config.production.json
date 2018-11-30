@@ -10,6 +10,9 @@
     "host": "queue",
     "port": 4222
   },
+  "limits": {
+    "maxPhotoCountPerAccount": 100
+  },
   "s3": {
     "endpoint": "s3.amazonaws.com",
     "port": 443,
@@ -40,9 +43,6 @@
     },
     "dropbox": {
       "clientRedirectUri": "https://api.photo.garden/dropbox/auth/finish"
-    },
-    "instagram": {
-      "clientRedirectUri": "https://api.photo.garden/instagram/auth/finish"
     }
   },
   "apis": {

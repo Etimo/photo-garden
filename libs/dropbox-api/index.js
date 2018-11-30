@@ -1,5 +1,8 @@
 const https = require("https");
 const querystring = require("querystring");
+const config = require("config");
+
+const downloadBatchSize = Number(config.get("limits.maxPhotoCountPerAccount"));
 
 function getFrom(token, host, path, request, content) {
   return new Promise((resolve, reject) => {
@@ -82,7 +85,7 @@ module.exports = {
         path: "",
         query: ".jpg",
         start: nextPageToken,
-        max_results: 25, // max download batch
+        max_results: downloadBatchSize, // max download batch
         mode: "filename"
       })
     );

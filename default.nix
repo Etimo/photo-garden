@@ -3,18 +3,30 @@
   dockerTag ? "latest",
   dockerImagePrefix ? "photo-garden-",
   prod ? false,
+
   pkgsOpts ?
     if useDocker
       then { system = "x86_64-linux"; }
       else {},
-  pkgs ? import <nixpkgs> pkgsOpts,
+  pkgsBootstrap ? import <nixpkgs> pkgsOpts,
+  pkgsSrc ? pkgsBootstrap.fetchgit {
+    url = "https://github.com/nixos/nixpkgs-channels";
+    rev = "45a419ab5a23c93421c18f3d9cde015ded22e712";
+    branchName = "nixos-unstable";
+    sha256 = "00mpq5p351xsk0p682xjggw17qgd079i45yj0aa6awawpckfx37s";
+  },
+  pkgs ? import pkgsSrc {},
+
+  nodejsName ? "nodejs",
+  nodejs ? pkgs.${nodejsName},
+
   yarn2nixSrc ? pkgs.fetchFromGitHub {
     owner = "teozkr";
     repo = "yarn2nix";
     rev = "74356856bd584196c458a5e3f6e08fc99e70e34c";
     sha256 = "1jb2w57z6jrbzvshkg801vjc5pxnzq3yb7kr0544ysx7lqvqz2f7";
   },
-  yarn2nix ? import yarn2nixSrc { inherit pkgs; },
+  yarn2nix ? import yarn2nixSrc { inherit pkgs nodejs; },
 }:
 let
   workspace = yarn2nix.mkYarnWorkspace rec {
@@ -31,7 +43,7 @@ let
           ''
             #!${pkgs.bash}/bin/bash
             set -euo pipefail
-            export PATH="${pkgs.lib.makeBinPath [ pkgs.coreutils pkgs.utillinuxMinimal pkgs.gnugrep pkgs.nodejs ]}:$PATH"
+            export PATH="${pkgs.lib.makeBinPath [ pkgs.coreutils pkgs.utillinuxMinimal pkgs.gnugrep nodejs ]}"
 
             cd "$(dirname "$(realpath "$0")")/.."
             TMP_BASE=/tmp/photo-garden/web-frontend
@@ -66,10 +78,12 @@ let
           extraBuildInputs = [ pkgs.utillinuxMinimal ];
           installPhase =
             ''
-              node node_modules/parcel-bundler/bin/cli.js build src/index.html --out-dir=$out/dist --out-file=index.html
+              node node_modules/parcel-bundler/bin/cli.js build src/index.html --out-dir=$out/dist --out-file=index.html --no-source-maps
               mkdir -p $out/bin
               cp ${prodRunScript} $out/bin/web-frontend
             '';
+
+          passthru.useBaseLayer = false;
         }
         else {
           extraBuildInputs = [ pkgs.makeWrapper ];
@@ -83,14 +97,23 @@ let
     };
 
 
-    # Prevent node-gyp (dependency of node-sass) from redownloading the Node headers
+    # Prevent  (dependency of node-sass) from redownloading the Node headers
     # (network access is not allowed inside the sandbox)
-    pkgConfig.node-gyp = {
-      buildInputs = [ pkgs.python ];
-    };
+    pkgConfig.node-gyp.buildInputs = [ nodejs.python ];
     yarnPreBuild =
       ''
-        export npm_config_nodedir=${pkgs.nodejs}
+        export npm_config_nodedir=${nodejs}
+        export SKIP_SASS_BINARY_DOWNLOAD_FOR_CI=1
+      '';
+
+    # Strip debugging references for the sake of the closure size
+    pkgConfig.node-sass.postInstall =
+      ''
+        find -iname binding.node -exec strip -s {} +
+      '';
+    pkgConfig.snappy.postInstall =
+      ''
+        find -iname binding.node -exec strip -s {} +
       '';
   };
   apps = pkgs.lib.mapAttrsToList (name: tpe: name) (builtins.readDir ./apps);
@@ -100,7 +123,7 @@ let
     path = workspace."${name}";
   }) (apps ++ jobs);
   dockerBuild = pkgs.callPackage ./docker.nix {
-    inherit apps jobs workspace prod dockerTag dockerImagePrefix;
+    inherit apps jobs workspace prod dockerTag dockerImagePrefix nodejs;
   };
 in
   pkgs.linkFarm "photo-garden" (pkgs.lib.optionals useDocker (dockerBuild.images ++ dockerBuild.extraFiles) ++ rawBuilds)

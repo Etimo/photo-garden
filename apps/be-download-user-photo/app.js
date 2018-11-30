@@ -18,16 +18,12 @@ const minioClient = new Minio.Client({
 const s3Bucket = config.get("s3.bucket");
 const s3Region = config.get("s3.region");
 
-minioClient
-  .makeBucket(s3Bucket, s3Region)
-  .then(() => logger.info(`Created bucket ${s3Bucket} in ${s3Region}`))
-  .catch(err => logger.info(`Failed to create bucket ${s3Bucket}: ${err}`));
-
 const options = {
   channel: "user-photo--prepared",
   durableName: "user-photo-downloader",
   // sequence: "earliest",
-  clientId: "user-photo-downloader"
+  clientId: "user-photo-downloader",
+  ackTimeoutMillis: 5 * 1000
 };
 communication.subscribe(options, async msg => {
   const data = JSON.parse(msg.data);

@@ -9,6 +9,7 @@
     "amqp10": "^3.5.3",
     "amqplib": "^0.5.2",
     "async-retry": "^1.2.1",
+    "app-name": "1.0.0",
     "config": "1.0.0",
     "kafka-node": "^2.5.0",
     "logging": "^1.0.0",

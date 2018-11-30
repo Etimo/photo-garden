@@ -7,7 +7,7 @@ const app = express();
 const port = config.get("providers.port") | 3000;
 
 // Mount available providers
-const providers = ["google-drive", "dropbox", "instagram"];
+const providers = ["google-drive", "dropbox"];
 providers.forEach(provider => {
   logger.info(`Mounting provider ${provider}`);
   app.use(`/${provider}`, require(`./${provider}`));

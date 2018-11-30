@@ -5,20 +5,28 @@ const google = require("googleapis");
 const GoogleAuth = require("google-auth-library");
 const auth = new GoogleAuth();
 const util = require("../lib/util");
+const config = require("config");
 
-function filesListCallback(client, err, response, user) {
+const maxPhotosPerAccount = Number(
+  config.get("limits.maxPhotoCountPerAccount")
+);
+const downloadBatchSize = 25;
+
+function filesListCallback(client, err, response, user, fetchedEarlierCount) {
   logger.info("Get files from drive using v3", err);
   if (err) {
     logger.error(`The API returned an error: ${err}`);
     return;
   }
 
-  // TODO: save nextPageToken so we dont have to start all over on next login
-  providerTokens.updateNextPageToken(user, response.nextPageToken);
+  fetchedEarlierCount += downloadBatchSize;
 
-  if (response.hasOwnProperty("nextPageToken")) {
+  if (
+    response.hasOwnProperty("nextPageToken") &&
+    fetchedEarlierCount < maxPhotosPerAccount
+  ) {
     // We have not reached the end yet, continue listing
-    getFilesInDrive(client, user, response.nextPageToken);
+    getFilesInDrive(client, user, response.nextPageToken, fetchedEarlierCount);
   }
   response.files
     .filter(util.isValidFile)
@@ -33,21 +41,17 @@ function publishToQueue(item, user) {
   });
 }
 
-function getFilesInDrive(client, user, nextPageToken) {
+function getFilesInDrive(client, user, nextPageToken, fetchedEarlierCount) {
   const options = {
     auth: client,
-    fields: "nextPageToken, files"
+    fields: "nextPageToken, files",
+    pageToken: nextPageToken || null,
+    pageSize: downloadBatchSize
   };
-  if (nextPageToken) {
-    // Indicate that we want to continue a previously started search
-    options.pageToken = nextPageToken;
-  } else {
-    // Get from db
-    options.pageToken = providerTokens.getNextPageToken(user);
-  }
+  fetchedEarlierCount = fetchedEarlierCount || 0;
   const service = google.drive("v3");
   service.files.list(options, (err, response) => {
-    filesListCallback(client, err, response, user);
+    filesListCallback(client, err, response, user, fetchedEarlierCount);
   });
 }
 

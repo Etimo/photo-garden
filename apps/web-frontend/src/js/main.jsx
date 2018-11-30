@@ -3,6 +3,7 @@ import ReactDOM from "react-dom";
 import Header from "./header.jsx";
 import Footer from "./footer.jsx";
 import Garden from "./components/garden/garden";
+import MenuSidebar from "./components/menu/menu-sidebar.jsx";
 import main from "../sass/main.scss";
 import SinglePhoto from "./components/single-photo/single-photo";
 import { Provider } from "react-redux";
@@ -38,7 +39,7 @@ class ConnectedMain extends React.Component {
     return (
       <div>
         <Header />
-        {this.getMain()}
+            {this.getMain()}
         <Footer />
       </div>
     );
@@ -55,6 +56,7 @@ class ConnectedMain extends React.Component {
     return (
       <main className="container">
         <Garden />
+        <MenuSidebar/>
       </main>
     );
   }
@@ -82,6 +84,7 @@ const element = (
     <Main />
   </Provider>
 );
+
 document.addEventListener("DOMContentLoaded", () => {
   ReactDOM.render(element, document.getElementById("root"));
 });
