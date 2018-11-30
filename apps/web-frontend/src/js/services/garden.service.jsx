@@ -23,7 +23,6 @@ const GardenService = async () => {
     baseURL: gatewayBaseUrl,
     withCredentials: true
   })).data;
-  console.log(photos);
   for (const photo of photos) {
     let gardenPhoto = {
       photo: {
