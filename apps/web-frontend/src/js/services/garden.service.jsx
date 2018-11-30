@@ -29,6 +29,7 @@ const GardenService = async () => {
         id: photo.id,
         source: photo.webViewLink,
         thumbnail: photo.thumbnailLink,
+        providerId: photo.provider_id,
         edit: {
           contrast: 100,
           brightness: 100,

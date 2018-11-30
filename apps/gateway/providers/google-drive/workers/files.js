@@ -46,7 +46,8 @@ function getFilesInDrive(client, user, nextPageToken, fetchedEarlierCount) {
     auth: client,
     fields: "nextPageToken, files",
     pageToken: nextPageToken || null,
-    pageSize: downloadBatchSize
+    pageSize: downloadBatchSize,
+    q: util.validFileQuery()
   };
   fetchedEarlierCount = fetchedEarlierCount || 0;
   const service = google.drive("v3");
