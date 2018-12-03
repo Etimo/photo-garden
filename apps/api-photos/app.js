@@ -12,6 +12,7 @@ const appUrl = config.get("urls.app");
 const app = express();
 const router = new Router();
 app.use(express.static("public"));
+app.use(express.json());
 app.use(router);
 
 router.get("/photos", async (req, res) => {
@@ -26,7 +27,6 @@ router.get("/photos", async (req, res) => {
   res.send(images);
 });
 router.get("/map", async (req, res) => {
-  console.log(req.query);
   const images = await model.getAllPhotos(req.query.user_id);
   res.header("Access-Control-Allow-Origin", "*");
   res.header(
@@ -37,17 +37,11 @@ router.get("/map", async (req, res) => {
 
   res.send(images);
 });
-router.post("/photos", async (req, res) => {
-  const owner = req.query.user_id;
-  const url = req.query.url;
-  const mimeType = req.query.mime_type;
-
-  const id = await model.insert({
-    owner,
-    url,
-    mimeType
-  });
-  res.send({ id });
+router.post("/edit/:id", [], async (req, res) => {
+  const id = req.params.id;
+  const edit = req.body.edit;
+  const usr = req.body.userId;
+  await model.storePhotoEdit(id, edit);
 });
 
 async function insert(image) {

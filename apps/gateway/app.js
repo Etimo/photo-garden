@@ -68,7 +68,7 @@ app.get("/logout", (req, res) => {
   res.redirect("/login");
 });
 
-app.get("/user", [allowCors, isAuthenticated], (req, res) => {
+app.get("/user/", [allowCors, isAuthenticated], (req, res) => {
   res.json({ user: req.gardenSession.userIdentity });
 });
 
@@ -83,6 +83,26 @@ app.get("/user/me/photos", [allowCors, isAuthenticated], (req, res, next) => {
     .then(response => res.json(response.data))
     .catch(next);
 });
+
+app.options("/user/me/photos/edit/:id", [allowCors]);
+app.post(
+  "/user/me/photos/edit/:id",
+  [allowCors, isAuthenticated],
+  (req, res, next) => {
+    const id = req.params.id;
+    const edit = req.body;
+    axios
+      .post(`${photosApiBaseUrl}/edit/${id}`, {
+        userId: req.gardenSession.userIdentity,
+        edit
+      })
+      .then(response => res.json({}))
+      .catch(err => {
+        // console.log('errr', err);
+        res.json({});
+      });
+  }
+);
 
 function allowCors(req, res, next) {
   res.header("Access-Control-Allow-Origin", appUrl);

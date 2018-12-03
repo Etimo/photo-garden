@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { selectGardenPhoto } from "../../../actions/index";
 import { showEditor } from "../../../actions/index";
-
+import { PhotoService } from "../../../services/photo.service";
 const filters = [
   {
     name: "#nofilter",
@@ -115,7 +115,13 @@ const EditorFilter = connect(
   },
   dispatch => {
     return {
-      selectGardenPhoto: photo => dispatch(selectGardenPhoto(photo)),
+      selectGardenPhoto: photo => {
+        const id = photo.id;
+        const edit = photo.edit;
+        const service = new PhotoService();
+        service.saveEdits(id, edit);
+        return dispatch(selectGardenPhoto(photo));
+      },
       showEditor: show => dispatch(showEditor(show))
     };
   }

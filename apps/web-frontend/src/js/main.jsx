@@ -30,7 +30,7 @@ class ConnectedMain extends React.Component {
   constructor(props) {
     super(props);
     this.photoClosed.bind(this);
-    GardenService();
+    new GardenService();
   }
   photoClosed() {
     this.props.photoClosed();
