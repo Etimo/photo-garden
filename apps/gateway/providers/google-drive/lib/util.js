@@ -23,6 +23,14 @@ function normalizePhotoInfo(fileInfo, user) {
   };
 }
 
+// Generates a search query, as documented by https://developers.google.com/drive/api/v3/search-parameters
+function validFileQuery() {
+  let mimeTypeConstraints = validPhotos.map(
+    mimeType => `mimeType = "${mimeType}"`
+  );
+  return mimeTypeConstraints.join(" or ");
+}
+
 function isValidFile(file) {
   return validPhotos.indexOf(file.mimeType) > -1;
 }
@@ -42,6 +50,7 @@ function getAuthUrl() {
 module.exports = {
   getClient,
   isValidFile,
+  validFileQuery,
   normalizePhotoInfo,
   getAuthUrl
 };

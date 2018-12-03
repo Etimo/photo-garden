@@ -14,7 +14,6 @@ async function getAllPhotos(userId) {
 }
 
 async function storePhotoEdit(photoId, edit) {
-  console.log(photoId, edit);
   await dbClient.query(
     "INSERT INTO photo_filter(photo_id, edit) VALUES($1, $2)",
     [photoId, edit]

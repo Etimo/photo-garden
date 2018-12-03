@@ -29,8 +29,6 @@ services:
     build: services/minio-setup
     depends_on:
       - minio
-    links:
-      - minio
     restart: on-failure
     environment:
       - MINIO_ACCESS_KEY=not-so-access
@@ -39,8 +37,6 @@ services:
   # Jobs
   db-migrations:
     depends_on:
-      - db
-    links:
       - db
 
   # Services
@@ -52,17 +48,11 @@ services:
     depends_on:
       - queue
       - db
-    links:
-      - queue
-      - db
     ports:
       - "3000:3000"
 
   be-dropbox:
     depends_on:
-      - queue
-      - db
-    links:
       - queue
       - db
 
@@ -72,25 +62,15 @@ services:
       - db
       - minio
       - minio-setup
-    links:
-      - queue
-      - db
-      - minio
 
   be-download-user-photo:
     depends_on:
       - queue
       - minio
       - minio-setup
-    links:
-      - queue
-      - minio
 
   be-google-drive:
     depends_on:
-      - queue
-      - db
-    links:
       - queue
       - db
 
@@ -98,8 +78,6 @@ services:
     ports:
       - "3002:3000"
     depends_on:
-      - db
-    links:
       - db
 
   web-frontend:
