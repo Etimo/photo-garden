@@ -13,7 +13,7 @@ const mapDispatchToProps = dispatch => {
   return {};
 };
 const MenuSidebar = ({ visible }) => (
-  <nav className={"sidebar " + (visible ? "open" : "closed")}>
+  <nav className={"sidebar " + (!visible ? "menu-open" : "menu-closed")}>
     <ul>
       <li>
         <a href={`${gatewayBaseUrl}/photoMap`}>See photos on map</a>

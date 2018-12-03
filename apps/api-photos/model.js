@@ -3,11 +3,23 @@ const imagePath = require("image-path");
 
 async function getAllPhotos(userId) {
   const response = await dbClient.query(
-    "SELECT p.owner, p.id, p.provider, p.provider_id, p.original, p.latitude, p.longitude, p.extension " +
-      "FROM photos p "
+    `SELECT p.owner, p.id, p.provider, p.provider_id, p.original, p.latitude, p.longitude, p.extension, pe.edit
+    FROM photos p
+   LEFT JOIN  photo_filter pe ON pe.photo_id = p.id
+   WHERE OWNER = $1`,
+    [userId]
   );
 
   return response.rows.map(mapRowToPhoto);
+}
+
+async function storePhotoEdit(photoId, edit) {
+  console.log(photoId, edit);
+  await dbClient.query(
+    "INSERT INTO photo_filter(photo_id, edit) VALUES($1, $2)",
+    [photoId, edit]
+  );
+  return;
 }
 
 function mapRowToPhoto(row) {
@@ -17,6 +29,18 @@ function mapRowToPhoto(row) {
     lat: row.latitude,
     long: row.longitude,
     provider: row.provider,
+    edit: row.edit
+      ? row.edit
+      : {
+          contrast: 100,
+          brightness: 100,
+          saturate: 100,
+          sepia: 0,
+          grayscale: 0,
+          invert: 0,
+          hueRotate: 0,
+          blur: 0
+        },
     thumbnailLink: imagePath.getUrl(
       row.owner,
       row.provider,
@@ -35,5 +59,6 @@ function mapRowToPhoto(row) {
 }
 
 module.exports = {
-  getAllPhotos
+  getAllPhotos,
+  storePhotoEdit
 };

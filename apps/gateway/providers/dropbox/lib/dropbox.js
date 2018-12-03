@@ -60,7 +60,6 @@ const getThumbnails = (token, photoIds) => {
 const getPostOptions = (path, token, request, queryparams) => {
   if (queryparams) {
     path += querystring.stringify(queryparams);
-    console.log("ADDED QUERYPARAMS!!!!!!", path);
   }
   return {
     host: "api.dropboxapi.com",

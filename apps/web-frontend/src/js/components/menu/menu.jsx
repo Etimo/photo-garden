@@ -7,7 +7,7 @@ const mapStateToProps = state => {
 };
 
 const Menu = visible => (
-  <div className={"sideBar " + !visible.open ? "hidden" : ""}>
+  <div className={"sidebar"}>
     <MenuItem text="Configure photo providers" link="providerSelect" />
   </div>
 );
