@@ -14,7 +14,7 @@
 }:
 let
   relativizePath = base: path: lib.removePrefix (toString base + "/") (toString path);
-  pkgAndDeps = pkg: [pkg] ++ lib.attrValues pkg.workspaceDependencies;
+  pkgAndDeps = pkg: [pkg] ++ pkg.workspaceDependencies;
 
   symlinkAddPkg = pkg: symlinkJoin {
     name = "${pkg.name}-symlinkJoin";
@@ -62,20 +62,20 @@ in rec {
       then baseImage
       else null;
     keepContentsDirlinks = true;
-    contents = [ imageConfigDir workspace.${name} ];
+    contents = [ imageConfigDir ];
     config =
     let
       pkg = workspace.${name};
-      pkgBin = "/bin/${name}";
+      pkgBin = "${pkg}/bin/${name}";
       nodemonConfig = {
-        watch = map (dep: "/node_modules/${dep.pname}") (pkgAndDeps pkg) ++ ["/photo-garden.json"];
+        watch = map (dep: "${pkg}/libexec/${name}/node_modules/${dep.pname}") (pkgAndDeps pkg) ++ ["/photo-garden.json"];
         # By default nodemon ignores everything inside node_modules
         ignoreRoot = [];
       };
       nodemonConfigJSON = writeText "nodemon.json" (builtins.toJSON nodemonConfig);
     in {
       Cmd = if (!prod) && (pkg.useNodemon or true)
-        then [ "/node_modules/nodemon/bin/nodemon.js" "--exec" "${nodejs}/bin/node" "--config" nodemonConfigJSON pkgBin ]
+        then [ "${pkg}/libexec/${name}/node_modules/nodemon/bin/nodemon.js" "--exec" "${nodejs}/bin/node" "--config" nodemonConfigJSON pkgBin ]
         else [ pkgBin ];
       Env = [
         "PHOTO_GARDEN_CONFIG=/photo-garden.json"
@@ -101,7 +101,8 @@ in rec {
         volumes =
         let
           existing = existingService.volumes or [];
-          dependencyVolumes = map (dep: "./${relativizePath ./. dep.src}:/node_modules/${dep.pname}") (pkgAndDeps workspace.${name});
+          pkg = workspace.${name};
+          dependencyVolumes = map (dep: "./${relativizePath ./. dep.src}:${pkg}/libexec/${name}/deps/${dep.pname}") (pkgAndDeps pkg);
           configVolume = "./${relativizePath ./. imageConfig}:/photo-garden.json";
         in existing ++ lib.optionals (!prod) (dependencyVolumes ++ [configVolume]);
         environment = (existingService.environment or []) ++ [
