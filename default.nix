@@ -12,8 +12,8 @@
   pkgsSrc ? pkgsBootstrap.fetchFromGitHub {
     owner = "nixos";
     repo = "nixpkgs-channels";
-    rev = "45a419ab5a23c93421c18f3d9cde015ded22e712";
-    sha256 = "00mpq5p351xsk0p682xjggw17qgd079i45yj0aa6awawpckfx37s";
+    rev = "61c3169a0e17d789c566d5b241bfe309ce4a6275";
+    sha256 = "0qbycg7wkb71v20rchlkafrjfpbk2fnlvvbh3ai9pyfisci5wxvq";
   },
   pkgs ? import pkgsSrc pkgsOpts,
 
@@ -35,6 +35,8 @@ let
         baseName = baseNameOf name;
       in pkgs.lib.all (x: !x) [
         (baseName == "node_modules")
+        (baseName == ".pnp.js")
+        (baseName == ".pnp")
       ];
     src = pkgs.lib.cleanSource src;
   };
