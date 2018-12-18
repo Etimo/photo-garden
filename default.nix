@@ -21,9 +21,9 @@
   nodejs ? pkgs.${nodejsName},
 
   yarn2nixSrc ? pkgs.fetchFromGitHub {
-    owner = "teozkr";
+    owner = "moretea";
     repo = "yarn2nix";
-    rev = "42e03a245eb9c8694b0101559b5052f2a34dc701";
+    rev = "780e33a07fd821e09ab5b05223ddb4ca15ac663f";
     sha256 = "1f83cr9qgk95g3571ps644rvgfzv2i4i7532q8pg405s4q5ada3h";
   },
   yarn2nix ? import yarn2nixSrc { inherit pkgs nodejs; },
