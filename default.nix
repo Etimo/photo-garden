@@ -29,8 +29,17 @@
   yarn2nix ? import yarn2nixSrc { inherit pkgs nodejs; },
 }:
 let
+  cleanSource = src: pkgs.lib.cleanSourceWith {
+    filter = name: type:
+      let
+        baseName = baseNameOf name;
+      in pkgs.lib.all (x: !x) [
+        (baseName == "node_modules")
+      ];
+    src = pkgs.lib.cleanSource src;
+  };
   workspace = yarn2nix.mkYarnWorkspace rec {
-    src = ./.;
+    src = cleanSource ./.;
     yarnFlags = [
       "--offline"
       "--frozen-lockfile"
