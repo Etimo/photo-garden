@@ -25,7 +25,7 @@ const MenuButton = ({ visible, open, close }) => (
   <div
     role="button"
     id="nav-icon"
-    className={"right" + (visible ? " open" : "")}
+    className={visible ? " open" : ""}
     onClick={visible ? close : open}
   >
     <span />
@@ -33,7 +33,6 @@ const MenuButton = ({ visible, open, close }) => (
     <span />
   </div>
 );
-// <div role="button" className={"icon-menu right"+ (visible ? " highlight" :"")}  onClick={(visible ? close : open)}><p>{visible}</p></div>
 
 export default connect(
   mapStateToProps,

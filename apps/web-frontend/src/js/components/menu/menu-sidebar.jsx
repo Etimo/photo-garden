@@ -40,21 +40,6 @@ const MenuSidebar = ({ visible, currentSorter, sortBy }) => {
           <a href={`${gatewayBaseUrl}/photoMap`}>See photos on map</a>
         </li>
       </ul>
-      <div>
-        <label>
-          Sort by:
-          <select
-            value={currentSorter}
-            onChange={ev => sortBy(ev.target.value)}
-          >
-            {mapObjToArray(sorters, (sorter, i) => (
-              <option key={i} value={i}>
-                {sorter.label}
-              </option>
-            ))}
-          </select>
-        </label>
-      </div>
     </nav>
   );
 };

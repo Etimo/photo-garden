@@ -1,6 +1,5 @@
 import { SORT_BY } from "../constants/action-types.jsx";
-
-const SortReducer = (state = [], action) => {
+const SortReducer = (state = ["calendar"], action) => {
   switch (action.type) {
     case SORT_BY:
       return [action.sortMethod];

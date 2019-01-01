@@ -24,26 +24,47 @@ function combineComparersOfSorters(sorters) {
   };
 }
 
-export const IdSorter = {
+const IdSorter = {
   label: "ID",
-  comparePhotos: compareByKey("id")
+  comparePhotos: compareByKey("id"),
+  filterPhotos: () => true
 };
-
-export const NoopSorter = {
+const colorSorter = {
+  label: "Color",
+  comparePhotos: () => 0,
+  filterPhotos: () => true
+};
+const calendar = {
+  label: "Calendar",
+  comparePhotos: compareByKey("shootDate")
+};
+const edited = {
+  label: "Edited",
+  comparePhotos: () => 0
+};
+const NoopSorter = {
   label: "None",
   comparePhotos: () => 0
 };
 
 export const sorters = {
-  noop: NoopSorter,
-  id: IdSorter
+  id: IdSorter,
+  calendar: calendar,
+  color: colorSorter,
+  edit: edited
 };
 
-export function sortPhotos(selectedSorters, photos) {
+export const sortOrder = {
+  ASCENDING: "ASCENDING",
+  DESCENDING: "DESCENDING"
+};
+
+export function sortPhotos(selectedSorters, photos, order) {
   // Never mutate external objects in-place
   let photosClone = [...photos];
   photosClone.sort(
     combineComparersOfSorters(selectedSorters.map(sorter => sorters[sorter]))
   );
-  return photosClone;
+
+  return order === sortOrder.DESCENDING ? photosClone.reverse() : photosClone;
 }

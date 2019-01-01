@@ -13,6 +13,7 @@ body {
   font-size: $font-size;
   background-color: $background-color;
   color: $etimo-blue;
+  margin: 0;
 }
 
 .container {
@@ -22,7 +23,6 @@ body {
   max-width: 93.5rem;
   padding-bottom: $footer-height;
   padding-top: $header-height;
-  @include paddings;
 }
 
 .container-single {

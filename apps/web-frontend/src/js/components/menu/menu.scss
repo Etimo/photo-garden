@@ -7,8 +7,8 @@
 }
 
 #nav-icon {
-  width: 38px;
-  height: 38px;
+  position: relative;
+  height: 100%;
   -webkit-transform: rotate(0deg);
   -moz-transform: rotate(0deg);
   -o-transform: rotate(0deg);
@@ -18,18 +18,18 @@
   -o-transition: 0.5s ease-in-out;
   transition: 0.5s ease-in-out;
   cursor: pointer;
-  margin-top: 0.5em;
 }
 
 #nav-icon span {
-  display: block;
   position: absolute;
-  height: 4px;
+  right: 1em;
+  display: block;
+  height: 3px;
+  max-width: 30px;
   width: 100%;
   background: $etimo-light-font;
   border-radius: 9px;
   opacity: 1;
-  left: 0;
   -webkit-transform: rotate(0deg);
   -moz-transform: rotate(0deg);
   -o-transform: rotate(0deg);
@@ -41,36 +41,15 @@
 }
 
 #nav-icon span:nth-child(1) {
-  top: 0px;
+  margin-top: 0px;
 }
 
 #nav-icon span:nth-child(2) {
-  top: 12px;
+  margin-top: 10px;
 }
 
 #nav-icon span:nth-child(3) {
-  top: 24px;
-}
-
-#nav-icon.open span:nth-child(1) {
-  top: 12px;
-  -webkit-transform: rotate(135deg);
-  -moz-transform: rotate(135deg);
-  -o-transform: rotate(135deg);
-  transform: rotate(135deg);
-}
-
-#nav-icon.open span:nth-child(2) {
-  opacity: 0;
-  left: -60px;
-}
-
-#nav-icon.open span:nth-child(3) {
-  top: 12px;
-  -webkit-transform: rotate(-135deg);
-  -moz-transform: rotate(-135deg);
-  -o-transform: rotate(-135deg);
-  transform: rotate(-135deg);
+  margin-top: 20px;
 }
 
 .sidebar {

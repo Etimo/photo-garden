@@ -4,4 +4,31 @@
   background: $etimo-blue;
   color: $etimo-light-font;
   @include paddings;
+  padding-left: 0;
+  padding-right: 0;
+  display: grid;
+  grid-template-columns: 15% 70% 15%;
+  grid-gap: 0.1rem;
+  width: 100%;
+  div {
+    width: auto;
+  }
+  h1 {
+    text-align: center;
+    font-size: 1.8em;
+    margin: 0;
+  }
+}
+.arrow-wrapper {
+  padding-left: 1em;
+  cursor: pointer;
+  padding-top: 0.5em;
+}
+.arrow-left {
+  border: solid white;
+  border-width: 0 3px 3px 0;
+  display: inline-block;
+  padding: 3px;
+  transform: rotate(135deg);
+  -webkit-transform: rotate(135deg);
 }

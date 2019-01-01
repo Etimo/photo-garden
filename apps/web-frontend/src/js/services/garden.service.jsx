@@ -32,14 +32,14 @@ class GardenService {
       baseURL: gatewayBaseUrl,
       withCredentials: true
     })).data;
-
     for (const photo of photos) {
       let gardenPhoto = {
         photo: {
           id: photo.id,
           source: photo.webViewLink,
           thumbnail: photo.thumbnailLink,
-          edit: photo.edit
+          edit: photo.edit,
+          shootDate: photo.shootDate
         },
         id: photo.id
       };

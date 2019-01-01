@@ -2,9 +2,9 @@
   background-color: $background-color;
   margin: 0 auto;
   padding: 0 0rem;
-  @media (min-width: 660px) {
-    padding: 0 2rem;
-  }
+  // @media (min-width: 660px) {
+  //   padding: 0 2rem;
+  // }
 }
 @mixin fixed-overlay {
   position: fixed;
@@ -12,5 +12,5 @@
   z-index: 999;
 }
 @mixin paddings {
-  padding:1em;
+  padding: 1em;
 }

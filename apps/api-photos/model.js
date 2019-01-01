@@ -3,10 +3,11 @@ const imagePath = require("image-path");
 
 async function getAllPhotos(userId) {
   const response = await dbClient.query(
-    `SELECT p.owner, p.id, p.provider, p.provider_id, p.original, p.latitude, p.longitude, p.extension, pe.edit
+    `SELECT p.owner, p.id, p.provider, p.provider_id, p.original, p.latitude, p.longitude, p.extension, pe.edit, (ex.exif -> 'exif' ->> 'DateTimeOriginal') AS shootDate
     FROM photos p
    LEFT JOIN  photo_filter pe ON pe.photo_id = p.id
-   WHERE OWNER = $1`,
+   LEFT JOIN photo_exif ex ON ex.photo_id = p.id
+   WHERE p.OWNER = $1`,
     [userId]
   );
 
@@ -28,6 +29,7 @@ function mapRowToPhoto(row) {
     lat: row.latitude,
     long: row.longitude,
     provider: row.provider,
+    shootDate: row.shootDate,
     edit: row.edit
       ? row.edit
       : {

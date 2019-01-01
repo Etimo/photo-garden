@@ -1,0 +1,67 @@
+@import "../../../sass/colors.scss";
+
+.sorters-selection {
+  margin-top: 0.7rem;
+  display: flex;
+  justify-content: space-between;
+  text-align: center;
+  background: $etimo-cyan;
+}
+
+.sort-item {
+  background: $etimo-cyan;
+  box-sizing: inherit;
+  border: 0;
+  margin: 0;
+  width: 20%;
+  height: 40px;
+  cursor: pointer;
+  padding-bottom: 0.8rem;
+  padding-top: 0.5rem;
+  &--selected,
+  &:hover {
+    background: $etimo-blue;
+  }
+}
+.sort-icon {
+  width: 100%;
+  height: 30px;
+  background-size: cover;
+  background: $etimo-blue;
+  display: block;
+  &__id {
+    -webkit-mask: url("../../../public/id.svg") no-repeat center;
+    mask: url("../../../public/id.svg") no-repeat center;
+  }
+  &__edit {
+    -webkit-mask: url("../../../public/edit.svg") no-repeat center;
+    mask: url("../../../public/edit.svg") no-repeat center;
+  }
+  &__color {
+    -webkit-mask: url("../../../public/color.svg") no-repeat center;
+    mask: url("../../../public/color.svg") no-repeat center;
+  }
+  &__calendar {
+    -webkit-mask: url("../../../public/calendar.svg") no-repeat center;
+    mask: url("../../../public/calendar.svg") no-repeat center;
+  }
+  &--selected,
+  &:hover {
+    background: white;
+  }
+}
+.sort-label {
+  color: $etimo-blue;
+  &__id {
+  }
+  &__edit {
+  }
+  &__color {
+  }
+  &__calendar {
+  }
+  &--selected,
+  &:hover {
+    color: white;
+  }
+}

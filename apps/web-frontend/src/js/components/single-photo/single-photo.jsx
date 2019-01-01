@@ -2,23 +2,15 @@ import React from "react";
 import singlephoto from "./single-photo.scss";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { photoClosed } from "../../actions/index";
 import createStyle from "../editor/editor-css";
 class ConnectedSinglePhoto extends React.Component {
   constructor(props) {
     super(props);
-    this.photoClosed.bind(this);
-  }
-  photoClosed() {
-    this.props.photoClosed();
   }
 
   render() {
     return (
       <div>
-        <button className="back-button" onClick={this.props.photoClosed}>
-          X
-        </button>
         <figure
           className="single-photo"
           style={createStyle(this.props.selectedPhoto.edit)}
@@ -46,20 +38,12 @@ class ConnectedSinglePhoto extends React.Component {
   }
 }
 ConnectedSinglePhoto.propTypes = {
-  selectedPhoto: PropTypes.object.isRequired,
-  photoClosed: PropTypes.func.isRequired
+  selectedPhoto: PropTypes.object.isRequired
 };
-const SinglePhoto = connect(
-  state => {
-    return {
-      selectedPhoto: state.selectedPhoto
-    };
-  },
-  dispatch => {
-    return {
-      photoClosed: () => dispatch(photoClosed())
-    };
-  }
-)(ConnectedSinglePhoto);
+const SinglePhoto = connect(state => {
+  return {
+    selectedPhoto: state.selectedPhoto
+  };
+})(ConnectedSinglePhoto);
 
 export default SinglePhoto;
