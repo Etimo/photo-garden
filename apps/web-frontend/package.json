@@ -7,6 +7,9 @@
   "scripts": {
     "start:dev": "parcel src/index.html"
   },
+  "sw-precache": {
+    "maximumFileSizeToCacheInBytes": 10485760
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -28,6 +31,7 @@
     "babel-preset-react-app": "^3.1.0",
     "eslint": "^4.19.1",
     "node-sass": "^4.7.2",
-    "parcel-bundler": "^1.9.7"
+    "parcel-bundler": "^1.9.7",
+    "parcel-plugin-sw-precache": "^1.0.3"
   }
 }
