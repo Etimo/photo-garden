@@ -12,8 +12,8 @@
   pkgsSrc ? pkgsBootstrap.fetchFromGitHub {
     owner = "nixos";
     repo = "nixpkgs-channels";
-    rev = "45a419ab5a23c93421c18f3d9cde015ded22e712";
-    sha256 = "00mpq5p351xsk0p682xjggw17qgd079i45yj0aa6awawpckfx37s";
+    rev = "61c3169a0e17d789c566d5b241bfe309ce4a6275";
+    sha256 = "0qbycg7wkb71v20rchlkafrjfpbk2fnlvvbh3ai9pyfisci5wxvq";
   },
   pkgs ? import pkgsSrc pkgsOpts,
 
@@ -21,10 +21,10 @@
   nodejs ? pkgs.${nodejsName},
 
   yarn2nixSrc ? pkgs.fetchFromGitHub {
-    owner = "teozkr";
+    owner = "moretea";
     repo = "yarn2nix";
-    rev = "74356856bd584196c458a5e3f6e08fc99e70e34c";
-    sha256 = "1jb2w57z6jrbzvshkg801vjc5pxnzq3yb7kr0544ysx7lqvqz2f7";
+    rev = "780e33a07fd821e09ab5b05223ddb4ca15ac663f";
+    sha256 = "1f83cr9qgk95g3571ps644rvgfzv2i4i7532q8pg405s4q5ada3h";
   },
   yarn2nix ? import yarn2nixSrc { inherit pkgs nodejs; },
 }:
@@ -49,17 +49,7 @@ let
             TMP_BASE=/tmp/photo-garden/web-frontend
             mkdir -p $TMP_BASE
 
-            # Parcel will not recompile stuff in node_modules... unless it both:
-            # 1) has a source field in package.json
-            # 2) is a symlink
-            # Please don't ask me to explain what they were thinking
-            FAKE_PKG=$TMP_BASE/fake-symlinked-pkg-to-force-parcel-to-recompile
-            rm -f $FAKE_PKG
-            ln -s $(pwd)/node_modules/web-frontend $FAKE_PKG
-            rm -f $TMP_BASE/node_modules
-            ln -s $(pwd)/node_modules $TMP_BASE/node_modules
-
-            exec node node_modules/parcel-bundler/bin/cli.js $FAKE_PKG/src/index.html --hmr-port=33710 --out-dir=$TMP_BASE/dist --cache-dir=$TMP_BASE/cache --no-autoinstall
+            exec node libexec/web-frontend/node_modules/parcel-bundler/bin/cli.js libexec/web-frontend/node_modules/web-frontend/src/index.html --hmr-port=33710 --out-dir=$TMP_BASE/dist --cache-dir=$TMP_BASE/cache --no-autoinstall
           '';
 
         prodRunScript = pkgs.writeScript "run-web-frontend-prod"
