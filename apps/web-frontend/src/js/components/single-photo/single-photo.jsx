@@ -3,9 +3,18 @@ import singlephoto from "./single-photo.scss";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import createStyle from "../editor/editor-css";
+import browserCacheService from "../../services/browser-cache.service";
 class ConnectedSinglePhoto extends React.Component {
+  image;
   constructor(props) {
     super(props);
+    this.image = React.createRef();
+    browserCacheService.imageSrcCache(
+      "photos",
+      this.image,
+      this.props.selectedPhoto.id,
+      this.props.selectedPhoto.source
+    );
   }
 
   render() {
@@ -15,10 +24,7 @@ class ConnectedSinglePhoto extends React.Component {
           className="single-photo"
           style={createStyle(this.props.selectedPhoto.edit)}
         >
-          <img
-            src={this.props.selectedPhoto.source}
-            className="single-photo-image"
-          />
+          <img ref={this.image} className="single-photo-image" />
           <figcaption className="single-photo-info">
             <ul>
               <li className="single-photo-tags">

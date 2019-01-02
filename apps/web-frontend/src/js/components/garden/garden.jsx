@@ -16,7 +16,6 @@ const ConnectedGarden = ({ gardenPhotos, sortMethods }) => (
   <div>
     <br />
     <Sort />
-    <br />
     <article className="garden">
       {sortPhotos(sortMethods, gardenPhotos).map(el => {
         return <GardenPhoto photo={el.photo} key={el.id} />;

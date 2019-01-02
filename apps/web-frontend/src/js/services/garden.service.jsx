@@ -1,7 +1,7 @@
 import { addGardenPhoto } from "../actions/index";
-import uuidv1 from "uuid";
 import store from "../store/index";
 import axios from "axios";
+import browserCacheService from "./browser-cache.service";
 
 export const gatewayBaseUrl = process.env.PHOTO_GARDEN_GATEWAY_BASE_URL;
 
@@ -62,5 +62,4 @@ class GardenService {
     });
   }
 }
-
 export default GardenService;

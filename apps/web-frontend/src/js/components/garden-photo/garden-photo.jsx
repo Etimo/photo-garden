@@ -6,16 +6,26 @@ import PropTypes from "prop-types";
 import { addGardenPhoto } from "../../actions/index";
 import { selectGardenPhoto } from "../../actions/index";
 import createStyle from "../editor/editor-css";
+import browserCacheService from "../../services/browser-cache.service";
 class ConnectedGardenPhoto extends React.Component {
   touchTimer;
-
+  thumbnail;
+  urlBlob;
   constructor(props) {
     super(props);
     this.onLongTouch = this.onLongTouch.bind(this);
     this.touchStart = this.touchStart.bind(this);
     this.touchEnd = this.touchEnd.bind(this);
+    this.thumbnail = React.createRef();
     this.state = { isSelected: false };
+    browserCacheService.imageSrcCache(
+      "thumbnails",
+      this.thumbnail,
+      this.props.photo.id,
+      this.props.photo.thumbnail
+    );
   }
+
   onLongTouch() {
     this.setState({ isSelected: true });
   }
@@ -39,10 +49,11 @@ class ConnectedGardenPhoto extends React.Component {
         onTouchEnd={this.touchEnd}
         style={createStyle(this.props.photo.edit)}
       >
-        <img src={this.props.photo.thumbnail} className="garden-photo-image" />
+        <img ref={this.thumbnail} className="garden-photo-image" />
         {this.renderSelected()}
         <figcaption className="garden-photo-info">
           <ul>
+            <li className="garden-photo-icon">#etimo</li>
             <li className="garden-photo-icon">#etimo</li>
             <li className="garden-photo-icon">#stockholm</li>
           </ul>
