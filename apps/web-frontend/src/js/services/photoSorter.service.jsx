@@ -21,7 +21,7 @@ function combineComparersOfSorters(photos, sorters) {
 
 const IdSorter = {
   label: "ID",
-  comparePhotos: photos => photos //photos.sort(compareByKey("id"))
+  comparePhotos: photos => photos.sort(compareByKey("id"))
 };
 const colorSorter = {
   label: "Color",

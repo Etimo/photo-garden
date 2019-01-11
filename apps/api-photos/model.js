@@ -23,7 +23,6 @@ async function storePhotoEdit(photoId, edit) {
 }
 
 function mapRowToPhoto(row) {
-  console.log("from database", row);
   return {
     id: row.id,
     name: row.id, //todo find a real name,
