@@ -57,7 +57,7 @@ let
             #!${pkgs.bash}/bin/bash
             set -euo pipefail
 
-            cd "$(dirname "$(realpath "$0")")/.."
+            cd "$(${pkgs.coreutils}/bin/dirname "$(${pkgs.coreutils}/bin/realpath "$0")")/.."
 
             exec ${pkgs.darkhttpd}/bin/darkhttpd dist --port 1234
           '';

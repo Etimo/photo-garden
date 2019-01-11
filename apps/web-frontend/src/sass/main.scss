@@ -45,11 +45,24 @@ body {
   background-size: cover;
   background-color: $etimo-light-font;
 }
+
+.icon-map {
+  @extend .icon;
+  background: url("../public/md-globe.svg");
+  background-size: cover;
+}
+.icon-garden {
+  @extend .icon;
+  background: url("../public/md-film.svg");
+  background-size: cover;
+}
+
 .icon-filter {
   @extend .icon;
   background: url("../public/android-search.svg");
   background-size: cover;
 }
+
 body .closed {
   display: none;
 }
@@ -60,9 +73,11 @@ body .closed {
   padding: 0;
   top: 1.5em;
 }
+
 .text-center {
   text-align: center;
 }
+
 footer {
   @include fixed-overlay();
   @include base-container();
@@ -73,21 +88,35 @@ footer {
   border-top-color: $etimo-cyan;
   border-top-style: solid;
 }
+
 header {
   @include fixed-overlay();
   @include base-container();
+  z-index: 11;
   top: 0;
   left: 0;
   height: $header-height;
 }
+
 button {
   background-color: white;
   border: 1px solid $etimo-cyan;
   color: $etimo-blue;
   padding: 10px 24px;
   cursor: pointer;
+
   &:hover {
     background-color: $etimo-blue;
     color: white;
   }
+}
+
+.container-map {
+  @extend .container-single;
+  top: 4.2em;
+  margin: 0 auto;
+  z-index: 9;
+  max-width:100%;
+  max-height:100%;
+
 }
