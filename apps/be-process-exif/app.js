@@ -6,7 +6,7 @@ const imagePath = require("image-path");
 const fs = require("fs");
 const exifDb = require("exif-db");
 const ExifImage = require("exif").ExifImage;
-
+const color = require("photo-color");
 const Minio = require("minio");
 const minioClient = new Minio.Client({
   endPoint: config.get("s3.endpoint"),
@@ -62,6 +62,25 @@ communication.subscribe(options, async msg => {
     }
   }
   communication.publish("user-photo--exifed", data);
+  if ("small" in data.sizes) {
+    const p = imagePath.getPathAndFile(
+      data.user,
+      data.provider,
+      data.providerId,
+      data.extension,
+      "small"
+    );
+    const imageBuf = await minioClient
+      .getObject(s3Bucket, p)
+      .then(readStreamToBuffer)
+      .catch(err => console.log(err));
+    try {
+      const imageColor = color.getAverageFromBuffer(imageBuf);
+      exifDb.setColor(data.id, imageColor);
+    } catch (error) {
+      console.log("Error: " + error.message);
+    }
+  }
 });
 
 function processExif(photoId, exif) {
