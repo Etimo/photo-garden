@@ -52,11 +52,11 @@ class ConnectedGardenPhoto extends React.Component {
         <img ref={this.thumbnail} className="garden-photo-image" />
         {this.renderSelected()}
         <figcaption className="garden-photo-info">
-          <ul>
+          {/* <ul>
             <li className="garden-photo-icon">#etimo</li>
             <li className="garden-photo-icon">#etimo</li>
             <li className="garden-photo-icon">#stockholm</li>
-          </ul>
+          </ul> */}
         </figcaption>
       </figure>
     );

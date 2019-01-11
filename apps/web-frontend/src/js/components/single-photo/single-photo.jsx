@@ -26,7 +26,7 @@ class ConnectedSinglePhoto extends React.Component {
         >
           <img ref={this.image} className="single-photo-image" />
           <figcaption className="single-photo-info">
-            <ul>
+            {/* <ul>
               <li className="single-photo-tags">
                 <i className="fas fa-heart" /> Tag1
               </li>
@@ -36,7 +36,7 @@ class ConnectedSinglePhoto extends React.Component {
               <li className="single-photo-tags">
                 <i className="fas fa-comment" /> Tag3
               </li>
-            </ul>
+            </ul> */}
           </figcaption>
         </figure>
       </div>
