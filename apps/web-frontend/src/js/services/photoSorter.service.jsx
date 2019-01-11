@@ -1,3 +1,5 @@
+import { sort as colorSort } from "color-sort";
+
 function compareByKey(key) {
   return (obj1, obj2) => {
     let obj1value = obj1.photo[key];
@@ -25,7 +27,10 @@ const IdSorter = {
 };
 const colorSorter = {
   label: "Color",
-  comparePhotos: photos => sortColors(photos)
+  comparePhotos: photos => {
+    const colorSorted = colorSort(photos);
+    return colorSorted;
+  }
 };
 const calendar = {
   label: "Date",
@@ -49,7 +54,18 @@ const calendar = {
 const edited = {
   label: "Edited",
   comparePhotos: photos => {
-    return photos.filter(p => p.id > 15);
+    const editedPhotos = photos.filter(
+      p =>
+        p.photo.edit.contrast !== 100 ||
+        p.photo.edit.brightness !== 100 ||
+        p.photo.edit.saturate !== 100 ||
+        p.photo.edit.sepia !== 0 ||
+        p.photo.edit.grayscale !== 0 ||
+        p.photo.edit.invert !== 0 ||
+        p.photo.edit.hueRotate !== 0 ||
+        p.photo.edit.blur !== 0
+    );
+    return editedPhotos;
   }
 };
 const NoopSorter = {

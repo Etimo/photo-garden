@@ -33,8 +33,6 @@ class GardenService {
       withCredentials: true
     })).data;
     for (const photo of photos) {
-      console.log("photo from server", photo);
-      // console.log('date log', photo.shootDate, new Date(photo.shootDate))
       let gardenPhoto = {
         photo: {
           id: photo.id,
@@ -45,7 +43,7 @@ class GardenService {
         },
         id: photo.id
       };
-      if (photo.r) {
+      if (photo.color) {
         gardenPhoto = Object.assign({}, gardenPhoto, {
           color: {
             r: photo.r,
