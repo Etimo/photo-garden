@@ -1,6 +1,5 @@
 const sort = photos => {
   var distances = [];
-  console.log(photos[0]);
   for (let i = 0; i < photos.length; i++) {
     for (let j = 0; j < i; j++) {
       distances.push([

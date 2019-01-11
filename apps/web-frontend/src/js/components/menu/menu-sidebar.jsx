@@ -18,8 +18,7 @@ function mapObjToArray(object, func) {
 
 const mapStateToProps = state => {
   return {
-    visible: state.menuSelector.menu,
-    sorter: state.sortMethods[0]
+    visible: state.menuSelector.menu
   };
 };
 const mapDispatchToProps = dispatch => {

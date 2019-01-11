@@ -8,7 +8,7 @@ import SortReducer from "./sort.reducer";
 
 export default combineReducers({
   gardenPhotos: GardenReducer,
-  sortMethods: SortReducer,
+  sortSettings: SortReducer,
   selectedPhoto: PhotoReducer,
   editorSettings: EditorReducer,
   session: SessionReducer,

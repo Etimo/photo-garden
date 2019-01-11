@@ -1,8 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { reverseGarden, sortByColor } from "../../actions/index";
-import { sorters, sortOrder } from "../../services/photoSorter.service.jsx";
+import { sorters } from "../../services/photoSorter.service.jsx";
 import { SORT_BY } from "../../constants/action-types.jsx";
 import { sort } from "./sort.component.scss";
 
@@ -53,19 +52,16 @@ const Sort = ({ sortMethod, sortBy }) => (
   </section>
 );
 Sort.propTypes = {
-  reverseGarden: PropTypes.func.isRequired,
-  sortByColor: PropTypes.func.isRequired
+  sortBy: PropTypes.func.isRequired
 };
 export default connect(
   state => {
     return {
-      sortMethod: state.sortMethods[0]
+      sortMethod: state.sortSettings.methods[0]
     };
   },
   dispatch => {
     return {
-      reverseGarden: () => dispatch(reverseGarden()),
-      sortByColor: () => dispatch(sortByColor()),
       sortBy: sorter => {
         dispatch({
           type: SORT_BY,

@@ -8,16 +8,16 @@ import Sort from "../sort/sort.component";
 const mapStateToProps = state => {
   return {
     gardenPhotos: state.gardenPhotos,
-    sortMethods: state.sortMethods
+    sortSettings: state.sortSettings
   };
 };
 
-const ConnectedGarden = ({ gardenPhotos, sortMethods }) => (
+const ConnectedGarden = ({ gardenPhotos, sortSettings }) => (
   <div>
     <br />
     <Sort />
     <article className="garden">
-      {sortPhotosIfAny(sortMethods, gardenPhotos).map(el => {
+      {sortPhotosIfAny(sortSettings, gardenPhotos).map(el => {
         return <GardenPhoto photo={el.photo} key={el.id} />;
       })}
     </article>
@@ -27,7 +27,7 @@ const Garden = connect(
   state => {
     return {
       gardenPhotos: state.gardenPhotos,
-      sortMethods: state.sortMethods
+      sortSettings: state.sortSettings
     };
   },
   dispatch => {
@@ -37,7 +37,7 @@ const Garden = connect(
 
 ConnectedGarden.propTypes = {
   gardenPhotos: PropTypes.array.isRequired,
-  sortMethods: PropTypes.array.isRequired
+  sortSettings: PropTypes.object.isRequired
 };
 
 export default Garden;
