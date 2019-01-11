@@ -41,7 +41,9 @@ body {
 .icon-menu {
   margin-top: 0.6em;
   @extend .icon;
-  background-image: url("../public/navicon-round.svg");
+  background:black;
+  -webkit-mask: url("../public/navicon-round.svg");
+  mask: url("../public/navicon-round.svg");
   background-size: cover;
   background-color: $etimo-light-font;
 }
@@ -110,7 +112,6 @@ button {
     color: white;
   }
 }
-
 .container-map {
   @extend .container-single;
   top: 4.2em;
