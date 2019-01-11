@@ -73,6 +73,8 @@ let
               cp ${prodRunScript} $out/bin/web-frontend
             '';
 
+          distPhase = "true";
+
           passthru.useBaseLayer = false;
         }
         else {
