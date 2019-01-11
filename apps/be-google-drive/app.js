@@ -49,21 +49,21 @@ communication.subscribe(options, async msg => {
     },
     large: {
       url: data.photo.thumbnailLink
-    }
+    },
     // large: {
     //   url: `https://www.googleapis.com/drive/v3/files/${
     //     data.photo.id
     //   }?alt=media`,
     //   headers: authHeaders
     // },
-    // exif: {
-    //   url: `https://www.googleapis.com/drive/v3/files/${
-    //     data.photo.id
-    //   }?alt=media`,
-    //   headers: Object.assign({}, authHeaders, {
-    //     Range: "bytes=0-40960"
-    //   })
-    // },
+    exif: {
+      url: `https://www.googleapis.com/drive/v3/files/${
+        data.photo.id
+      }?alt=media`,
+      headers: Object.assign({}, authHeaders, {
+        Range: "bytes=0-40960"
+      })
+    }
   };
 
   logger.info(`Normalized user photo ${data.photo.id} for user ${data.user}`);

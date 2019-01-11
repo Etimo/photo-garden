@@ -39,11 +39,11 @@ class GardenService {
           source: photo.webViewLink,
           thumbnail: photo.thumbnailLink,
           edit: photo.edit,
-          shootDate: photo.shootDate
+          shootDate: new Date(photo.shootDate)
         },
         id: photo.id
       };
-      if (photo.r) {
+      if (photo.color) {
         gardenPhoto = Object.assign({}, gardenPhoto, {
           color: {
             r: photo.r,

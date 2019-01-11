@@ -98,7 +98,6 @@ app.post(
       })
       .then(response => res.json({}))
       .catch(err => {
-        // console.log('errr', err);
         res.json({});
       });
   }
