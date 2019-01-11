@@ -1,3 +1,5 @@
+import { sort as colorSort } from "color-sort";
+
 function compareByKey(key) {
   return (obj1, obj2) => {
     let obj1value = obj1.photo[key];
@@ -12,41 +14,66 @@ function compareByKey(key) {
   };
 }
 
-function combineComparersOfSorters(sorters) {
-  return (obj1, obj2) => {
-    for (let sorter of sorters) {
-      let cmp = sorter.comparePhotos(obj1, obj2);
-      if (cmp != 0) {
-        return cmp;
-      }
-    }
-    return 0;
-  };
+function combineComparersOfSorters(photos, sorters) {
+  for (let sorter of sorters) {
+    photos = sorter.comparePhotos(photos);
+  }
+  return photos;
 }
 
 const IdSorter = {
   label: "ID",
-  comparePhotos: compareByKey("id"),
-  filterPhotos: () => true
+  comparePhotos: photos => photos.sort(compareByKey("id"))
 };
 const colorSorter = {
   label: "Color",
-  comparePhotos: () => 0,
-  filterPhotos: () => true
+  comparePhotos: photos => {
+    const colorSorted = colorSort(photos);
+    return colorSorted;
+  }
 };
 const calendar = {
-  label: "Calendar",
-  comparePhotos: compareByKey("shootDate")
+  label: "Date",
+  comparePhotos: photos => {
+    if (photos[0]) {
+    }
+
+    const photosWithShootDate = photos.filter(
+      p => p.photo.shootDate !== undefined
+    );
+    photosWithShootDate.sort((a, b) => {
+      return b.photo.shootDate - a.photo.shootDate;
+    });
+    const photosWithoutShootDate = photos.filter(
+      p => p.photo.shootDate === undefined
+    );
+    const sortedPhotos = photosWithShootDate.concat(photosWithoutShootDate);
+    return sortedPhotos;
+  }
 };
 const edited = {
   label: "Edited",
-  comparePhotos: () => 0
+  comparePhotos: photos => {
+    const editedPhotos = photos.filter(
+      p =>
+        p.photo.edit.contrast !== 100 ||
+        p.photo.edit.brightness !== 100 ||
+        p.photo.edit.saturate !== 100 ||
+        p.photo.edit.sepia !== 0 ||
+        p.photo.edit.grayscale !== 0 ||
+        p.photo.edit.invert !== 0 ||
+        p.photo.edit.hueRotate !== 0 ||
+        p.photo.edit.blur !== 0
+    );
+    return editedPhotos;
+  }
 };
 const NoopSorter = {
   label: "None",
-  comparePhotos: () => 0
+  comparePhotos: photos => photos
 };
-
+// TODO: rename sorters to better naming,
+// remeber that names might also be used for retriving icons
 export const sorters = {
   id: IdSorter,
   calendar: calendar,
@@ -59,11 +86,13 @@ export const sortOrder = {
   DESCENDING: "DESCENDING"
 };
 
-export function sortPhotos(selectedSorters, photos, order) {
+export function sortPhotosIfAny(selectedSorters, photos, order) {
   // Never mutate external objects in-place
   let photosClone = [...photos];
-  photosClone.sort(
-    combineComparersOfSorters(selectedSorters.map(sorter => sorters[sorter]))
+
+  photosClone = combineComparersOfSorters(
+    photosClone,
+    selectedSorters.map(sorter => sorters[sorter])
   );
 
   return order === sortOrder.DESCENDING ? photosClone.reverse() : photosClone;

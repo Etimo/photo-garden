@@ -25,16 +25,21 @@ let
       skip = skipIfMissing && (!builtins.pathExists appTemplatePath);
     };
 
+  containerTemplate = loadYAML ./deploy/container.template.yml;
   controller = args: app: kubeAppYamlFile ({
     inherit app;
     skipIfMissing = false;
     override = super: {
       metadata.name = app;
       spec.template.metadata.labels.app = app;
-      spec.template.spec.containers = map (container: lib.recursiveUpdate container {
-        name = app;
-        image = dockerImageRef app;
-      }) super.spec.template.spec.containers;
+      spec.template.spec.containers = map (container: lib.foldl lib.recursiveUpdate {} [
+        containerTemplate
+        container
+        {
+          name = app;
+          image = dockerImageRef app;
+        }
+      ]) super.spec.template.spec.containers;
     };
   } // args);
 
