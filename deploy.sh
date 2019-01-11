@@ -10,7 +10,7 @@ eval $(aws ecr get-login --no-include-email --region eu-west-1)
 parallel -j20 docker push "${DOCKER_IMAGE_PREFIX}{}:$DOCKER_TAG" ::: $(ls apps jobs)
 
 echo Deploying Kube Dashboard
-kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/master/src/deploy/recommended/kubernetes-dashboard.yaml
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/master/aio/deploy/recommended/kubernetes-dashboard.yaml
 echo Deploying Helm
 helm init --client-only
 echo 'Not deploying tiller due to race conditions (run `helm init --upgrade --service-acount tiller` manually if required)'
