@@ -15,8 +15,15 @@ async function setLongLatFromExif(photoId, longitude, latitude) {
   );
   return response;
 }
-
+async function setColor(photoId, color) {
+  const response = await dbClient.query(
+    "INSERT INTO photo_color (photo_id, r, g, b, a) VALUES ($1, $2, $3, $4, 0) ON CONFLICT DO NOTHING ",
+    [photoId, color.r, color.g, color.b]
+  );
+  return response;
+}
 module.exports = {
   setExif,
-  setLongLatFromExif
+  setLongLatFromExif,
+  setColor
 };

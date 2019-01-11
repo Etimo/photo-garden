@@ -33,11 +33,13 @@ class BrowserCacheService {
     this.succeded = true;
   }
   async insert(type, id, object) {
-    let db = this.connection.result;
-    let tx = db.transaction(type, "readwrite");
-    let store = tx.objectStore(type);
+    try {
+      let db = this.connection.result;
+      let tx = db.transaction(type, "readwrite");
+      let store = tx.objectStore(type);
 
-    store.put({ id: id, image: object });
+      store.put({ id: id, image: object });
+    } catch (error) {}
   }
   async get(type, id) {
     let db = this.connection.result;
