@@ -3,7 +3,7 @@ import GardenPhoto from "../garden-photo/garden-photo.jsx";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import garden from "./garden.scss";
-import { sortPhotos } from "../../services/photoSorter.service";
+import { sortPhotosIfAny } from "../../services/photoSorter.service";
 import Sort from "../sort/sort.component";
 const mapStateToProps = state => {
   return {
@@ -17,7 +17,7 @@ const ConnectedGarden = ({ gardenPhotos, sortMethods }) => (
     <br />
     <Sort />
     <article className="garden">
-      {sortPhotos(sortMethods, gardenPhotos).map(el => {
+      {sortPhotosIfAny(sortMethods, gardenPhotos).map(el => {
         return <GardenPhoto photo={el.photo} key={el.id} />;
       })}
     </article>

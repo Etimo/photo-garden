@@ -3,7 +3,7 @@ const imagePath = require("image-path");
 
 async function getAllPhotos(userId) {
   const response = await dbClient.query(
-    `SELECT p.owner, p.id, p.provider, p.provider_id, p.original, p.latitude, p.longitude, p.extension, pe.edit, (ex.exif -> 'exif' ->> 'DateTimeOriginal') AS shootDate
+    `SELECT p.owner, p.id, p.provider, p.provider_id, p.original, p.latitude, p.longitude, p.extension, pe.edit, TO_TIMESTAMP((ex.exif -> 'exif' ->> 'DateTimeOriginal'), 'YYYY:MM:DD HH24:MI:SS') AS shootDate
     FROM photos p
    LEFT JOIN  photo_filter pe ON pe.photo_id = p.id
    LEFT JOIN photo_exif ex ON ex.photo_id = p.id
@@ -23,13 +23,14 @@ async function storePhotoEdit(photoId, edit) {
 }
 
 function mapRowToPhoto(row) {
+  console.log("from database", row);
   return {
     id: row.id,
     name: row.id, //todo find a real name,
     lat: row.latitude,
     long: row.longitude,
     provider: row.provider,
-    shootDate: row.shootDate,
+    shootDate: row.shootdate,
     edit: row.edit
       ? row.edit
       : {

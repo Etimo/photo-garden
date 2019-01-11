@@ -14,7 +14,6 @@
     "config": "^1.0.0",
     "exif": "^0.6.0",
     "exif-db": "^1.0.0",
-    "photo-color": "1.0.0",
     "image-path": "^1.0.0",
     "logging": "^1.0.0",
     "minio": "^6.0.0",

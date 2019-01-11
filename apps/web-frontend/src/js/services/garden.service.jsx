@@ -33,13 +33,15 @@ class GardenService {
       withCredentials: true
     })).data;
     for (const photo of photos) {
+      console.log("photo from server", photo);
+      // console.log('date log', photo.shootDate, new Date(photo.shootDate))
       let gardenPhoto = {
         photo: {
           id: photo.id,
           source: photo.webViewLink,
           thumbnail: photo.thumbnailLink,
           edit: photo.edit,
-          shootDate: photo.shootDate
+          shootDate: new Date(photo.shootDate)
         },
         id: photo.id
       };

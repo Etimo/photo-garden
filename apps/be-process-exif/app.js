@@ -6,7 +6,8 @@ const imagePath = require("image-path");
 const fs = require("fs");
 const exifDb = require("exif-db");
 const ExifImage = require("exif").ExifImage;
-const color = require("photo-color");
+// TODO #42
+// const color = require("photo-color");
 const Minio = require("minio");
 const minioClient = new Minio.Client({
   endPoint: config.get("s3.endpoint"),
@@ -75,8 +76,9 @@ communication.subscribe(options, async msg => {
       .then(readStreamToBuffer)
       .catch(err => console.log(err));
     try {
-      const imageColor = color.getAverageFromBuffer(imageBuf);
-      exifDb.setColor(data.id, imageColor);
+      // TODO: #42 Below row is related to color issue
+      // const imageColor = color.getAverageFromBuffer(imageBuf);
+      // exifDb.setColor(data.id, imageColor);
     } catch (error) {
       console.log("Error: " + error.message);
     }
