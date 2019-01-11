@@ -52,6 +52,10 @@ let
             exec node libexec/web-frontend/node_modules/parcel-bundler/bin/cli.js libexec/web-frontend/node_modules/web-frontend/src/index.html --hmr-port=33710 --out-dir=$TMP_BASE/dist --cache-dir=$TMP_BASE/cache --no-autoinstall
           '';
 
+        mimeTypeMapping = pkgs.writeText "darkhttpd-extra-mime-types"
+          ''
+            image/svg+xml svg
+          '';
         prodRunScript = pkgs.writeScript "run-web-frontend-prod"
           ''
             #!${pkgs.bash}/bin/bash
@@ -59,7 +63,7 @@ let
 
             cd "$(${pkgs.coreutils}/bin/dirname "$(${pkgs.coreutils}/bin/realpath "$0")")/.."
 
-            exec ${pkgs.darkhttpd}/bin/darkhttpd dist --port 1234
+            exec ${pkgs.darkhttpd}/bin/darkhttpd dist --port 1234 --mimetypes ${mimeTypeMapping}
           '';
       in if prod
         then {
