@@ -1,3 +1,5 @@
+export const MAP_OPEN = "OPEN_MAP";
+export const MAP_CLOSE = "CLOSE_MAP";
 export const ADD_GARDENPHOTO = "ADD_GARDENPHOTO";
 export const GET_GARDENPHOTO = "GET_GARDENPHOTO";
 export const SELECT_GARDENPHOTO = "SELECT_GARDENPHOTO";
@@ -8,3 +10,4 @@ export const SESSION_LOGOUT = "SESSION_LOGOUT";
 export const MENU_OPEN = "MENU_OPEN";
 export const MENU_CLOSE = "MENU_CLOSE";
 export const SORT_BY = "SORT_BY";
+export const SET_STATE =  "SET_STATE";

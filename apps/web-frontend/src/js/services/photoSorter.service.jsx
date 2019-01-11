@@ -35,9 +35,6 @@ const colorSorter = {
 const calendar = {
   label: "Date",
   comparePhotos: photos => {
-    if (photos[0]) {
-    }
-
     const photosWithShootDate = photos.filter(
       p => p.photo.shootDate !== undefined
     );
@@ -81,19 +78,19 @@ export const sorters = {
   edit: edited
 };
 
-export const sortOrder = {
+export const sortDirection = {
   ASCENDING: "ASCENDING",
   DESCENDING: "DESCENDING"
 };
 
-export function sortPhotosIfAny(selectedSorters, photos, order) {
+export function sortPhotosIfAny(sortSettings, photos) {
   // Never mutate external objects in-place
   let photosClone = [...photos];
-
   photosClone = combineComparersOfSorters(
     photosClone,
-    selectedSorters.map(sorter => sorters[sorter])
+    sortSettings.methods.map(sorter => sorters[sorter])
   );
-
-  return order === sortOrder.DESCENDING ? photosClone.reverse() : photosClone;
+  return sortSettings.direction === sortDirection.DESCENDING
+    ? photosClone.reverse()
+    : photosClone;
 }

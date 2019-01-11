@@ -4,13 +4,15 @@ import PhotoReducer from "./photo.reducer";
 import EditorReducer from "./editor.reducer";
 import SessionReducer from "./session.reducer";
 import MenuReducer from "./menu.reducer";
+import SetStateReducer from "./setstate.reducer";
 import SortReducer from "./sort.reducer";
 
 export default combineReducers({
   gardenPhotos: GardenReducer,
-  sortMethods: SortReducer,
+  sortSettings: SortReducer,
   selectedPhoto: PhotoReducer,
   editorSettings: EditorReducer,
   session: SessionReducer,
-  menuSelector: MenuReducer
+  menuSelector: MenuReducer,
+  appState:SetStateReducer
 });

@@ -9,10 +9,12 @@ import SinglePhoto from "./components/single-photo/single-photo";
 import { Provider } from "react-redux";
 import store from "./store/index";
 import GardenService from "./services/garden.service";
+import PhotoMap from "./components/photomap/photo-map.jsx";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { photoClosed } from "./actions/index";
 import "babel-polyfill";
+import menuSidebar from "./components/menu/menu-sidebar.jsx";
 
 class ConnectedMain extends React.Component {
   onmessage(event) {
@@ -46,6 +48,14 @@ class ConnectedMain extends React.Component {
   }
 
   getMain() {
+    if (this.props.appState.appState === "map") {
+      return (
+        <main>
+          <PhotoMap/>
+          <MenuSidebar/>
+        </main>
+      );
+    }
     if (this.props.selectedPhoto) {
       return (
         <main className="container">
@@ -65,7 +75,8 @@ class ConnectedMain extends React.Component {
 const Main = connect(
   state => {
     return {
-      selectedPhoto: state.selectedPhoto
+      selectedPhoto: state.selectedPhoto,
+      appState: state.appState
     };
   },
   dispatch => {

@@ -52,16 +52,24 @@
   margin-top: 20px;
 }
 
+.menuItemDiv{
+  padding:0.6em 0;
+}
+.selected  {
+  background:rgba(255,255,255,0.5);
+}
 .sidebar {
+  z-index:10;
   background-color: $etimo-cyan;
   position: fixed;
   width: 85%;
   height: 100%;
   display: inline-block;
-  top: $header-height;
-
-  @include paddings;
-
+  top: 4.2em;
+  margin:0;
+  padding:0;
+  padding-top:1em;
+  vertical-align: middle;
   transition: right 0.5s;
   -webkit-transition: right 0.5s;
 }
@@ -71,3 +79,4 @@
 .menu-closed {
   right: 0px;
 }
+
