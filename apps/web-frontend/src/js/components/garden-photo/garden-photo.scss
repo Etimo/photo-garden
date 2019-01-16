@@ -1,5 +1,4 @@
 .garden-photo {
-  width: auto;
   margin: 0;
   position: relative;
   color: #fff;
@@ -9,7 +8,6 @@
     grid-column: span 2;
     grid-row: span 2;
   }
-  height: auto;
   -ms-interpolation-mode: bicubic;
 }
 
@@ -48,5 +46,6 @@
 }
 .garden-photo-image {
   width: 100%;
+  height: 100%;
   object-fit: cover;
 }
