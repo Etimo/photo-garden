@@ -1,8 +1,34 @@
+$gutter: 1px;
+$wrapper: calc(100vw - (2 * $gutter));
+$noOfColumns: 3;
+
+$noOfGutters: calc($noOfColumns - 1);
+
+$ratioA: 1;
+$ratioB: 1;
+
+$factor: calc($ratioB / $ratioA);
+
+$rh: calc((($wrapper - ($noOfGutters * $gutter)) / $noOfColumns) * $factor);
+
+@media (min-width: 60em) {
+  $wrapper: 60em;
+  $gutter: 20px;
+  $noOfColumns: 4;
+  $ratioA: 1;
+  $ratioB: 1;
+}
+
 .garden {
-  width: auto;
-  overflow-x: hidden;
-  margin: 0;
+  max-width: $wrapper;
   display: grid;
-  grid-template-columns: 33% 33% 34%;
-  grid-gap: 0.1rem;
+  grid-template-columns: repeat($noOfColumns, minmax(0, 1fr));
+  grid-auto-flow: dense;
+  grid-auto-rows: minmax($rh, auto);
+  grid-gap: $gutter;
+  margin: $gutter;
+  overflow-x: hidden;
+  @media (min-width: 60em) {
+    margin: $gutter auto;
+  }
 }
