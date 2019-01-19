@@ -45,8 +45,8 @@ class ConnectedGardenPhoto extends React.Component {
         onClick={() => {
           this.props.selectGardenPhoto(this.props.photo);
         }}
-        onTouchStart={this.touchStart}
-        onTouchEnd={this.touchEnd}
+        // onTouchStart={this.touchStart}
+        // onTouchEnd={this.touchEnd}
         style={createStyle(this.props.photo.edit)}
       >
         <img ref={this.thumbnail} className="garden-photo-image" />
