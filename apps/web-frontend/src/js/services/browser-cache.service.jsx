@@ -42,22 +42,26 @@ class BrowserCacheService {
     } catch (error) {}
   }
   async get(type, id) {
-    let db = this.connection.result;
-    let tx = db.transaction(type, "readwrite");
-    let store = tx.objectStore(type);
-    let item = store.get(id);
-    return new Promise((resolve, reject) => {
-      item.onsuccess = () => {
-        if (item.result) {
-          resolve(item.result);
-        } else {
+    try {
+      let db = this.connection.result;
+      let tx = db.transaction(type, "readwrite");
+      let store = tx.objectStore(type);
+      let item = store.get(id);
+      return new Promise((resolve, reject) => {
+        item.onsuccess = () => {
+          if (item.result) {
+            resolve(item.result);
+          } else {
+            resolve();
+          }
+        };
+        item.onerror = () => {
           resolve();
-        }
-      };
-      item.onerror = () => {
-        resolve();
-      };
-    });
+        };
+      });
+    } catch (error) {
+      resolve();
+    }
   }
   async imageSrcCache(cacheType, elementRef, id, url) {
     let cached = await this.get(cacheType, id);
