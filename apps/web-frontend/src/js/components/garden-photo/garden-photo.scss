@@ -4,9 +4,11 @@
   color: #fff;
   cursor: pointer;
   &:nth-child(1),
-  &:nth-child(13n) {
-    grid-column: span 2;
-    grid-row: span 2;
+  &:nth-child(14n) {
+    @media (max-width: 60em) {
+      grid-column: span 2;
+      grid-row: span 2;
+    }
   }
   -ms-interpolation-mode: bicubic;
 }

@@ -1,36 +1,39 @@
-$gutter: 1px;
-$wrapper: calc(100vw - (2 * #{$gutter}));
-$noOfColumns: 3;
+:root {
+  --gutter: 1px;
+  --wrapper: calc(100vw - (2 * var(--gutter)));
 
-$noOfGutters: calc(#{$noOfColumns} - 1);
+  --noOfColumns: 3;
 
-$ratioA: 1;
-$ratioB: 1;
+  --noOfGutters: calc(var(--noOfColumns) - 1);
 
-$factor: calc(#{$ratioB} / #{$ratioA});
+  --ratioA: 1;
+  --ratioB: 1;
 
-$rh: calc(
-  ((#{$wrapper} - (#{$noOfGutters} * #{$gutter})) / #{noOfColumns}) * #{$factor}
-);
+  --factor: calc(var(--ratioB) / var(--ratioA));
 
-@media (min-width: 60em) {
-  $wrapper: 60em;
-  $gutter: 20px;
-  $noOfColumns: 4;
-  $ratioA: 1;
-  $ratioB: 1;
+  --rh: calc(
+    (
+        (var(--wrapper) - (var(--noOfGutters) * var(--gutter))) /
+          var(--noOfColumns)
+      ) * var(--factor)
+  );
+
+  @media (min-width: 60em) {
+    --wrapper: 60em;
+    --gutter: 5px;
+  }
 }
 
 .garden {
-  max-width: $wrapper;
+  max-width: var(--wrapper);
   display: grid;
-  grid-template-columns: repeat(#{$noOfColumns}, minmax(0, 1fr));
+  grid-template-columns: repeat(var(--noOfColumns), minmax(0, 1fr));
   grid-auto-flow: dense;
-  grid-auto-rows: minmax(#{rh}, auto);
-  grid-gap: $gutter;
-  margin: $gutter;
+  grid-auto-rows: minmax(var(--rh), auto);
+  grid-gap: var(--gutter);
+  margin: var(--gutter);
   overflow-x: hidden;
   @media (min-width: 60em) {
-    margin: $gutter auto;
+    margin: var(--gutter) auto;
   }
 }
