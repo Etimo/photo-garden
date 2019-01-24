@@ -33,10 +33,10 @@ in rec {
     name = "photo-garden.json";
     path = imageConfig;
   } ];
-  baseImage = dockerTools.buildImage {
-    name = "photo-garden-base";
-    keepContentsDirlinks = true;
-    contents = map symlinkAddPkg [
+  appImages = lib.mapAttrs (name: pkg: dockerTools.buildLayeredImage {
+    inherit name;
+    maxLayers = 120;
+    contents = [
       # Debugging
       bashInteractive
       coreutils
@@ -52,17 +52,9 @@ in rec {
           }];
         }];
       }])
-      # Shared packages to reduce duplication
-      nodejs
+      # Config
+      imageConfigDir
     ];
-  };
-  appImages = lib.mapAttrs (name: pkg: dockerTools.buildImage {
-    inherit name;
-    fromImage = if pkg.useBaseLayer or true
-      then baseImage
-      else null;
-    keepContentsDirlinks = true;
-    contents = [ imageConfigDir ];
     config =
     let
       pkgBin = "${pkg}/bin/${name}";
@@ -82,13 +74,6 @@ in rec {
       ];
     };
   }) (apps // jobs);
-  images = lib.mapAttrsToList (name: img: {
-    name = "${name}.docker.tar.gz";
-    path = img;
-  }) appImages ++ [{
-    name = "docker-base.tar.gz";
-    path = baseImage;
-  }];
 
   composeFileBase = loadYAML ./docker-compose.template.yml;
   composeFileOverrides = {

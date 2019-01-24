@@ -3,8 +3,6 @@
 set -euo pipefail
 
 NIX_OPTS="--file . --arg useDocker true $@"
-
-# source result/docker-env
 export KUBECONFIG=$(pwd)/kubeconfig
 
 echo Building Docker Images
