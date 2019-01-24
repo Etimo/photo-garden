@@ -13,4 +13,4 @@ echo "Copying docker-compose.yml"
 cp --no-preserve=mode $DOCKER_COMPOSE_FILE docker-compose.yml
 
 echo "Loading images"
-parallel -j20 skopeo copy :::: $SKOPEO_LOAD_MAP
+parallel -j20 skopeo copy --remove-signatures :::: $SKOPEO_LOAD_MAP
