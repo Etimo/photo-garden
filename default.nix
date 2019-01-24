@@ -112,14 +112,16 @@ let
         find -iname binding.node -exec strip -s {} +
       '';
   };
-  apps = pkgs.lib.mapAttrsToList (name: tpe: name) (builtins.readDir ./apps);
-  jobs = pkgs.lib.mapAttrsToList (name: tpe: name) (builtins.readDir ./jobs);
-  rawBuilds = map (name: {
-    name = "${name}";
-    path = workspace."${name}";
-  }) (apps ++ jobs);
+  apps = pkgs.lib.mapAttrs (name: tpe: workspace."${name}") (builtins.readDir ./apps);
+  jobs = pkgs.lib.mapAttrs (name: tpe: workspace."${name}") (builtins.readDir ./jobs);
   dockerBuild = pkgs.callPackage ./docker.nix {
-    inherit apps jobs workspace prod dockerTag dockerImagePrefix nodejs;
+    inherit apps jobs prod dockerTag dockerImagePrefix nodejs;
   };
 in
-  pkgs.linkFarm "photo-garden" (pkgs.lib.optionals useDocker (dockerBuild.images ++ dockerBuild.extraFiles) ++ rawBuilds)
+  pkgs.linkFarm "photo-garden" (
+    pkgs.lib.optionals useDocker (dockerBuild.images ++ dockerBuild.extraFiles)
+    ++ pkgs.lib.mapAttrsToList (name: pkg: {
+      inherit name;
+      path = pkg;
+    }) (apps // jobs)
+  )

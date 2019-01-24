@@ -86,5 +86,5 @@ let
 in
   symlinkJoin {
     name = "photo-garden-kube";
-    paths = map appFiles apps ++ map jobFiles jobs ++ [sharedFiles];
+    paths = lib.mapAttrsToList (name: pkg: appFiles name) apps ++ lib.mapAttrsToList (name: pkg: jobFiles name) jobs ++ [sharedFiles];
   }

@@ -1,6 +1,6 @@
 {
   # Photo garden packages
-  workspace, apps, jobs,
+  apps, jobs,
 
   # Config
   prod, dockerTag, dockerImagePrefix,
@@ -56,16 +56,15 @@ in rec {
       nodejs
     ];
   };
-  appImages = lib.listToAttrs (map (name: lib.nameValuePair name (dockerTools.buildImage {
+  appImages = lib.mapAttrs (name: pkg: dockerTools.buildImage {
     inherit name;
-    fromImage = if workspace.${name}.useBaseLayer or true
+    fromImage = if pkg.useBaseLayer or true
       then baseImage
       else null;
     keepContentsDirlinks = true;
     contents = [ imageConfigDir ];
     config =
     let
-      pkg = workspace.${name};
       pkgBin = "${pkg}/bin/${name}";
       nodemonConfig = {
         watch = map (dep: "${pkg}/libexec/${name}/node_modules/${dep.pname}") (pkgAndDeps pkg) ++ ["/photo-garden.json"];
@@ -82,7 +81,7 @@ in rec {
         "APP_NAME=${name}"
       ];
     };
-  })) (apps ++ jobs));
+  }) (apps // jobs);
   images = lib.mapAttrsToList (name: img: {
     name = "${name}.docker.tar.gz";
     path = img;
@@ -93,7 +92,7 @@ in rec {
 
   composeFileBase = loadYAML ./docker-compose.template.yml;
   composeFileOverrides = {
-    services = lib.listToAttrs (map (name: rec {
+    services = lib.mapAttrs (name: pkg: rec {
       inherit name;
       existingService = (composeFileBase.services or {}).${name} or {};
       value = {
@@ -101,7 +100,6 @@ in rec {
         volumes =
         let
           existing = existingService.volumes or [];
-          pkg = workspace.${name};
           dependencyVolumes = map (dep: "./${relativizePath ./. dep.src}:${pkg}/libexec/${name}/deps/${dep.pname}") (pkgAndDeps pkg);
           configVolume = "./${relativizePath ./. imageConfig}:/photo-garden.json";
         in existing ++ lib.optionals (!prod) (dependencyVolumes ++ [configVolume]);
@@ -109,7 +107,7 @@ in rec {
           "LOG_LEVEL"
         ];
       };
-    }) (apps ++ jobs));
+    }) (apps // jobs);
   };
   composeFileData = lib.recursiveUpdate composeFileBase composeFileOverrides;
   composeFile = writeText "docker-compose.yml"
