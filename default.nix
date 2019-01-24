@@ -21,16 +21,20 @@
   nodejs ? pkgs.${nodejsName},
 
   yarn2nixSrc ? pkgs.fetchFromGitHub {
-    owner = "moretea";
+    owner = "teozkr";
     repo = "yarn2nix";
-    rev = "780e33a07fd821e09ab5b05223ddb4ca15ac663f";
-    sha256 = "1f83cr9qgk95g3571ps644rvgfzv2i4i7532q8pg405s4q5ada3h";
+    rev = "59c9dfe6209bca13fc4bce6e473c5c0a6ec2dcee";
+    sha256 = "11f7d4ssipdn4855wf7c234ngj6i15ksn5b97cxnc0ipx7ny7yva";
   },
   yarn2nix ? import yarn2nixSrc { inherit pkgs nodejs; },
 }:
 rec {
   workspace = yarn2nix.mkYarnWorkspace rec {
     src = ./.;
+    sourceCleaner = src: pkgs.lib.cleanSourceWith {
+      filter = name: type: (baseNameOf name != "node_modules") && pkgs.lib.cleanSourceFilter name type;
+      inherit src;
+    };
     yarnFlags = [
       "--offline"
       "--frozen-lockfile"
