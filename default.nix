@@ -12,8 +12,9 @@
   pkgsSrc ? pkgsBootstrap.fetchFromGitHub {
     owner = "nixos";
     repo = "nixpkgs-channels";
-    rev = "61c3169a0e17d789c566d5b241bfe309ce4a6275";
-    sha256 = "0qbycg7wkb71v20rchlkafrjfpbk2fnlvvbh3ai9pyfisci5wxvq";
+    # branch = "nixpkgs-unstable";
+    rev = "79e699096d949d50d70e266b6964f9200f236b82";
+    sha256 = "0bbv93pxyanprpia0ibbkawbpdncxdma2a8qkl8p7qjfpvfbfhi5";
   },
   pkgs ? import pkgsSrc pkgsOpts,
 
