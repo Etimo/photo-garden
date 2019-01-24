@@ -33,7 +33,11 @@ rec {
   workspace = yarn2nix.mkYarnWorkspace rec {
     src = ./.;
     sourceCleaner = src: pkgs.lib.cleanSourceWith {
-      filter = name: type: (baseNameOf name != "node_modules") && pkgs.lib.cleanSourceFilter name type;
+      filter =
+        if prod || !useDocker
+          then name: type: (baseNameOf name != "node_modules") && pkgs.lib.cleanSourceFilter name type
+          # We volume-mount the source code anyway, so there's no point copying it here.
+          else name: type: (baseNameOf name == "package.json");
       inherit src;
     };
     yarnFlags = [
