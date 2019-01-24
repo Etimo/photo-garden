@@ -1,5 +1,5 @@
 #!/usr/bin/env nix-shell
-#! nix-shell -i bash -p bash kubectl kubernetes-helm helmfile awscli docker parallel-rust skopeo -j32
+#! nix-shell -i bash -A managementEnv -j32
 set -euo pipefail
 
 NIX_OPTS="--file . --arg useDocker true $@"

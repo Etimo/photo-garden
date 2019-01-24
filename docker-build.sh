@@ -1,5 +1,5 @@
 #!/usr/bin/env nix-shell
-#! nix-shell -i bash -p nix bash docker parallel-rust skopeo -j30
+#! nix-shell -i bash -A managementEnv -j30
 set -euo pipefail
 
 NIX_OPTS="--file . --arg useDocker true $@"

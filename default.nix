@@ -123,4 +123,28 @@ rec {
   ${if useDocker then "dockerBuild" else null} = pkgs.callPackage ./docker.nix {
     inherit apps jobs prod dockerTag dockerImagePrefix nodejs;
   };
+
+  managementEnv = pkgs.stdenvNoCC.mkDerivation {
+    name = "management-env";
+    srcs = [];
+    buildInputs = [
+      # To build
+      pkgs.nix
+      pkgs.bash
+      pkgs.docker
+      pkgs.parallel-rust
+      pkgs.skopeo
+
+      # To deploy
+      pkgs.kubectl
+      pkgs.kubernetes-helm
+      pkgs.helmfile
+      pkgs.awscli
+    ];
+    buildPhase =
+      ''
+        echo "This should only be used with nix-shell!"
+        exit 1
+      '';
+  };
 }
