@@ -28,7 +28,7 @@
   },
   yarn2nix ? import yarn2nixSrc { inherit pkgs nodejs; },
 }:
-let
+rec {
   workspace = yarn2nix.mkYarnWorkspace rec {
     src = ./.;
     yarnFlags = [
@@ -112,16 +112,11 @@ let
         find -iname binding.node -exec strip -s {} +
       '';
   };
+
   apps = pkgs.lib.mapAttrs (name: tpe: workspace."${name}") (builtins.readDir ./apps);
   jobs = pkgs.lib.mapAttrs (name: tpe: workspace."${name}") (builtins.readDir ./jobs);
-  dockerBuild = pkgs.callPackage ./docker.nix {
+
+  ${if useDocker then "dockerBuild" else null} = pkgs.callPackage ./docker.nix {
     inherit apps jobs prod dockerTag dockerImagePrefix nodejs;
   };
-in
-  pkgs.linkFarm "photo-garden" (
-    pkgs.lib.optionals useDocker (dockerBuild.images ++ dockerBuild.extraFiles)
-    ++ pkgs.lib.mapAttrsToList (name: pkg: {
-      inherit name;
-      path = pkg;
-    }) (apps // jobs)
-  )
+}

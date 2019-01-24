@@ -1,13 +1,20 @@
 #!/usr/bin/env nix-shell
-#! nix-shell -i bash -p bash kubectl kubernetes-helm helmfile awscli docker parallel-rust -j32
+#! nix-shell -i bash -p bash kubectl kubernetes-helm helmfile awscli docker parallel-rust skopeo -j32
 set -euo pipefail
 
-source result/docker-env
+NIX_OPTS="--file . --arg useDocker true $@"
+
+# source result/docker-env
 export KUBECONFIG=$(pwd)/kubeconfig
+
+echo Building Docker Images
+nix build --max-jobs 30 --no-link dockerBuild.{skopeoUploadMap,kubernetesConfig} $NIX_OPTS
+SKOPEO_UPLOAD_MAP=$(nix path-info dockerBuild.skopeoUploadMap $NIX_OPTS)
+KUBERNETES_CONFIG=$(nix path-info dockerBuild.kubernetesConfig $NIX_OPTS)
 
 echo Pushing Docker Images
 eval $(aws ecr get-login --no-include-email --region eu-west-1)
-parallel -j20 docker push "${DOCKER_IMAGE_PREFIX}{}:$DOCKER_TAG" ::: $(ls apps jobs)
+parallel -j20 skopeo copy :::: $SKOPEO_UPLOAD_MAP
 
 echo Deploying Kube Dashboard
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/master/aio/deploy/recommended/kubernetes-dashboard.yaml
@@ -22,4 +29,4 @@ helmfile sync
 
 echo Deploying Photo Garden
 kubectl delete jobs/db-migrations --ignore-not-found
-kubectl apply --filename=result/kubernetes/ --recursive
+kubectl apply --filename=$KUBERNETES_CONFIG --recursive

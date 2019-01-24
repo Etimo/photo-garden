@@ -125,32 +125,4 @@ in rec {
   skopeoLoadImgsMap = targetProto: lib.concatStringsSep "\n" (lib.mapAttrsToList (skopeoLoadImgMap targetProto) appImages);
   skopeoLoadMap = writeText "docker-load" (skopeoLoadImgsMap "docker-daemon:");
   skopeoUploadMap = writeText "docker-upload" (skopeoLoadImgsMap "docker://");
-  dockerEnv = writeText "docker-env"
-    ''
-      export DOCKER_IMAGE_PREFIX=${dockerImagePrefix}
-      export DOCKER_TAG=${dockerTag}
-    '';
-
-  extraFiles = [
-    {
-      name = "docker-compose.yml";
-      path = composeFile;
-    }
-    {
-      name = "kubernetes";
-      path = kubernetesConfig;
-    }
-    {
-      name = "docker-env";
-      path = dockerEnv;
-    }
-    {
-      name = "skopeo-load-map";
-      path = skopeoLoadMap;
-    }
-    {
-      name = "skopeo-upload-map";
-      path = skopeoUploadMap;
-    }
-  ];
 }
