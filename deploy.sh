@@ -12,7 +12,7 @@ KUBERNETES_CONFIG=$(nix path-info dockerBuild.kubernetesConfig $NIX_OPTS)
 
 echo Pushing Docker Images
 eval $(aws ecr get-login --no-include-email --region eu-west-1)
-parallel -j20 skopeo copy :::: $SKOPEO_UPLOAD_MAP
+parallel -j1 skopeo copy :::: $SKOPEO_UPLOAD_MAP
 
 echo Deploying Kube Dashboard
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/master/aio/deploy/recommended/kubernetes-dashboard.yaml
