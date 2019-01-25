@@ -77,22 +77,25 @@ in rec {
 
   composeFileBase = loadYAML ./docker-compose.template.yml;
   composeFileOverrides = {
-    services = lib.mapAttrs (name: pkg: rec {
-      inherit name;
-      existingService = (composeFileBase.services or {}).${name} or {};
-      value = {
+    services = lib.mapAttrs (name: pkg:
+      let
+        existingService = (composeFileBase.services or {}).${name} or {};
+      in {
         image = dockerImageRef name;
         volumes =
-        let
-          existing = existingService.volumes or [];
-          dependencyVolumes = map (dep: "./${relativizePath ./. dep.src}:${pkg}/libexec/${name}/deps/${dep.pname}") (pkgAndDeps pkg);
-          configVolume = "./${relativizePath ./. imageConfig}:/photo-garden.json";
-        in existing ++ lib.optionals (!prod) (dependencyVolumes ++ [configVolume]);
+          let
+            existing = existingService.volumes or [];
+            originalSourcePath = path: assert lib.canCleanSource path;
+              if path ? _isLibCleanSourceWith
+                then path.origSrc
+                else path;
+            dependencyVolumes = map (dep: "./${relativizePath ./. (originalSourcePath dep.src)}:${pkg}/libexec/${name}/deps/${dep.pname}") (pkgAndDeps pkg);
+            configVolume = "./${relativizePath ./. imageConfig}:/photo-garden.json";
+          in existing ++ lib.optionals (!prod) (dependencyVolumes ++ [configVolume]);
         environment = (existingService.environment or []) ++ [
           "LOG_LEVEL"
         ];
-      };
-    }) (apps // jobs);
+      }) (apps // jobs);
   };
   composeFileData = lib.recursiveUpdate composeFileBase composeFileOverrides;
   composeFile = writeText "docker-compose.yml"
