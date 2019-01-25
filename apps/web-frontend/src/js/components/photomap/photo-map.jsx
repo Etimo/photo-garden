@@ -44,6 +44,10 @@ function map() {
   //var stamenLayer = new L.StamenTileLayer("terrain");
   //var stamenLayer = new L.StamenTileLayer("toner");
   var stamenLayer = new L.StamenTileLayer("watercolor");
+  // The default URL is HTTP, so force the HTTPS equivalent
+  stamenLayer.setUrl(
+    "https://stamen-tiles-{s}a.ssl.fastly.net/watercolor/{z}/{x}/{y}.jpg"
+  );
   map.addLayer(stamenLayer);
   var markers = L.markerClusterGroup();
 
