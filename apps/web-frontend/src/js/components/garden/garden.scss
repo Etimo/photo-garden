@@ -32,7 +32,6 @@
   grid-auto-rows: minmax(var(--rh), auto);
   grid-gap: var(--gutter);
   margin: var(--gutter);
-  overflow-x: hidden;
   @media (min-width: 60em) {
     margin: var(--gutter) auto;
   }

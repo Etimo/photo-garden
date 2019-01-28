@@ -39,7 +39,7 @@ class ConnectedMain extends React.Component {
   }
   render() {
     return (
-      <div>
+      <div className="main-container">
         <Header />
         {this.getMain()}
         <Footer />
@@ -51,8 +51,8 @@ class ConnectedMain extends React.Component {
     if (this.props.appState.appState === "map") {
       return (
         <main>
-          <PhotoMap/>
-          <MenuSidebar/>
+          <PhotoMap />
+          <MenuSidebar />
         </main>
       );
     }
