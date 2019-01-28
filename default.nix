@@ -157,13 +157,18 @@ rec {
     # Skopeo 0.1.34 produces a ton of log spam, and has no silence option
     # 0.1.35 (not yet released) disables this when output is not a TTY
     # See #99
+    # ---
+    # Skopeo upstream does not support copying in parallel from Docker archives,
+    # slowing down pushes massively.
+    # containers/image#568 fixes this.
     skopeo = assert pkgs.skopeo.name == "skopeo-0.1.34"; pkgs.skopeo.overrideAttrs (old: {
       name = "skopeo-0.1.35-dev";
       src = pkgs.fetchFromGitHub {
-        rev = "42b01df89e77cab17cad306567a5dd59ec3f7881";
-        owner = "containers";
+        rev = "275f4f3ca6d86ae859eb11e74496c244813a0264";
+        # branch = "containers-image-568";
+        owner = "teozkr";
         repo = "skopeo";
-        sha256 = "1bchd6qvjw3q0g4jcxdw03jfrhnjdxwj6bq3mqmkk9i7xf9rl7lf";
+        sha256 = "04dabxdbfqxb0f5z0rgxdkqrjip45q0qwqd2alg25znpnqnb3lkb";
       };
     });
   };
