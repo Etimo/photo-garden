@@ -35,7 +35,7 @@ in rec {
   } ];
   appImages = lib.mapAttrs (name: pkg: dockerTools.buildLayeredImage {
     inherit name;
-    maxLayers = 120;
+    maxLayers = 20;
     contents = [
       # Debugging
       bashInteractive
