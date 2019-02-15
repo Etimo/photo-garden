@@ -11,6 +11,7 @@ const appUrl = config.get("urls.app");
 
 const app = express();
 const router = new Router();
+app.set("port", port);
 app.use(express.static("public"));
 app.use(express.json());
 app.use(router);
@@ -59,5 +60,5 @@ async function insert(image) {
   return response.rows[0] !== undefined ? response.rows[0].id : undefined;
 }
 
-app.listen(port);
+app.listen(app.get("port"));
 logger.info(`Listening on port ${port}`);
