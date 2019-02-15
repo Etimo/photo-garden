@@ -1,0 +1,46 @@
+version: "2.1"
+services:
+  # External services
+  queue:
+    image: nats-streaming
+    command: -m 8222 -store file -dir datastore
+    ports:
+      - "4222:4222"
+      - "8222:8222"
+
+  db:
+    build: services/db
+    ports:
+      - "5433:5432"
+
+  minio:
+    image: minio/minio
+    command: server /data
+    ports:
+      - "9000:9000"
+    volumes:
+      - photo-storage:/data
+      - photo-storage-config:/root/.minio
+    environment:
+      - MINIO_ACCESS_KEY=not-so-access
+      - MINIO_SECRET_KEY=not-so-secret
+
+  minio-setup:
+    build: services/minio-setup
+    depends_on:
+      - minio
+    restart: on-failure
+    environment:
+      - MINIO_ACCESS_KEY=not-so-access
+      - MINIO_SECRET_KEY=not-so-secret
+
+  # Jobs
+  db-migrations:
+    build: jobs/db-migrations
+    depends_on:
+      - db
+
+
+volumes:
+  photo-storage:
+  photo-storage-config:
