@@ -6,7 +6,7 @@
   "bin": "app.js",
   "scripts": {
     "start:dev": "nodemon --watch ../../libs --watch . app.js",
-    "start:debug": "node --inspect app.js",
+    "start:debug": "node --inspect  --inspect-brk=9234 app.js",
     "start:prod": "node app.js"
   },
   "dependencies": {

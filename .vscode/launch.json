@@ -7,8 +7,77 @@
     {
       "type": "node",
       "request": "launch",
-      "name": "Launch Program",
-      "program": "${file}"
+      "name": "API-Photos",
+      "cwd": "${workspaceFolder}/apps/api-photos",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run-script", "start:debug"],
+      "port": 9230
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "BE Download User Photos",
+      "cwd": "${workspaceFolder}/apps/be-download-user-photo",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run-script", "start:debug"],
+      "port": 9231
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "BE Dropbox",
+      "cwd": "${workspaceFolder}/apps/be-dropbox",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run-script", "start:debug"],
+      "port": 9232
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "BE Google Drive",
+      "cwd": "${workspaceFolder}/apps/be-google-drive",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run-script", "start:debug"],
+      "port": 9233
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "BE Process exif",
+      "cwd": "${workspaceFolder}/apps/be-process-exif",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run-script", "start:debug"],
+      "port": 9234
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Gateway",
+      "cwd": "${workspaceFolder}/apps/gateway",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run-script", "start:debug"],
+      "port": 9235
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Frontend",
+      "cwd": "${workspaceFolder}/apps/web-frontend",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run-script", "start:dev"]
+    }
+  ],
+  "compounds": [
+    {
+      "name": "All",
+      "configurations": [
+        "Gateway",
+        "BE Process exif",
+        "BE Google Drive",
+        "BE Dropbox",
+        "BE Download User Photos",
+        "API-Photos"
+      ]
     }
   ]
 }
