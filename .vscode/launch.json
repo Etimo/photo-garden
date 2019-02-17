@@ -11,7 +11,9 @@
       "cwd": "${workspaceFolder}/apps/api-photos",
       "runtimeExecutable": "npm",
       "runtimeArgs": ["run-script", "start:debug"],
-      "port": 9230
+      "port": 9230,
+      "restart": true,
+      "console": "integratedTerminal"
     },
     {
       "type": "node",
@@ -20,7 +22,9 @@
       "cwd": "${workspaceFolder}/apps/be-download-user-photo",
       "runtimeExecutable": "npm",
       "runtimeArgs": ["run-script", "start:debug"],
-      "port": 9231
+      "port": 9231,
+      "restart": true,
+      "console": "integratedTerminal"
     },
     {
       "type": "node",
@@ -29,7 +33,9 @@
       "cwd": "${workspaceFolder}/apps/be-dropbox",
       "runtimeExecutable": "npm",
       "runtimeArgs": ["run-script", "start:debug"],
-      "port": 9232
+      "port": 9232,
+      "restart": true,
+      "console": "integratedTerminal"
     },
     {
       "type": "node",
@@ -38,7 +44,9 @@
       "cwd": "${workspaceFolder}/apps/be-google-drive",
       "runtimeExecutable": "npm",
       "runtimeArgs": ["run-script", "start:debug"],
-      "port": 9233
+      "port": 9233,
+      "restart": true,
+      "console": "integratedTerminal"
     },
     {
       "type": "node",
@@ -47,7 +55,9 @@
       "cwd": "${workspaceFolder}/apps/be-process-exif",
       "runtimeExecutable": "npm",
       "runtimeArgs": ["run-script", "start:debug"],
-      "port": 9234
+      "port": 9234,
+      "restart": true,
+      "console": "integratedTerminal"
     },
     {
       "type": "node",
@@ -56,7 +66,9 @@
       "cwd": "${workspaceFolder}/apps/gateway",
       "runtimeExecutable": "npm",
       "runtimeArgs": ["run-script", "start:debug"],
-      "port": 9235
+      "port": 9235,
+      "restart": true,
+      "console": "integratedTerminal"
     },
     {
       "type": "node",
