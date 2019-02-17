@@ -74,6 +74,7 @@ If you are using VS code you can then:
 
 - Create the database by running the Task `Migrate local database`
 - Run all apps by selecting the debug configuration called `All`. With this setups it is also possible to set break points and easily debug the code.
+- Start FE by run `yarn start:dev` in the web-frontend folder
 
 ### Windows 10
 
