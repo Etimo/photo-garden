@@ -4,7 +4,7 @@
     "photoServer": "http://localhost:9000/photos"
   },
   "serviceUrls": {
-    "photos": "http://api-photos:3000"
+    "photos": "http://localhost:3002/"
   },
   "queue": {
     "host": "localhost",
