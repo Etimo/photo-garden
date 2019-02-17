@@ -1,0 +1,64 @@
+{
+  "urls": {
+    "app": "http://localhost:3001",
+    "photoServer": "http://localhost:9000/photos"
+  },
+  "serviceUrls": {
+    "photos": "http://api-photos:3000"
+  },
+  "queue": {
+    "host": "localhost",
+    "port": 4222
+  },
+  "limits": {
+    "maxPhotoCountPerAccount": 100
+  },
+  "s3": {
+    "endpoint": "localhost",
+    "port": 9000,
+    "secure": false,
+    "accessKey": "not-so-access",
+    "secretKey": "not-so-secret",
+    "bucket": "photos",
+    "region": "eu-west-1"
+  },
+  "databases": {
+    "garden": {
+      "host": "localhost",
+      "port": 5432,
+      "user": "the_gardener",
+      "password": "mysecretpassword",
+      "database": "photo_garden"
+    },
+    "unleash": {
+      "host": "localhost",
+      "port": 5432,
+      "user": "unleash",
+      "password": "mysecretpassword",
+      "database": "unleash"
+    }
+  },
+  "gateway": {
+    "port": 3000,
+    "secret": "ThisIsNotSecret",
+    "cookieName": "gardenSession"
+  },
+  "providers": {
+    "googleDrive": {
+      "validPhotos": ["image/jpeg"],
+      "clientRedirectUri": "http://localhost:3000/google-drive/auth/finish",
+      "scopes": ["https://www.googleapis.com/auth/drive.readonly", "email"]
+    },
+    "dropbox": {
+      "clientRedirectUri": "http://localhost:3000/dropbox/auth/finish"
+    }
+  },
+  "apis": {
+    "photos": {
+      "port": 3002
+    }
+  },
+  "images": {
+    "path": "/usr/src/photos"
+  }
+}
