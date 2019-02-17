@@ -14,7 +14,6 @@ const mapStateToProps = state => {
 
 const ConnectedGarden = ({ gardenPhotos, sortSettings }) => (
   <div>
-    <br />
     <Sort />
     <article className="garden">
       {sortPhotosIfAny(sortSettings, gardenPhotos).map(el => {

@@ -1,6 +1,6 @@
 {
   # Photo garden packages
-  workspace, apps, jobs,
+  apps, jobs,
 
   # Config
   prod, dockerTag, dockerImagePrefix,
@@ -33,10 +33,10 @@ in rec {
     name = "photo-garden.json";
     path = imageConfig;
   } ];
-  baseImage = dockerTools.buildImage {
-    name = "photo-garden-base";
-    keepContentsDirlinks = true;
-    contents = map symlinkAddPkg [
+  appImages = lib.mapAttrs (name: pkg: dockerTools.buildLayeredImage {
+    inherit name;
+    maxLayers = 20;
+    contents = [
       # Debugging
       bashInteractive
       coreutils
@@ -52,20 +52,11 @@ in rec {
           }];
         }];
       }])
-      # Shared packages to reduce duplication
-      nodejs
+      # Config
+      imageConfigDir
     ];
-  };
-  appImages = lib.listToAttrs (map (name: lib.nameValuePair name (dockerTools.buildImage {
-    inherit name;
-    fromImage = if workspace.${name}.useBaseLayer or true
-      then baseImage
-      else null;
-    keepContentsDirlinks = true;
-    contents = [ imageConfigDir ];
     config =
     let
-      pkg = workspace.${name};
       pkgBin = "${pkg}/bin/${name}";
       nodemonConfig = {
         watch = map (dep: "${pkg}/libexec/${name}/node_modules/${dep.pname}") (pkgAndDeps pkg) ++ ["/photo-garden.json"];
@@ -82,34 +73,29 @@ in rec {
         "APP_NAME=${name}"
       ];
     };
-  })) (apps ++ jobs));
-  images = lib.mapAttrsToList (name: img: {
-    name = "${name}.docker.tar.gz";
-    path = img;
-  }) appImages ++ [{
-    name = "docker-base.tar.gz";
-    path = baseImage;
-  }];
+  }) (apps // jobs);
 
   composeFileBase = loadYAML ./docker-compose.template.yml;
   composeFileOverrides = {
-    services = lib.listToAttrs (map (name: rec {
-      inherit name;
-      existingService = (composeFileBase.services or {}).${name} or {};
-      value = {
+    services = lib.mapAttrs (name: pkg:
+      let
+        existingService = (composeFileBase.services or {}).${name} or {};
+      in {
         image = dockerImageRef name;
         volumes =
-        let
-          existing = existingService.volumes or [];
-          pkg = workspace.${name};
-          dependencyVolumes = map (dep: "./${relativizePath ./. dep.src}:${pkg}/libexec/${name}/deps/${dep.pname}") (pkgAndDeps pkg);
-          configVolume = "./${relativizePath ./. imageConfig}:/photo-garden.json";
-        in existing ++ lib.optionals (!prod) (dependencyVolumes ++ [configVolume]);
+          let
+            existing = existingService.volumes or [];
+            originalSourcePath = path: assert lib.canCleanSource path;
+              if path ? _isLibCleanSourceWith
+                then path.origSrc
+                else path;
+            dependencyVolumes = map (dep: "./${relativizePath ./. (originalSourcePath dep.src)}:${pkg}/libexec/${name}/deps/${dep.pname}") (pkgAndDeps pkg);
+            configVolume = "./${relativizePath ./. imageConfig}:/photo-garden.json";
+          in existing ++ lib.optionals (!prod) (dependencyVolumes ++ [configVolume]);
         environment = (existingService.environment or []) ++ [
           "LOG_LEVEL"
         ];
-      };
-    }) (apps ++ jobs));
+      }) (apps // jobs);
   };
   composeFileData = lib.recursiveUpdate composeFileBase composeFileOverrides;
   composeFile = writeText "docker-compose.yml"
@@ -127,32 +113,4 @@ in rec {
   skopeoLoadImgsMap = targetProto: lib.concatStringsSep "\n" (lib.mapAttrsToList (skopeoLoadImgMap targetProto) appImages);
   skopeoLoadMap = writeText "docker-load" (skopeoLoadImgsMap "docker-daemon:");
   skopeoUploadMap = writeText "docker-upload" (skopeoLoadImgsMap "docker://");
-  dockerEnv = writeText "docker-env"
-    ''
-      export DOCKER_IMAGE_PREFIX=${dockerImagePrefix}
-      export DOCKER_TAG=${dockerTag}
-    '';
-
-  extraFiles = [
-    {
-      name = "docker-compose.yml";
-      path = composeFile;
-    }
-    {
-      name = "kubernetes";
-      path = kubernetesConfig;
-    }
-    {
-      name = "docker-env";
-      path = dockerEnv;
-    }
-    {
-      name = "skopeo-load-map";
-      path = skopeoLoadMap;
-    }
-    {
-      name = "skopeo-upload-map";
-      path = skopeoUploadMap;
-    }
-  ];
 }

@@ -12,8 +12,9 @@
   pkgsSrc ? pkgsBootstrap.fetchFromGitHub {
     owner = "nixos";
     repo = "nixpkgs-channels";
-    rev = "61c3169a0e17d789c566d5b241bfe309ce4a6275";
-    sha256 = "0qbycg7wkb71v20rchlkafrjfpbk2fnlvvbh3ai9pyfisci5wxvq";
+    # branch = "nixpkgs-unstable";
+    rev = "79e699096d949d50d70e266b6964f9200f236b82";
+    sha256 = "0bbv93pxyanprpia0ibbkawbpdncxdma2a8qkl8p7qjfpvfbfhi5";
   },
   pkgs ? import pkgsSrc pkgsOpts,
 
@@ -21,16 +22,24 @@
   nodejs ? pkgs.${nodejsName},
 
   yarn2nixSrc ? pkgs.fetchFromGitHub {
-    owner = "moretea";
+    owner = "teozkr";
     repo = "yarn2nix";
-    rev = "780e33a07fd821e09ab5b05223ddb4ca15ac663f";
-    sha256 = "1f83cr9qgk95g3571ps644rvgfzv2i4i7532q8pg405s4q5ada3h";
+    rev = "59c9dfe6209bca13fc4bce6e473c5c0a6ec2dcee";
+    sha256 = "11f7d4ssipdn4855wf7c234ngj6i15ksn5b97cxnc0ipx7ny7yva";
   },
   yarn2nix ? import yarn2nixSrc { inherit pkgs nodejs; },
 }:
-let
+rec {
   workspace = yarn2nix.mkYarnWorkspace rec {
     src = ./.;
+    sourceCleaner = src: pkgs.lib.cleanSourceWith {
+      filter =
+        if prod || !useDocker
+          then name: type: (baseNameOf name != "node_modules") && pkgs.lib.cleanSourceFilter name type
+          # We volume-mount the source code anyway, so there's no point copying it here.
+          else name: type: (baseNameOf name == "package.json");
+      inherit src;
+    };
     yarnFlags = [
       "--offline"
       "--frozen-lockfile"
@@ -112,14 +121,55 @@ let
         find -iname binding.node -exec strip -s {} +
       '';
   };
-  apps = pkgs.lib.mapAttrsToList (name: tpe: name) (builtins.readDir ./apps);
-  jobs = pkgs.lib.mapAttrsToList (name: tpe: name) (builtins.readDir ./jobs);
-  rawBuilds = map (name: {
-    name = "${name}";
-    path = workspace."${name}";
-  }) (apps ++ jobs);
-  dockerBuild = pkgs.callPackage ./docker.nix {
-    inherit apps jobs workspace prod dockerTag dockerImagePrefix nodejs;
+
+  apps = pkgs.lib.mapAttrs (name: tpe: workspace."${name}") (builtins.readDir ./apps);
+  jobs = pkgs.lib.mapAttrs (name: tpe: workspace."${name}") (builtins.readDir ./jobs);
+
+  ${if useDocker then "dockerBuild" else null} = pkgs.callPackage ./docker.nix {
+    inherit apps jobs prod dockerTag dockerImagePrefix nodejs;
   };
-in
-  pkgs.linkFarm "photo-garden" (pkgs.lib.optionals useDocker (dockerBuild.images ++ dockerBuild.extraFiles) ++ rawBuilds)
+
+  managementEnv = pkgs.stdenvNoCC.mkDerivation {
+    name = "management-env";
+    srcs = [];
+    buildInputs = [
+      # To build
+      pkgs.nix
+      pkgs.bash
+      pkgs.docker
+      pkgs.parallel-rust
+      vendor.skopeo
+
+      # To deploy
+      pkgs.kubectl
+      pkgs.kubernetes-helm
+      pkgs.helmfile
+      pkgs.awscli
+    ];
+    buildPhase =
+      ''
+        echo "This should only be used with nix-shell!"
+        exit 1
+      '';
+  };
+
+  vendor = {
+    # Skopeo 0.1.34 produces a ton of log spam, and has no silence option
+    # 0.1.35 (not yet released) disables this when output is not a TTY
+    # See #99
+    # ---
+    # Skopeo upstream does not support copying in parallel from Docker archives,
+    # slowing down pushes massively.
+    # containers/image#568 fixes this.
+    skopeo = assert pkgs.skopeo.name == "skopeo-0.1.34"; pkgs.skopeo.overrideAttrs (old: {
+      name = "skopeo-0.1.35-dev";
+      src = pkgs.fetchFromGitHub {
+        rev = "275f4f3ca6d86ae859eb11e74496c244813a0264";
+        # branch = "containers-image-568";
+        owner = "teozkr";
+        repo = "skopeo";
+        sha256 = "04dabxdbfqxb0f5z0rgxdkqrjip45q0qwqd2alg25znpnqnb3lkb";
+      };
+    });
+  };
+}

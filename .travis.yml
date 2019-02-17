@@ -15,12 +15,12 @@ before_script:
   --trusted-public-keys cachix.cachix.org-1:eWNHQldwUO7G2VkjpnjDbWwy4KQ/HNxht7H4SSoMckM=
 - cachix use photogarden
 script:
-- nix-build -j32 --arg prod $PROD | cachix push photogarden
+- nix-build --max-jobs 32 --arg prod $PROD --attr apps --attr jobs | cachix push photogarden
 - export DOCKER_TAG=$(git rev-parse HEAD)
-- ./docker-build.sh --arg prod $PROD --argstr dockerImagePrefix $ECR_BASE --argstr dockerTag $DOCKER_TAG
+- ./docker-build.sh --arg prod $PROD
 deploy:
   provider: script
-  script: "./deploy.sh"
+  script: "./deploy.sh --arg prod $PROD --argstr dockerImagePrefix $ECR_BASE --argstr dockerTag $DOCKER_TAG"
   skip_cleanup: true
   on:
     repo: Etimo/photo-garden

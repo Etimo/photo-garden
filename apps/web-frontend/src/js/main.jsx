@@ -39,7 +39,7 @@ class ConnectedMain extends React.Component {
   }
   render() {
     return (
-      <div>
+      <div className="main-container">
         <Header />
         {this.getMain()}
         <Footer />
