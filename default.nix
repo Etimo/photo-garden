@@ -158,17 +158,16 @@ rec {
     # 0.1.35 (not yet released) disables this when output is not a TTY
     # See #99
     # ---
-    # Skopeo upstream does not support copying in parallel from Docker archives,
-    # slowing down pushes massively.
-    # containers/image#568 fixes this.
+    # Skopeo 0.1.34 does not support parallel copying from Docker archives,
+    # slowing down pushes massively. 0.1.35 (not yet released) fixes this.
+    # See containers/image#568.
     skopeo = assert pkgs.skopeo.name == "skopeo-0.1.34"; pkgs.skopeo.overrideAttrs (old: {
       name = "skopeo-0.1.35-dev";
       src = pkgs.fetchFromGitHub {
-        rev = "275f4f3ca6d86ae859eb11e74496c244813a0264";
-        # branch = "containers-image-568";
-        owner = "teozkr";
+        rev = "fee5981ebf441a2d398a3955fe650939a505007a";
+        owner = "containers";
         repo = "skopeo";
-        sha256 = "04dabxdbfqxb0f5z0rgxdkqrjip45q0qwqd2alg25znpnqnb3lkb";
+        sha256 = "0xdr6lqdbzy91vxn4cdq7bbd2827gc9iy0ygmplsiwwmm5p32yg7";
       };
     });
   };
