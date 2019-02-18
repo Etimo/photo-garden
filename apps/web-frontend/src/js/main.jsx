@@ -1,3 +1,4 @@
+import "babel-polyfill";
 import React from "react";
 import ReactDOM from "react-dom";
 import Header from "./components/header/header.jsx";
@@ -13,7 +14,6 @@ import PhotoMap from "./components/photomap/photo-map.jsx";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { photoClosed } from "./actions/index";
-import "babel-polyfill";
 import menuSidebar from "./components/menu/menu-sidebar.jsx";
 
 class ConnectedMain extends React.Component {

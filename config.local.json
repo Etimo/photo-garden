@@ -4,17 +4,17 @@
     "photoServer": "http://localhost:9000/photos"
   },
   "serviceUrls": {
-    "photos": "http://api-photos:3000"
+    "photos": "http://localhost:3002/"
   },
   "queue": {
-    "host": "queue",
+    "host": "localhost",
     "port": 4222
   },
   "limits": {
     "maxPhotoCountPerAccount": 100
   },
   "s3": {
-    "endpoint": "minio",
+    "endpoint": "localhost",
     "port": 9000,
     "secure": false,
     "accessKey": "not-so-access",
@@ -24,14 +24,14 @@
   },
   "databases": {
     "garden": {
-      "host": "db",
+      "host": "localhost",
       "port": 5432,
       "user": "the_gardener",
       "password": "mysecretpassword",
       "database": "photo_garden"
     },
     "unleash": {
-      "host": "db",
+      "host": "localhost",
       "port": 5432,
       "user": "unleash",
       "password": "mysecretpassword",
