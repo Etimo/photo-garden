@@ -5,7 +5,7 @@
   "main": "./src/index.html",
   "source": "./src/index.html",
   "scripts": {
-    "start:dev": "parcel src/index.html"
+    "start:dev": "PHOTO_GARDEN_GATEWAY_BASE_URL=http://localhost:3000 parcel src/index.html --port 3001"
   },
   "sw-precache": {
     "maximumFileSizeToCacheInBytes": 10485760
@@ -26,6 +26,7 @@
     "uuid": "^3.1.0"
   },
   "devDependencies": {
+    "babel-core": "^6.26.3",
     "babel-preset-env": "^1.6.1",
     "babel-preset-react": "^6.24.1",
     "babel-preset-react-app": "^3.1.0",

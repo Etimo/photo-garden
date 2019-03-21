@@ -66,6 +66,16 @@ You also need to install Docker, but the exact procedure for that depends on you
 3.  Set up a [https://nixos.wiki/wiki/Distributed_build](remote Linux builder), which is easiest done using
     [https://github.com/LnL7/nix-docker#running-as-a-remote-builder](nix-docker).
 
+If you dont want to use Nix you can start external services like database and queue with docker-compose:
+
+`docker-compose -f docker-services-compose.yml up --build`
+
+If you are using VS code you can then:
+
+- Create the database by running the Task `Migrate local database`
+- Run all apps by selecting the debug configuration called `All`. With this setups it is also possible to set break points and easily debug the code.
+- Start FE by run `yarn start:dev` in the web-frontend folder
+
 ### Windows 10
 
 Nix doesn't run natively on Windows, but runs fine (aside from Microsoft/WSL#2395) under the WSL. Note that

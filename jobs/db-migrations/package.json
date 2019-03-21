@@ -16,11 +16,10 @@
   "homepage": "https://github.com/Etimo/photo-garden#readme",
   "dependencies": {
     "command-line-args": "^4.0.7",
-    "config": "1.0.0",
-    "logging": "1.0.0",
-    "postgrator-cli": "^0.2.2"
+    "config": "1.0.0"
   },
   "devDependencies": {
+    "postgrator-cli": "^3.1.0",
     "nodemon": "^1.18.3"
   }
 }
