@@ -11,5 +11,4 @@ const Menu = visible => (
     <MenuItem text="Configure photo providers" link="providerSelect" />
   </div>
 );
-
 export default Menu;

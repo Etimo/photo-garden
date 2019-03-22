@@ -103,6 +103,26 @@ app.post(
   }
 );
 
+app.get(
+  "/user/me/photos/large/:id",
+  [allowCors, isAuthenticated],
+  (req, res, next) => {
+    const id = req.params.id;
+
+    const userid = req.gardenSession.userIdentity;
+    axios
+      .get(`/large/${userid}/${id}`, {
+        baseURL: photosApiBaseUrl
+      })
+      .then(response => {
+        res.json(response.data);
+      })
+      .catch(err => {
+        res.json({});
+      });
+  }
+);
+
 function allowCors(req, res, next) {
   res.header("Access-Control-Allow-Origin", appUrl);
   res.header(

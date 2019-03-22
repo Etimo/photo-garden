@@ -4,17 +4,36 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import createStyle from "../editor/editor-css";
 import browserCacheService from "../../services/browser-cache.service";
+import axios from "axios";
+export const gatewayBaseUrl = process.env.PHOTO_GARDEN_GATEWAY_BASE_URL;
 class ConnectedSinglePhoto extends React.Component {
   image;
+  imageUrl;
   constructor(props) {
     super(props);
     this.image = React.createRef();
-    browserCacheService.imageSrcCache(
-      "photos",
-      this.image,
-      this.props.selectedPhoto.id,
-      this.props.selectedPhoto.source
+    // browserCacheService.imageSrcCache(
+    //   "photos",
+    //   this.image,
+    //   this.props.selectedPhoto.id,
+    //   this.props.selectedPhoto.source
+    // );
+    this.getPhoto();
+  }
+  async getPhoto() {
+    console.log("hejhej");
+    const resp = await axios.get(
+      `/user/me/photos/large/${this.props.selectedPhoto.id}`,
+      {
+        baseURL: gatewayBaseUrl,
+        withCredentials: true
+      }
     );
+
+    const link = resp.data.link;
+    console.log(link);
+
+    this.image.current.src = link;
   }
 
   render() {
@@ -24,7 +43,11 @@ class ConnectedSinglePhoto extends React.Component {
           className="single-photo"
           style={createStyle(this.props.selectedPhoto.edit)}
         >
-          <img ref={this.image} className="single-photo-image" />
+          <img
+            ref={this.image}
+            src={this.imageUrl}
+            className="single-photo-image"
+          />
           <figcaption className="single-photo-info">
             {/* <ul>
               <li className="single-photo-tags">

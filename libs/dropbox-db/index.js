@@ -10,6 +10,13 @@ async function getDropboxTokenByUserId(user_id) {
   );
   return response.rows[0].token || undefined;
 }
+async function getDropboxPhotoIDByPhotoId(photo_id) {
+  const response = await dbClient.query(
+    "select provider_id from photos where id = $1 ",
+    [photo_id]
+  );
+  return response.rows[0].provider_id || undefined;
+}
 async function storeDropboxToken(user_id, token) {
   const response = await dbClient.query(
     "SELECT token FROM dropbox_tokens WHERE user_id = $1 ",
@@ -61,5 +68,6 @@ module.exports = {
   storeDropboxToken,
   getDropboxTokenByUserId,
   getDropboxNextPageTokenByUserId,
-  setDropboxNextPageToken
+  setDropboxNextPageToken,
+  getDropboxPhotoIDByPhotoId
 };

@@ -20,14 +20,14 @@
     "start:be-google-drive": "cd apps/be-google-drive/ && nodemon --watch ../../libs --watch . app.js",
     "start:be-process-exif": "cd apps/be-process-exif/ && nodemon --watch ../../libs --watch . app.js",
     "start:gateway": "cd apps/gateway/ && nodemon --watch ../../libs --watch . app.js",
-    "start:web-frontend": "cd apps/web-frontend/ && npm run start:dev",
+    "start:web-frontend": "cd apps/web-frontend/ && cross-env PHOTO_GARDEN_GATEWAY_BASE_URL=http://localhost:3000 parcel src/index.html --port 3001",
     "debug:api-photos": "cd apps/api-photos && cross-env NODE_ENV=local nodemon --inspect=9230 app.js",
     "debug:be-download-user-photo": "cd apps/be-download-user-photo/ && cross-env NODE_ENV=local nodemon --inspect=9231 app.js",
     "debug:be-dropbox": "cd apps/be-dropbox/ && cross-env NODE_ENV=local nodemon --inspect=9232 app.js",
     "debug:be-google-drive": "cd apps/be-google-drive/ && cross-env NODE_ENV=local nodemon --inspect=9233 app.js",
     "debug:be-process-exif": "cd apps/be-process-exif/ && cross-env NODE_ENV=local nodemon --inspect=9234 app.js",
     "debug:gateway": "cd apps/gateway/ && cross-env NODE_ENV=local nodemon --inspect=9235 app.js",
-    "debug:web-frontend": "cd apps/web-frontend/ && npm run start:dev"
+    "debug:web-frontend": "cd apps/web-frontend/ && cross-env PHOTO_GARDEN_GATEWAY_BASE_URL=http://localhost:3000 parcel src/index.html --port 3001"
   },
   "lint-staged": {
     "*.{js,md,scss,jsx,css,json}": [

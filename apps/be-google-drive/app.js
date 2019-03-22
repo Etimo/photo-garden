@@ -43,12 +43,15 @@ communication.subscribe(options, async msg => {
   const authHeaders = {
     Authorization: `Bearer ${accessToken}`
   };
+
+  var regex = "/s/{0-9}";
+  var biggerUrl = data.photo.thumbnailLink.replace("=s220", "=s1000");
   const sizes = {
     small: {
       url: data.photo.thumbnailLink
     },
     large: {
-      url: data.photo.thumbnailLink
+      url: biggerUrl
     },
     // large: {
     //   url: `https://www.googleapis.com/drive/v3/files/${
