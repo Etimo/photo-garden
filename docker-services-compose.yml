@@ -34,11 +34,11 @@ services:
       - MINIO_SECRET_KEY=not-so-secret
 
   # Jobs
-  # db-migrations:
-  #   build: jobs/db-migrations
-  #   command: ./setup-photo-garden.sh
-  #   depends_on:
-  #     - db
+  db-migrations:
+    build: jobs/db-migrations
+    command: ./setup-photo-garden.sh
+    depends_on:
+      - db
 
 
 volumes:
