@@ -4,11 +4,6 @@
   "description": "",
   "main": "app.js",
   "bin": "app.js",
-  "scripts": {
-    "start:dev": "nodemon --watch ../../libs --watch . app.js",
-    "start:debug": "NODE_ENV=local nodemon --inspect --inspect-brk=9231 app.js",
-    "start:prod": "node app.js"
-  },
   "dependencies": {
     "communication": "^1.0.0",
     "config": "^1.0.0",
