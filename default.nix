@@ -13,8 +13,8 @@
     owner = "nixos";
     repo = "nixpkgs-channels";
     # branch = "nixpkgs-unstable";
-    rev = "79e699096d949d50d70e266b6964f9200f236b82";
-    sha256 = "0bbv93pxyanprpia0ibbkawbpdncxdma2a8qkl8p7qjfpvfbfhi5";
+    rev = "796a8764ab85746f916e2cc8f6a9a5fc6d4d03ac";
+    sha256 = "1m57gsr9r96gip2wdvdzbkj8zxf47rg3lrz35yi352x1mzj3by3x";
   },
   pkgs ? import pkgsSrc pkgsOpts,
 
@@ -138,7 +138,7 @@ rec {
       pkgs.bash
       pkgs.docker
       pkgs.parallel-rust
-      vendor.skopeo
+      pkgs.skopeo
 
       # To deploy
       pkgs.kubectl
@@ -154,21 +154,5 @@ rec {
   };
 
   vendor = {
-    # Skopeo 0.1.34 produces a ton of log spam, and has no silence option
-    # 0.1.35 (not yet released) disables this when output is not a TTY
-    # See #99
-    # ---
-    # Skopeo 0.1.34 does not support parallel copying from Docker archives,
-    # slowing down pushes massively. 0.1.35 (not yet released) fixes this.
-    # See containers/image#568.
-    skopeo = assert pkgs.skopeo.name == "skopeo-0.1.34"; pkgs.skopeo.overrideAttrs (old: {
-      name = "skopeo-0.1.35-dev";
-      src = pkgs.fetchFromGitHub {
-        rev = "fee5981ebf441a2d398a3955fe650939a505007a";
-        owner = "containers";
-        repo = "skopeo";
-        sha256 = "0xdr6lqdbzy91vxn4cdq7bbd2827gc9iy0ygmplsiwwmm5p32yg7";
-      };
-    });
   };
 }
