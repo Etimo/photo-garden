@@ -8,7 +8,7 @@
   # Dependencies
   lib,
   dockerTools, skopeo,
-  linkFarm, symlinkJoin, runCommand, writeText,
+  linkFarm, symlinkJoin, runCommand, writeText, copyPathToStore,
   bashInteractive, coreutils, less, nodejs, remarshal,
   callPackage,
 }:
@@ -26,9 +26,9 @@ let
 
   dockerImageRef = app: "${dockerImagePrefix}${app}:${dockerTag}";
 in rec {
-  imageConfig = if prod
+  imageConfig = copyPathToStore (if prod
     then ./config.production.json
-    else ./config.development.json;
+    else ./config.development.json);
   imageConfigDir = linkFarm "config" [ {
     name = "photo-garden.json";
     path = imageConfig;

@@ -13,11 +13,11 @@ KUBERNETES_CONFIG=$(nix path-info dockerBuild.kubernetesConfig $NIX_OPTS)
 echo Pushing Docker Images
 if [[ -t 0 ]]; then
   echo '(Is TTY, turning on progress display)'
-  tty_arg='--bar'
+  parallel_tty='--tmux --bar'
 else
-  tty_arg=''
+  parallel_tty=''
 fi
-parallel -j3 $tty_arg --colsep=' ' skopeo copy --dest-cert-dir=deploy/registry-keys :::: $SKOPEO_UPLOAD_MAP
+parallel -j3 --colsep=' ' $parallel_tty skopeo copy --dest-cert-dir=deploy/registry-keys :::: $SKOPEO_UPLOAD_MAP
 
 echo Deploying Photo Garden
 kubectl delete jobs/db-migrations --ignore-not-found
