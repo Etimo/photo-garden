@@ -9,10 +9,8 @@ before_script:
 - echo madvise | sudo tee /sys/kernel/mm/transparent_hugepage/enabled
 - sudo mount -t tmpfs none /run/user -o remount,size=8G
 - nix-channel --update
-- nix-env -j32 -iA nixpkgs.git-crypt
+- nix-env -j32 -iA nixpkgs.git-crypt nixpkgs.cachix
 - git crypt unlock git-crypt.key
-- nix-env -j32 -if https://github.com/cachix/cachix/tarball/master --substituters https://cachix.cachix.org
-  --trusted-public-keys cachix.cachix.org-1:eWNHQldwUO7G2VkjpnjDbWwy4KQ/HNxht7H4SSoMckM=
 - cachix use photogarden
 script:
 - nix-build --max-jobs 32 --arg prod $PROD --attr apps --attr jobs | cachix push photogarden
