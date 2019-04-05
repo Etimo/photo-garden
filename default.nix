@@ -137,7 +137,7 @@ rec {
       pkgs.nix
       pkgs.bash
       pkgs.docker
-      pkgs.parallel-rust
+      pkgs.parallel
       pkgs.skopeo
 
       # To deploy

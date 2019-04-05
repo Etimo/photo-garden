@@ -8,7 +8,7 @@
 let
   kubeAppYamlFile = {fileType, app, override, base ? ./apps, skipIfMissing ? true}:
   let
-    baseTemplate = loadYAML (./deploy + "/${fileType}.template.yml");
+    baseTemplate = loadYAML (./deploy/kubernetes + "/${fileType}.template.yml");
     appTemplatePath = base + "/${app}/kube.${fileType}.yml";
     appTemplate =
       if builtins.pathExists appTemplatePath
@@ -25,7 +25,7 @@ let
       skip = skipIfMissing && (!builtins.pathExists appTemplatePath);
     };
 
-  containerTemplate = loadYAML ./deploy/container.template.yml;
+  containerTemplate = loadYAML ./deploy/kubernetes/container.template.yml;
   controller = args: app: kubeAppYamlFile ({
     inherit app;
     skipIfMissing = false;
@@ -80,7 +80,7 @@ let
   ];
 
   sharedFiles = lib.cleanSourceWith {
-    src = ./deploy;
+    src = ./deploy/kubernetes;
     filter = (name: type: !lib.hasSuffix ".template.yml" name);
   };
 in
