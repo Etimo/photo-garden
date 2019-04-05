@@ -26,6 +26,7 @@
     "garden": {
       "host": "db",
       "port": 5432,
+      "ssl": false,
       "user": "the_gardener",
       "password": "mysecretpassword",
       "database": "photo_garden"

@@ -8,7 +8,13 @@ function create(name) {
     host: config.get(`${prefix}.host`),
     database: config.get(`${prefix}.database`),
     password: config.get(`${prefix}.password`),
-    port: config.get(`${prefix}.port`)
+    port: config.get(`${prefix}.port`),
+    ssl: config.get(`${prefix}.ssl.enable`)
+      ? {
+          // TODO: enforce TLS certificates somehow?
+          rejectUnauthorized: false
+        }
+      : null
   });
 }
 

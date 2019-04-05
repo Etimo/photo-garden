@@ -1,0 +1,16 @@
+apiVersion: "acid.zalan.do/v1"
+kind: postgresql
+metadata:
+  name: photo-garden-garden
+spec:
+  teamId: photo-garden
+  volume:
+    size: 5Gi
+  numberOfInstances: 2
+  users:
+    # database owner
+    photo-garden: []
+  databases:
+    garden: photo-garden
+  postgresql:
+    version: "10"

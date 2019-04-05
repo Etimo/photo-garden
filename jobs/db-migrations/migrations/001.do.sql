@@ -1,3 +1,5 @@
+CREATE EXTENSION pgcrypto;
+
 CREATE TYPE identity_provider AS enum('Google');
 
 CREATE TABLE users(
