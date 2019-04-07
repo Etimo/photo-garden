@@ -13,4 +13,10 @@ echo "Copying docker-compose.yml"
 cp --no-preserve=mode $DOCKER_COMPOSE_FILE docker-compose.yml
 
 echo "Loading images"
-parallel -j20 skopeo copy --remove-signatures :::: $SKOPEO_LOAD_MAP
+if [[ -t 0 ]]; then
+  echo '(Is TTY, turning on progress display)'
+  parallel_tty='--tmux --bar'
+else
+  parallel_tty=''
+fi
+parallel -j3 --colsep=' ' $parallel_tty skopeo copy :::: $SKOPEO_LOAD_MAP
