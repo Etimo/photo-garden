@@ -13,7 +13,7 @@ before_script:
 - git crypt unlock git-crypt.key
 - cachix use photogarden
 script:
-- nix-build --max-jobs 32 --arg prod $PROD --attr apps --attr jobs | cachix push photogarden
+- nix-build --max-jobs 32 --arg prod $PROD --arg useDocker --attr apps --attr jobs --attr dockerBuild.skopeoLoadMap --attr dockerBuild.skopeoUploadMap --attr dockerBuild.kubernetesConfig | cachix push photogarden
 - export DOCKER_TAG=$(git rev-parse HEAD)
 - ./docker-build.sh --arg prod $PROD
 deploy:
