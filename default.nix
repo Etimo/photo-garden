@@ -34,10 +34,10 @@ rec {
     src = ./.;
     sourceCleaner = src: pkgs.lib.cleanSourceWith {
       filter =
-        if prod || !useDocker
-          then name: type: (baseNameOf name != "node_modules") && pkgs.lib.cleanSourceFilter name type
-          # We volume-mount the source code anyway, so there's no point copying it here.
-          else name: type: (baseNameOf name == "package.json");
+        if !prod && useDocker
+          # We volume-mount the source code when developing in Docker, so there's no point copying it into the container, too.
+          then name: type: (baseNameOf name == "package.json")
+          else name: type: (baseNameOf name != "node_modules") && pkgs.lib.cleanSourceFilter name type;
       inherit src;
     };
     yarnFlags = [
