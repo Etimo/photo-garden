@@ -139,12 +139,12 @@ rec {
       pkgs.docker
       pkgs.parallel
       pkgs.skopeo
+      pkgs.tmux
 
       # To deploy
       pkgs.kubectl
       pkgs.kubernetes-helm
       pkgs.helmfile
-      pkgs.awscli
     ];
     buildPhase =
       ''
