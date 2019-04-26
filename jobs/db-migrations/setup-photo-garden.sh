@@ -1,7 +1,7 @@
 #!/bin/sh
-
+yarn add postgrator-cli
 # Wait for database to come up
 false
 while test "$?" -eq 1; do
-    yarn postgrator
+    ./node_modules/.bin/postgrator
 done
