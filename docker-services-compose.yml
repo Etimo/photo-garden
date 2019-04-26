@@ -40,6 +40,17 @@ services:
     depends_on:
       - db
 
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch-oss:7.0.0
+    ports:
+      - "9200:9200"
+    environment:
+      - discovery.type=single-node 
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana-oss:7.0.0
+    ports:
+      - "5601:5601"
 
 volumes:
   photo-storage:

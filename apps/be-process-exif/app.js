@@ -2,6 +2,7 @@
 const communication = require("communication");
 const config = require("config");
 const logger = require("logging");
+const request = require("request");
 const imagePath = require("image-path");
 const fs = require("fs");
 const exifDb = require("exif-db");
@@ -34,6 +35,7 @@ const options = {
 };
 communication.subscribe(options, async msg => {
   const data = JSON.parse(msg.data);
+  var exif = {};
 
   // Check if exif image exists
   if ("exif" in data.sizes) {
@@ -55,6 +57,21 @@ communication.subscribe(options, async msg => {
           let s = JSON.stringify(exifData).replace(/\\u0000/g, "");
           await exifDb.setExif(data.id, s);
           processExif(data.id, exifData);
+          exif = exifData;
+
+          url = "http://localhost:9200/photogarden/_doc/" + data.id;
+          data.exif = exif;
+          request(
+            {
+              url: url,
+              method: "POST",
+              headers: {
+                "content-type": "application/json"
+              },
+              json: data
+            },
+            function(error, resp, body) {}
+          );
         }
       });
     } catch (error) {
